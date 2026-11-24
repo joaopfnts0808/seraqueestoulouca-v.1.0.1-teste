@@ -353,12 +353,23 @@ body::after {
   border: 1px solid var(--purple);
   overflow: hidden;
   flex-shrink: 0;
+  background: #000;
 }
 .rw-cover-box img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   display: block;
+}
+
+/* Player oculto do YouTube (áudio completo sem cortes) */
+.yt-engine-box {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0.01;
+  pointer-events: none;
+  overflow: hidden;
 }
 
 .rw-info-col {
@@ -436,6 +447,20 @@ body::after {
 }
 .rw-btn:hover, .rw-btn.pink { background: var(--pink); }
 
+.rw-vol-box {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.65rem;
+  font-weight: 600;
+  margin-left: auto;
+}
+.rw-vol-box input {
+  width: 72px;
+  accent-color: var(--pink);
+  cursor: pointer;
+}
+
 /* Barra de Ferramentas de Leitura */
 .rw-tools-row {
   display: flex;
@@ -501,35 +526,23 @@ body::after {
   line-height: 1.55;
 }
 
-/* Embed Oficial da Playlist (Reprodução livre sem login) */
-.rw-embed-holder {
-  border-top: 1px solid rgba(255, 255, 255, 0.12);
-  padding-top: 8px;
-}
-.rw-embed-frame {
-  width: 100%;
-  height: 80px;
-  overflow: hidden;
-  border: 1px solid var(--purple);
-}
-
 /* ESTADO FLUTUANTE DO PLAYER ENTRE AS ABAS */
 .radio-widget.floating {
   position: fixed;
   bottom: 20px;
   right: 20px;
-  width: 340px;
+  width: 345px;
   background: var(--purple-dark);
   box-shadow: 7px 7px 0 var(--pink);
   z-index: 9999;
 }
 .radio-widget.floating .rw-topbar { cursor: grab; }
 .radio-widget.floating .rw-topbar:active { cursor: grabbing; }
-.radio-widget.floating .rw-main-grid { grid-template-columns: 74px 1fr; gap: 12px; }
-.radio-widget.floating .rw-cover-box { width: 74px; height: 74px; }
+.radio-widget.floating .rw-main-grid { grid-template-columns: 76px 1fr; gap: 12px; }
+.radio-widget.floating .rw-cover-box { width: 76px; height: 76px; }
 .radio-widget.floating.minimized .rw-tools-row,
 .radio-widget.floating.minimized .rw-reading-drawer,
-.radio-widget.floating.minimized .rw-embed-holder,
+.radio-widget.floating.minimized .rw-vol-box,
 .radio-widget.floating.minimized .rw-cover-box {
   display: none !important;
 }
@@ -786,17 +799,17 @@ body::after {
       </div>
     </section>
 
-    <!-- 2. SEÇÃO DA TRILHA SONORA (PLAYER LIVRE SEM LOGIN QUE VIRA FLUTUANTE) -->
+    <!-- 2. SEÇÃO DA TRILHA SONORA (FAIXAS COMPLETAS VIA YOUTUBE API) -->
     <section class="hc-window" id="secao-trilha">
       <div class="hc-win-bar">
         <span>SOUNDTRACK.M3U // TRILHA OFICIAL DO LIVRO</span>
-        <span>20 FAIXAS</span>
+        <span>19 FAIXAS COMPLETAS</span>
       </div>
       <div class="soundtrack-dock">
         <div class="sd-header">
           <div>
             <h2>Ouça enquanto lê</h2>
-            <p>Uma música por capítulo. Ao dar play ou trocar de aba, o player flutua na tela para continuar tocando.</p>
+            <p>Faixas completas sincronizadas por capítulo. Ao dar play ou trocar de aba, o player flutua na tela.</p>
           </div>
           <button type="button" class="btn-secondary" style="padding:8px 16px; font-size:0.76rem;" onclick="showTab('trilha', document.querySelectorAll('.hc-nav button')[4])">Ver todas as faixas</button>
         </div>
@@ -810,7 +823,7 @@ body::after {
           <!-- WIDGET DO PLAYER -->
           <div class="radio-widget" id="radioWidget">
             <div class="rw-topbar" id="rwDragHandle">
-              <span>● LOUCA RADIO // TRILHA OFICIAL</span>
+              <span>● LOUCA RADIO // TRILHA COMPLETA</span>
               <div class="rw-win-btns">
                 <button type="button" class="rw-win-btn" id="btnFloatToggle" onclick="toggleFloatMode()" title="Destacar / Encaixar">FLUTUAR</button>
                 <button type="button" class="rw-win-btn" onclick="toggleMinimizePlayer()" title="Minimizar">_</button>
@@ -820,12 +833,13 @@ body::after {
             <div class="rw-content">
               <div class="rw-main-grid">
                 <div class="rw-cover-box">
-                  <img id="rwCover" src="https://i.imgur.com/dgWxjNX.jpeg" alt="Capa">
+                  <img id="rwCover" src="https://i.ytimg.com/vi/vOZFiX6hDXQ/hqdefault.jpg" alt="Capa">
+                  <div class="yt-engine-box"><div id="yt-player-engine"></div></div>
                 </div>
                 <div class="rw-info-col">
                   <div class="rw-status-line">
                     <span id="rwState">PRONTO PARA TOCAR</span>
-                    <span id="rwTrackNum">CAP. I (1/20)</span>
+                    <span id="rwTrackNum">CAP. I (1/19)</span>
                   </div>
                   <div class="rw-lcd">
                     <div class="rw-title" id="rwTitle">Out Of Mind</div>
@@ -838,22 +852,27 @@ body::after {
                     <div class="rw-progress-bar" id="rwProgressBar" onclick="seekProgress(event)" title="Clique para avançar ou voltar">
                       <div class="rw-progress-fill" id="rwProgressFill"></div>
                     </div>
-                    <span id="rwTimeDur">0:30</span>
+                    <span id="rwTimeDur">0:00</span>
                   </div>
 
                   <div class="rw-controls-row">
                     <button type="button" class="rw-btn" onclick="prevTrack()" title="Anterior">◀◀</button>
                     <button type="button" class="rw-btn pink" onclick="togglePlay()" id="rwPlayBtn">▶ PLAY / PAUSE</button>
                     <button type="button" class="rw-btn" onclick="nextTrack()" title="Próxima">▶▶</button>
+                    <div class="rw-vol-box">
+                      <span>VOL</span>
+                      <input type="range" id="rwVolSlider" min="0" max="100" step="5" value="80" oninput="setVol(this.value)">
+                    </div>
                   </div>
                 </div>
               </div>
 
-              <!-- FERRAMENTAS DE LEITURA -->
+              <!-- FERRAMENTAS DE LEITURA E VOLUME -->
               <div class="rw-tools-row">
                 <button type="button" class="rw-tool-btn" id="btnReadingMode" onclick="toggleReadingDrawer()">📖 Acompanhar Leitura</button>
-                <a class="rw-tool-btn" id="btnOpenTrackSpotify" href="https://open.spotify.com/track/1duoEJxM4GBEICofJAh9Im" target="_blank" rel="noopener">↗ Faixa no Spotify</a>
-                <a class="rw-tool-btn" href="https://open.spotify.com/playlist/2nKDeojKmuFvGf6p20WWbt" target="_blank" rel="noopener">+ Salvar Playlist</a>
+                <button type="button" class="rw-tool-btn" id="btnWhisperMode" onclick="toggleWhisperMode()">🤫 Modo Sussurro</button>
+                <a class="rw-tool-btn" href="https://youtube.com/playlist?list=PLJQ_9cMQGgAI&si=vIx0Vk7OlFIxInQ4" target="_blank" rel="noopener">↗ YouTube</a>
+                <a class="rw-tool-btn" href="https://open.spotify.com/playlist/2nKDeojKmuFvGf6p20WWbt" target="_blank" rel="noopener">↗ Spotify</a>
               </div>
 
               <!-- PAINEL: ACOMPANHAR LEITURA + TIMER + NOTA DO CAPÍTULO -->
@@ -868,14 +887,6 @@ body::after {
                 </div>
                 <p class="rw-reading-text" id="rwReadingNote">Out Of Mind é sobre negar que alguém tomou conta da sua cabeça. Você se convence de que está bem, que o tempo vai curar, que está seguindo em frente. A música é o momento em que essa mentira racha.</p>
               </div>
-
-              <!-- EMBED IFRAME OFICIAL DO SPOTIFY (SEM LOGIN E SEM LIMITE DE USUÁRIOS) -->
-              <div class="rw-embed-holder">
-                <div class="rw-embed-frame">
-                  <div id="spotify-embed-target"></div>
-                </div>
-              </div>
-
             </div>
           </div>
         </div>
@@ -966,12 +977,12 @@ body::after {
   <!-- ABA 5: FAIXAS DO LIVRO -->
   <div class="tab-view" id="view-trilha">
     <section class="hc-window">
-      <div class="hc-win-bar"><span>PLAYLIST.M3U // 20 FAIXAS</span><span>[ — □ × ]</span></div>
+      <div class="hc-win-bar"><span>PLAYLIST.M3U // 19 FAIXAS</span><span>[ — □ × ]</span></div>
       <div class="inner-pad">
         <h2>Biblioteca Musical</h2>
-        <p class="inner-role">Clique na faixa para ler a história ou dê play para ouvir no player flutuante</p>
+        <p class="inner-role">Clique na faixa para ler a história ou dê play para ouvir inteira no player flutuante</p>
         <div class="disc-tabs">
-          <button type="button" class="disc-tab active" onclick="filterDisc('all', this)">Todas (20)</button>
+          <button type="button" class="disc-tab active" onclick="filterDisc('all', this)">Todas (19)</button>
           <button type="button" class="disc-tab" onclick="filterDisc('A', this)">Lado A (I–V)</button>
           <button type="button" class="disc-tab" onclick="filterDisc('B', this)">Lado B (VI–X)</button>
           <button type="button" class="disc-tab" onclick="filterDisc('C', this)">Lado C (XI–XV)</button>
@@ -998,41 +1009,40 @@ body::after {
   <footer style="margin-top:20px; text-align:center; font-size:0.72rem; opacity:0.65;"><p>© 2026 · Será que Estou Louca? · João Pedro Fontes</p></footer>
 </div>
 
-<script src="https://open.spotify.com/embed/iframe-api/v1" async></script>
+<script src="https://www.youtube.com/iframe_api"></script>
 <script>
 const TRACKS = [
-  { disc:"A", cap:"I", title:"Out Of Mind", artist:"Tove Lo", uri:"spotify:track:1duoEJxM4GBEICofJAh9Im", id:"1duoEJxM4GBEICofJAh9Im", desc:"Out Of Mind é sobre negar que alguém tomou conta da sua cabeça. Você se convence de que está bem, que o tempo vai curar, que está seguindo em frente. A música é o momento em que essa mentira racha." },
-  { disc:"A", cap:"II", title:"Let's Not Fall In Love", artist:"BigBang", uri:"spotify:track:6UgkB0xM45TR3Zjqm3GQ6T", id:"6UgkB0xM45TR3Zjqm3GQ6T", desc:"Let's Not Fall In Love é sobre dois que se gostam e sabem que aprofundar vai doer. O pedido é simples: fica essa noite, mas não promete nada. É o aviso que veio antes de tudo." },
-  { disc:"A", cap:"III", title:"Casanova", artist:"Allie X", uri:"spotify:track:1fN3fH8Wcx7SJJwlVFrO5t", id:"1fN3fH8Wcx7SJJwlVFrO5t", desc:"Casanova é sobre saber que alguém é perigoso e ficar mesmo assim. Você vê a má reputação, sente o perigo nos lábios e continua." },
-  { disc:"A", cap:"IV", title:"Nicotine", artist:"Panic! At The Disco", uri:"spotify:track:5Q4H1XkVHxQjnrHCUpS61d", id:"5Q4H1XkVHxQjnrHCUpS61d", desc:"Nicotine é sobre querer parar e não conseguir. Você sabe que é ruim, corta os laços, e ainda precisa." },
-  { disc:"A", cap:"V", title:"hey you got drugs?", artist:"Tove Lo", uri:"spotify:track:73kadnv7SduzhApfRUv5C0", id:"73kadnv7SduzhApfRUv5C0", desc:"hey you got drugs? é sobre usar a noite e as substâncias para não sentir. Só mostra como é quando a festa é o único lugar onde você consegue respirar." },
-  { disc:"B", cap:"VI", title:"Doi D+", artist:"Jaloo", uri:"spotify:track:1CD7hXuEjiUsoqOhleyKb7", id:"1CD7hXuEjiUsoqOhleyKb7", desc:"Doi D+ é sobre uma dor que não passa nem quando você tenta se afastar. Só a honestidade de quem ficou no naufrágio sabendo que o mar é a mesma pessoa que afunda." },
-  { disc:"B", cap:"VII", title:"Get Outta My Way", artist:"Kylie Minogue", uri:"spotify:track:2VZ5Vtjn16RThAvaFz3sJZ", id:"2VZ5Vtjn16RThAvaFz3sJZ", desc:"Get Outta My Way é sobre decidir ir embora e já estar indo. Não tem hesitação, não tem última conversa." },
-  { disc:"B", cap:"VIII", title:"Circle The Drain", artist:"Katy Perry", uri:"spotify:track:7s0YfJE6hNNYq9BV26iCw6", id:"7s0YfJE6hNNYq9BV26iCw6", desc:"Circle The Drain é sobre perceber que você virou responsável por alguém que não quer ser salvo." },
-  { disc:"B", cap:"IX", title:"Godless", artist:"Banks", uri:"spotify:track:1eTL8yocTmire9gpOn2H2g", id:"1eTL8yocTmire9gpOn2H2g", desc:"Godless é sobre idolatrar alguém que não acredita em nada. Quando ela vai embora, sobra o vazio de quem perdeu a própria religião." },
-  { disc:"B", cap:"X", title:"Sangrando", artist:"Gaby Amarantos & Potyguara Bardo", uri:"spotify:track:2ArW2y4HFzz1VjGtl7f4xm", id:"2ArW2y4HFzz1VjGtl7f4xm", desc:"Sangrando é sobre olhar para o lado e perceber que a pessoa sumiu sem explicação. A cura não vem depois da dor. Vem durante." },
-  { disc:"C", cap:"XI", title:"Espumas ao Vento", artist:"Elza Soares", uri:"spotify:track:7KiLniGRlvAHpoxMLYp32P", id:"7KiLniGRlvAHpoxMLYp32P", desc:"Espumas ao Vento é sobre saber que o amor foi real e não conseguir aceitar que acabou." },
-  { disc:"C", cap:"XII", title:"Supercut", artist:"Lorde", uri:"spotify:track:6K8VQ84MqhsoakN5MjrnVR", id:"6K8VQ84MqhsoakN5MjrnVR", desc:"Supercut é sobre a versão editada que você guarda de alguém. A compilação é bonita porque você escolheu o que ficou." },
-  { disc:"C", cap:"XIII", title:"Not Cute Anymore", artist:"ILLIT", uri:"spotify:track:1k0JAiH11gHL9dc5dfQjQr", id:"1k0JAiH11gHL9dc5dfQjQr", desc:"Not Cute Anymore é sobre parar de se encaixar no que o outro esperava. É só alguém que cansou de ser o que não é." },
-  { disc:"C", cap:"XIV", title:"It's Alright, It's Ok", artist:"Ashley Tisdale", uri:"spotify:track:1bYtKF2sY2wLU6xdVaqIqD", id:"1bYtKF2sY2wLU6xdVaqIqD", desc:"It's Alright, It's Ok é sobre fechar a porta sem drama. A ponte queimou e tá tudo bem assim." },
-  { disc:"C", cap:"XV", title:"You're On Your Own, Kid", artist:"Taylor Swift", uri:"spotify:track:4D7BCuvgdJlYvlX5QlSQoE", id:"4D7BCuvgdJlYvlX5QlSQoE", desc:"You're On Your Own, Kid é sobre fechar uma conta que nunca vai ser paga pelo outro. Você sempre esteve por conta própria." },
-  { disc:"BONUS", cap:"★", title:"Who's Afraid of Little Old Me?", artist:"Taylor Swift", uri:"spotify:track:2d8UxVNhJinc8uat9PoM9y", id:"2d8UxVNhJinc8uat9PoM9y", desc:"Sobre alguém que foi tratado como ameaça, como instável. A música apenas confirma: você deveria ter medo mesmo." },
-  { disc:"BONUS", cap:"B1", title:"Amor pra Recordar", artist:"Gaby Amarantos & Liniker", uri:"spotify:track:2olfjOvAFAIaQ8mJp1TFo0", id:"2olfjOvAFAIaQ8mJp1TFo0", desc:"Ficou nas bônus porque esse sentimento é real: apesar de tudo, houve amor." },
-  { disc:"BONUS", cap:"B2", title:"Strangers", artist:"Halsey ft. Lauren Jauregui", uri:"spotify:track:11EDhDAVDtGPoSar6ootYA", id:"11EDhDAVDtGPoSar6ootYA", desc:"O diagnóstico mais preciso do que aquela relação era antes de ter nome." },
-  { disc:"BONUS", cap:"B3", title:"Propaganda", artist:"Banks", uri:"spotify:track:3XMBVIWJ19LcePSuM0VLEX", id:"3XMBVIWJ19LcePSuM0VLEX", desc:"A frase I can’t save myself é o que o texto inteiro tenta não dizer em voz alta." },
-  { disc:"BONUS", cap:"B4", title:"Não Me Cutuca", artist:"Anitta, Alceu Valença", uri:"spotify:track:02BhbpQKWCVjqVBUsvOL7i", id:"02BhbpQKWCVjqVBUsvOL7i", desc:"Devolve a palavra do título pra quem foi chamada assim." }
+  { disc:"A", cap:"I", title:"Out Of Mind", artist:"Tove Lo", ytId:"vOZFiX6hDXQ", desc:"Out Of Mind é sobre negar que alguém tomou conta da sua cabeça. Você se convence de que está bem, que o tempo vai curar, que está seguindo em frente. A música é o momento em que essa mentira racha." },
+  { disc:"A", cap:"II", title:"Let's Not Fall In Love", artist:"BigBang", ytId:"_65tLeIWtx0", desc:"Let's Not Fall In Love é sobre dois que se gostam e sabem que aprofundar vai doer. O pedido é simples: fica essa noite, mas não promete nada. É o aviso que veio antes de tudo." },
+  { disc:"A", cap:"III", title:"Casanova", artist:"Allie X", ytId:"RoKsw9FdUFM", desc:"Casanova é sobre saber que alguém é perigoso e ficar mesmo assim. Você vê a má reputação, sente o perigo nos lábios e continua." },
+  { disc:"A", cap:"IV", title:"Nicotine", artist:"Panic! At The Disco", ytId:"xThd_r0dqd4", desc:"Nicotine é sobre querer parar e não conseguir. Você sabe que é ruim, corta os laços, e ainda precisa." },
+  { disc:"A", cap:"V", title:"hey you got drugs?", artist:"Tove Lo", ytId:"LkBxcmxWKAA", desc:"hey you got drugs? é sobre usar a noite e as substâncias para não sentir. Só mostra como é quando a festa é o único lugar onde você consegue respirar." },
+  { disc:"B", cap:"VI", title:"Doi D+", artist:"Jaloo", ytId:"NCdB-b53bn0", desc:"Doi D+ é sobre uma dor que não passa nem quando você tenta se afastar. Só a honestidade de quem ficou no naufrágio sabendo que o mar é a mesma pessoa que afunda." },
+  { disc:"B", cap:"VII", title:"Get Outta My Way", artist:"Kylie Minogue", ytId:"YFmIbWHNp0I", desc:"Get Outta My Way é sobre decidir ir embora e já estar indo. Não tem hesitação, não tem última conversa." },
+  { disc:"B", cap:"VIII", title:"Circle The Drain", artist:"Katy Perry", ytId:"BHGaW8lBlSk", desc:"Circle The Drain é sobre perceber que você virou responsável por alguém que não quer ser salvo." },
+  { disc:"B", cap:"IX", title:"Godless", artist:"Banks", ytId:"kuP8tZ5-7Wk", desc:"Godless é sobre idolatrar alguém que não acredita em nada. Quando ela vai embora, sobra o vazio de quem perdeu a própria religião." },
+  { disc:"B", cap:"X", title:"Sangrando", artist:"Gaby Amarantos & Potyguara Bardo", ytId:"CJ-E6NyjgAo", desc:"Sangrando é sobre olhar para o lado e perceber que a pessoa sumiu sem explicação. A cura não vem depois da dor. Vem durante." },
+  { disc:"C", cap:"XI", title:"Espumas ao Vento", artist:"Elza Soares", ytId:"YqxMZUU098s", desc:"Espumas ao Vento é sobre saber que o amor foi real e não conseguir aceitar que acabou." },
+  { disc:"C", cap:"XII", title:"Supercut", artist:"Lorde", ytId:"39LNUl7vLNM", desc:"Supercut é sobre a versão editada que você guarda de alguém. A compilação é bonita porque você escolheu o que ficou." },
+  { disc:"C", cap:"XIII", title:"Not Cute Anymore", artist:"ILLIT", ytId:"4bNZK-zgmUc", desc:"Not Cute Anymore é sobre parar de se encaixar no que o outro esperava. É só alguém que cansou de ser o que não é." },
+  { disc:"C", cap:"XIV", title:"It's Alright, It's Ok", artist:"Ashley Tisdale", ytId:"HGc8w9D9slA", desc:"It's Alright, It's Ok é sobre fechar a porta sem drama. A ponte queimou e tá tudo bem assim." },
+  { disc:"C", cap:"XV", title:"You're On Your Own, Kid", artist:"Taylor Swift", ytId:"On_ZPiDEqkA", desc:"You're On Your Own, Kid é sobre fechar uma conta que nunca vai ser paga pelo outro. Você sempre esteve por conta própria." },
+  { disc:"BONUS", cap:"★", title:"Who's Afraid of Little Old Me?", artist:"Taylor Swift", ytId:"7Gbg6Z70J7E", desc:"Sobre alguém que foi tratado como ameaça, como instável. A música apenas confirma: você deveria ter medo mesmo." },
+  { disc:"BONUS", cap:"B1", title:"Amor pra Recordar", artist:"Gaby Amarantos & Liniker", ytId:"qcK5MJEktLc", desc:"Ficou nas bônus porque esse sentimento é real: apesar de tudo, houve amor." },
+  { disc:"BONUS", cap:"B2", title:"Strangers", artist:"Halsey ft. Lauren Jauregui", ytId:"RVd_71ZdRd4", desc:"O diagnóstico mais preciso do que aquela relação era antes de ter nome." },
+  { disc:"BONUS", cap:"B3", title:"Propaganda", artist:"Banks", ytId:"gQroY_XO1js", desc:"A frase I can’t save myself é o que o texto inteiro tenta não dizer em voz alta." }
 ];
 
-const PLAYLIST_URI = "spotify:playlist:2nKDeojKmuFvGf6p20WWbt";
-
-let embedController = null;
+let ytPlayer = null;
+let ytReady = false;
 let currentIdx = 0;
 let isPlaying = false;
-let currentDurationSec = 30;
 let isFloating = false;
 let readingOpen = false;
 let readingSeconds = 0;
 let readingTimerRunning = true;
+let whisperActive = false;
+let savedVolume = 80;
 
 /* Renderiza Lista de Faixas na Aba 5 */
 function renderTracks(filter = "all") {
@@ -1048,7 +1058,7 @@ function renderTracks(filter = "all") {
           <div><span class="track-num">${t.cap}</span><span class="track-name">${t.title}</span></div>
           <div class="track-art">${t.artist}</div>
         </div>
-        <button type="button" class="mini-play" onclick="event.stopPropagation(); playSpecificTrack(${idx})" title="Ouvir no player">▶</button>
+        <button type="button" class="mini-play" onclick="event.stopPropagation(); playSpecificTrack(${idx})" title="Ouvir faixa inteira">▶</button>
       </div>
       <div class="track-note">${t.desc}</div>
     `;
@@ -1071,77 +1081,90 @@ function formatTime(sec) {
   return `${m}:${s < 10 ? "0" : ""}${s}`;
 }
 
-/* Atualiza UI da Faixa Atual + Nota do Capítulo */
+/* Atualiza UI da Faixa Atual + Capa + Nota do Capítulo */
 function updateTrackUI(idx) {
   currentIdx = idx;
   const trk = TRACKS[idx];
-  document.getElementById("rwTrackNum").textContent = `CAP. ${trk.cap} (${idx + 1}/20)`;
+  document.getElementById("rwTrackNum").textContent = `CAP. ${trk.cap} (${idx + 1}/${TRACKS.length})`;
   document.getElementById("rwTitle").textContent = trk.title;
   document.getElementById("rwArtist").textContent = trk.artist;
+  document.getElementById("rwCover").src = `https://i.ytimg.com/vi/${trk.ytId}/hqdefault.jpg`;
   document.getElementById("rwReadingCap").textContent = `NOTAS DO CAPÍTULO ${trk.cap}`;
   document.getElementById("rwReadingNote").textContent = trk.desc;
-  document.getElementById("btnOpenTrackSpotify").href = `https://open.spotify.com/track/${trk.id}`;
 }
 
-/* Inicializa Spotify iFrame API (Sem login e sem limite de usuários) */
-window.onSpotifyIframeApiReady = (IFrameAPI) => {
-  const element = document.getElementById("spotify-embed-target");
-  const options = {
-    width: "100%",
-    height: "80",
-    uri: PLAYLIST_URI,
-    theme: "dark"
-  };
-
-  IFrameAPI.createController(element, options, (EmbedController) => {
-    embedController = EmbedController;
-
-    EmbedController.addListener("playback_update", e => {
-      const data = e.data;
-      if (!data) return;
-
-      isPlaying = !data.isPaused;
-      document.getElementById("rwState").textContent = isPlaying ? "TOCANDO ▶" : "PAUSADO";
-
-      if (isPlaying) {
-        floatPlayer();
-      }
-
-      /* Sincroniza se o usuário clicou direto em outra faixa dentro do embed */
-      if (data.playingURI) {
-        const foundIdx = TRACKS.findIndex(t => t.uri === data.playingURI);
-        if (foundIdx !== -1 && foundIdx !== currentIdx) {
-          updateTrackUI(foundIdx);
+/* Inicializa YouTube IFrame API (Músicas inteiras sem login) */
+function onYouTubeIframeAPIReady() {
+  ytPlayer = new YT.Player("yt-player-engine", {
+    height: "100",
+    width: "100",
+    videoId: TRACKS[0].ytId,
+    playerVars: {
+      autoplay: 0,
+      controls: 0,
+      disablekb: 1,
+      fs: 0,
+      modestbranding: 1,
+      playsinline: 1,
+      rel: 0
+    },
+    events: {
+      onReady: () => {
+        ytReady = true;
+        ytPlayer.setVolume(savedVolume);
+        document.getElementById("rwState").textContent = "PRONTO PARA TOCAR";
+      },
+      onStateChange: (e) => {
+        if (e.data === YT.PlayerState.PLAYING) {
+          isPlaying = true;
+          document.getElementById("rwState").textContent = "TOCANDO ▶";
+          floatPlayer();
+        } else if (e.data === YT.PlayerState.PAUSED) {
+          isPlaying = false;
+          document.getElementById("rwState").textContent = "PAUSADO";
+        } else if (e.data === YT.PlayerState.BUFFERING) {
+          document.getElementById("rwState").textContent = "CARREGANDO...";
+        } else if (e.data === YT.PlayerState.ENDED) {
+          nextTrack();
         }
+      },
+      onError: () => {
+        nextTrack();
       }
-
-      /* Barra de Progresso Interativa (Scrubbing) */
-      const posSec = (data.position || 0) / 1000;
-      const durSec = (data.duration || 30000) / 1000;
-      currentDurationSec = durSec > 0 ? durSec : 30;
-      const pct = Math.min(100, Math.max(0, (posSec / currentDurationSec) * 100));
-
-      document.getElementById("rwProgressFill").style.width = pct + "%";
-      document.getElementById("rwTimeCur").textContent = formatTime(posSec);
-      document.getElementById("rwTimeDur").textContent = formatTime(currentDurationSec);
-    });
+    }
   });
-};
+}
+
+/* Atualiza Barra de Progresso a cada 500ms */
+setInterval(() => {
+  if (!ytReady || !ytPlayer || typeof ytPlayer.getCurrentTime !== "function") return;
+  const cur = ytPlayer.getCurrentTime() || 0;
+  const dur = ytPlayer.getDuration() || 0;
+  if (dur > 0) {
+    const pct = Math.min(100, Math.max(0, (cur / dur) * 100));
+    document.getElementById("rwProgressFill").style.width = pct + "%";
+    document.getElementById("rwTimeCur").textContent = formatTime(cur);
+    document.getElementById("rwTimeDur").textContent = formatTime(dur);
+  }
+}, 500);
 
 /* Controles do Player */
 function playSpecificTrack(idx) {
   floatPlayer();
   updateTrackUI(idx);
-  if (embedController) {
-    embedController.loadUri(TRACKS[idx].uri);
-    embedController.play();
+  if (ytReady && ytPlayer) {
+    ytPlayer.loadVideoById(TRACKS[idx].ytId);
+    ytPlayer.playVideo();
   }
 }
 
 function togglePlay() {
   floatPlayer();
-  if (embedController) {
-    embedController.togglePlay();
+  if (!ytReady || !ytPlayer) return;
+  if (isPlaying) {
+    ytPlayer.pauseVideo();
+  } else {
+    ytPlayer.playVideo();
   }
 }
 
@@ -1155,14 +1178,43 @@ function prevTrack() {
 
 /* Scrubbing na Barra de Progresso */
 function seekProgress(e) {
-  if (!embedController) return;
+  if (!ytReady || !ytPlayer) return;
+  const dur = ytPlayer.getDuration() || 0;
+  if (dur <= 0) return;
   const bar = document.getElementById("rwProgressBar");
   const rect = bar.getBoundingClientRect();
   const ratio = Math.min(1, Math.max(0, (e.clientX - rect.left) / rect.width));
-  const targetSec = Math.floor(ratio * currentDurationSec);
-  embedController.seek(targetSec);
+  const targetSec = ratio * dur;
+  ytPlayer.seekTo(targetSec, true);
   document.getElementById("rwProgressFill").style.width = (ratio * 100) + "%";
   document.getElementById("rwTimeCur").textContent = formatTime(targetSec);
+}
+
+/* Volume e Modo Sussurro / Leitura (Ducking) */
+function setVol(v) {
+  const num = parseInt(v, 10);
+  savedVolume = num;
+  whisperActive = false;
+  document.getElementById("btnWhisperMode").classList.remove("on");
+  if (ytReady && ytPlayer) {
+    ytPlayer.setVolume(num);
+  }
+}
+
+function toggleWhisperMode() {
+  whisperActive = !whisperActive;
+  const btn = document.getElementById("btnWhisperMode");
+  const slider = document.getElementById("rwVolSlider");
+  btn.classList.toggle("on", whisperActive);
+
+  if (whisperActive) {
+    slider.value = 20;
+    if (ytReady && ytPlayer) ytPlayer.setVolume(20);
+  } else {
+    const restore = savedVolume > 20 ? savedVolume : 80;
+    slider.value = restore;
+    if (ytReady && ytPlayer) ytPlayer.setVolume(restore);
+  }
 }
 
 /* Modo "Acompanhar Leitura" com Timer e Nota do Capítulo */
@@ -1237,15 +1289,15 @@ function scrollToOrFloatPlayer() {
   if (sec && document.getElementById("view-inicio").classList.contains("active")) {
     sec.scrollIntoView({ behavior: "smooth", block: "center" });
   }
-  if (embedController && !isPlaying) {
-    embedController.play();
+  if (ytReady && ytPlayer && !isPlaying) {
+    ytPlayer.playVideo();
   }
 }
 
 function floatPlayerAndPlay() {
   floatPlayer();
-  if (embedController && !isPlaying) {
-    embedController.play();
+  if (ytReady && ytPlayer && !isPlaying) {
+    ytPlayer.playVideo();
   }
 }
 
