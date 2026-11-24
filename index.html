@@ -282,7 +282,7 @@ body::after {
   font-weight: 300;
 }
 
-/* TELA DE VÍDEO GRANDE ACIMA DO PLAYER */
+/* TELA DE VÍDEO GRANDE (COMPARTILHADA ENTRE INÍCIO E BIBLIOTECA MUSICAL) */
 .video-stage-wrap {
   width: 100%;
   aspect-ratio: 16 / 9;
@@ -700,6 +700,10 @@ body::after {
   cursor: pointer;
 }
 .track-item:hover { background: rgba(240, 54, 184, 0.1); }
+.track-item.now-playing {
+  background: rgba(240, 54, 184, 0.15);
+  border-left: 3px solid var(--pink);
+}
 .track-row {
   display: flex;
   align-items: center;
@@ -827,9 +831,11 @@ body::after {
           <button type="button" class="btn-secondary" style="padding:8px 16px; font-size:0.76rem;" onclick="showTab('trilha', document.querySelectorAll('.hc-nav button')[4])">Ver todas as faixas</button>
         </div>
 
-        <!-- PALCO DO VÍDEO GRANDE ACIMA DO PLAYER -->
-        <div class="video-stage-wrap">
-          <div id="yt-player-engine"></div>
+        <!-- SLOT DO VÍDEO NA ABA INÍCIO -->
+        <div id="homeVideoHost">
+          <div class="video-stage-wrap" id="sharedVideoStage">
+            <div id="yt-player-engine"></div>
+          </div>
         </div>
 
         <!-- PLAYER ABAIXO DO VÍDEO COM A CAPA DA MÚSICA -->
@@ -993,13 +999,17 @@ body::after {
     </section>
   </div>
 
-  <!-- ABA 5: FAIXAS DO LIVRO -->
+  <!-- ABA 5: FAIXAS DO LIVRO (COM PALCO DE VÍDEO NO TOPO) -->
   <div class="tab-view" id="view-trilha">
     <section class="hc-window">
       <div class="hc-win-bar"><span>PLAYLIST.M3U // 19 FAIXAS</span><span>[ — □ × ]</span></div>
       <div class="inner-pad">
         <h2>Biblioteca Musical</h2>
         <p class="inner-role">Clique na faixa para ler a história ou dê play para assistir e ouvir</p>
+
+        <!-- SLOT DO VÍDEO NA BIBLIOTECA MUSICAL -->
+        <div id="libraryVideoHost"></div>
+
         <div class="disc-tabs">
           <button type="button" class="disc-tab active" onclick="filterDisc('all', this)">Todas (19)</button>
           <button type="button" class="disc-tab" onclick="filterDisc('A', this)">Lado A (I–V)</button>
@@ -1055,6 +1065,7 @@ const TRACKS = [
 let ytPlayer = null;
 let ytReady = false;
 let currentIdx = 0;
+let currentFilter = "all";
 let isPlaying = false;
 let isFloating = false;
 let readingOpen = false;
@@ -1064,13 +1075,14 @@ let whisperActive = false;
 let savedVolume = 80;
 
 /* Renderiza Lista de Faixas na Aba 5 */
-function renderTracks(filter = "all") {
+function renderTracks(filter = currentFilter) {
+  currentFilter = filter;
   const box = document.getElementById("trackListContainer");
   box.innerHTML = "";
   TRACKS.forEach((t, idx) => {
     if (filter !== "all" && t.disc !== filter) return;
     const div = document.createElement("div");
-    div.className = "track-item";
+    div.className = "track-item" + (idx === currentIdx ? " now-playing" : "");
     div.innerHTML = `
       <div class="track-row" onclick="this.parentElement.classList.toggle('open')">
         <div class="track-meta">
@@ -1100,7 +1112,7 @@ function formatTime(sec) {
   return `${m}:${s < 10 ? "0" : ""}${s}`;
 }
 
-/* Atualiza UI da Faixa Atual + Capa + Nota do Capítulo */
+/* Atualiza UI da Faixa Atual + Capa + Nota do Capítulo + Destaque na Lista */
 function updateTrackUI(idx) {
   currentIdx = idx;
   const trk = TRACKS[idx];
@@ -1110,9 +1122,10 @@ function updateTrackUI(idx) {
   document.getElementById("rwCover").src = `https://i.ytimg.com/vi/${trk.ytId}/hqdefault.jpg`;
   document.getElementById("rwReadingCap").textContent = `NOTAS DA FAIXA ${trk.cap}`;
   document.getElementById("rwReadingNote").textContent = trk.desc;
+  renderTracks(currentFilter);
 }
 
-/* Inicializa YouTube IFrame API no Palco Superior */
+/* Inicializa YouTube IFrame API no Palco */
 function onYouTubeIframeAPIReady() {
   ytPlayer = new YT.Player("yt-player-engine", {
     videoId: TRACKS[0].ytId,
@@ -1313,8 +1326,15 @@ function floatPlayerAndPlay() {
   }
 }
 
-/* Navegação entre abas mantendo o player flutuando */
+/* Navegação entre abas levando o palco do vídeo entre Início e Biblioteca Musical */
 function showTab(tabId, btn) {
+  const videoStage = document.getElementById("sharedVideoStage");
+  if (tabId === "trilha") {
+    document.getElementById("libraryVideoHost").appendChild(videoStage);
+  } else if (tabId === "inicio") {
+    document.getElementById("homeVideoHost").appendChild(videoStage);
+  }
+
   if (tabId !== "inicio" && isPlaying) {
     floatPlayer();
   }
