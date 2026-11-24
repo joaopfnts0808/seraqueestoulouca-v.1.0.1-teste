@@ -300,7 +300,7 @@ body::after {
   gap: 12px;
 }
 
-/* WIDGET DO PLAYER (EMBUTIDO -> FLUTUANTE) */
+/* WIDGET DO PLAYER (EMBUTIDO -> FLUTUANTE COM VÍDEO VISÍVEL) */
 .radio-widget {
   background: var(--purple-deep);
   border: 2px solid var(--purple);
@@ -341,35 +341,29 @@ body::after {
 
 .rw-main-grid {
   display: grid;
-  grid-template-columns: 112px 1fr;
-  gap: 16px;
+  grid-template-columns: 240px 1fr;
+  gap: 18px;
   align-items: center;
 }
 
-.rw-cover-box {
+/* TELA DE VÍDEO DO YOUTUBE VISÍVEL */
+.rw-video-box {
   position: relative;
-  width: 112px;
-  height: 112px;
-  border: 1px solid var(--purple);
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border: 2px solid var(--purple);
+  box-shadow: 4px 4px 0 var(--pink);
   overflow: hidden;
-  flex-shrink: 0;
   background: #000;
 }
-.rw-cover-box img {
+.rw-video-box iframe,
+.rw-video-box #yt-player-engine {
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  border: 0;
   display: block;
-}
-
-/* Player oculto do YouTube (áudio completo sem cortes) */
-.yt-engine-box {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  opacity: 0.01;
-  pointer-events: none;
-  overflow: hidden;
 }
 
 .rw-info-col {
@@ -526,28 +520,31 @@ body::after {
   line-height: 1.55;
 }
 
-/* ESTADO FLUTUANTE DO PLAYER ENTRE AS ABAS */
+/* ESTADO FLUTUANTE DO PLAYER ENTRE AS ABAS (COM VÍDEO VISÍVEL) */
 .radio-widget.floating {
   position: fixed;
   bottom: 20px;
   right: 20px;
-  width: 345px;
+  width: 330px;
   background: var(--purple-dark);
   box-shadow: 7px 7px 0 var(--pink);
   z-index: 9999;
 }
 .radio-widget.floating .rw-topbar { cursor: grab; }
 .radio-widget.floating .rw-topbar:active { cursor: grabbing; }
-.radio-widget.floating .rw-main-grid { grid-template-columns: 76px 1fr; gap: 12px; }
-.radio-widget.floating .rw-cover-box { width: 76px; height: 76px; }
+.radio-widget.floating .rw-main-grid {
+  grid-template-columns: 1fr;
+  gap: 10px;
+}
+.radio-widget.floating .rw-video-box {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+}
 .radio-widget.floating.minimized .rw-tools-row,
 .radio-widget.floating.minimized .rw-reading-drawer,
 .radio-widget.floating.minimized .rw-vol-box,
-.radio-widget.floating.minimized .rw-cover-box {
+.radio-widget.floating.minimized .rw-video-box {
   display: none !important;
-}
-.radio-widget.floating.minimized .rw-main-grid {
-  grid-template-columns: 1fr;
 }
 
 /* SEÇÃO DA RESENHA (RAFAEL NASCIMENTO / SSEX BBOX) */
@@ -748,9 +745,8 @@ body::after {
   .author-layout { grid-template-columns: 1fr; }
   .author-photo { max-width: 140px; }
   .rw-main-grid { grid-template-columns: 1fr; }
-  .rw-cover-box { width: 100%; height: 160px; }
   .radio-widget.floating { left: 12px; right: 12px; bottom: 12px; width: auto; }
-  .radio-widget.floating .rw-cover-box { display: none; }
+  .radio-widget.floating .rw-video-box { max-height: 150px; }
 }
 </style>
 </head>
@@ -799,7 +795,7 @@ body::after {
       </div>
     </section>
 
-    <!-- 2. SEÇÃO DA TRILHA SONORA (FAIXAS COMPLETAS VIA YOUTUBE API) -->
+    <!-- 2. SEÇÃO DA TRILHA SONORA (VÍDEO E ÁUDIO COMPLETOS VIA YOUTUBE API) -->
     <section class="hc-window" id="secao-trilha">
       <div class="hc-win-bar">
         <span>SOUNDTRACK.M3U // TRILHA OFICIAL DO LIVRO</span>
@@ -809,14 +805,14 @@ body::after {
         <div class="sd-header">
           <div>
             <h2>Ouça enquanto lê</h2>
-            <p>Faixas completas sincronizadas por capítulo. Ao dar play ou trocar de aba, o player flutua na tela.</p>
+            <p>Clipes e faixas completas na ordem da playlist. Ao dar play ou trocar de aba, o player flutua na tela.</p>
           </div>
           <button type="button" class="btn-secondary" style="padding:8px 16px; font-size:0.76rem;" onclick="showTab('trilha', document.querySelectorAll('.hc-nav button')[4])">Ver todas as faixas</button>
         </div>
 
         <div class="player-slot" id="playerSlot">
           <div class="floating-notice" id="floatingNotice">
-            <span>O player está flutuando no canto da tela para você ouvir enquanto navega.</span>
+            <span>O player com vídeo está flutuando no canto da tela para você acompanhar enquanto navega.</span>
             <button type="button" class="btn-secondary" style="padding:7px 16px; font-size:0.75rem;" onclick="dockPlayer()">Encaixar player aqui novamente</button>
           </div>
 
@@ -832,18 +828,19 @@ body::after {
 
             <div class="rw-content">
               <div class="rw-main-grid">
-                <div class="rw-cover-box">
-                  <img id="rwCover" src="https://i.ytimg.com/vi/vOZFiX6hDXQ/hqdefault.jpg" alt="Capa">
-                  <div class="yt-engine-box"><div id="yt-player-engine"></div></div>
+                <!-- TELA DE VÍDEO VISÍVEL -->
+                <div class="rw-video-box">
+                  <div id="yt-player-engine"></div>
                 </div>
+
                 <div class="rw-info-col">
                   <div class="rw-status-line">
                     <span id="rwState">PRONTO PARA TOCAR</span>
-                    <span id="rwTrackNum">CAP. I (1/19)</span>
+                    <span id="rwTrackNum">FAIXA ★ (1/19)</span>
                   </div>
                   <div class="rw-lcd">
-                    <div class="rw-title" id="rwTitle">Out Of Mind</div>
-                    <div class="rw-artist" id="rwArtist">Tove Lo</div>
+                    <div class="rw-title" id="rwTitle">Who's Afraid of Little Old Me?</div>
+                    <div class="rw-artist" id="rwArtist">Taylor Swift</div>
                   </div>
 
                   <!-- BARRA DE PROGRESSO INTERATIVA (SCRUBBING) -->
@@ -878,14 +875,14 @@ body::after {
               <!-- PAINEL: ACOMPANHAR LEITURA + TIMER + NOTA DO CAPÍTULO -->
               <div class="rw-reading-drawer" id="rwReadingDrawer">
                 <div class="rw-reading-head">
-                  <span id="rwReadingCap">NOTAS DO CAPÍTULO I</span>
+                  <span id="rwReadingCap">NOTAS DA FAIXA ★</span>
                   <div class="rw-timer-controls">
                     <span id="rwReadingTimer">⏱ Leitura: 00:00</span>
                     <button type="button" class="rw-mini-timer-btn" id="btnTimerToggle" onclick="toggleReadingTimer()">Pausar</button>
                     <button type="button" class="rw-mini-timer-btn" onclick="resetReadingTimer()">Zerar</button>
                   </div>
                 </div>
-                <p class="rw-reading-text" id="rwReadingNote">Out Of Mind é sobre negar que alguém tomou conta da sua cabeça. Você se convence de que está bem, que o tempo vai curar, que está seguindo em frente. A música é o momento em que essa mentira racha.</p>
+                <p class="rw-reading-text" id="rwReadingNote">Sobre alguém que foi tratado como ameaça, como instável. A música apenas confirma: você deveria ter medo mesmo.</p>
               </div>
             </div>
           </div>
@@ -980,7 +977,7 @@ body::after {
       <div class="hc-win-bar"><span>PLAYLIST.M3U // 19 FAIXAS</span><span>[ — □ × ]</span></div>
       <div class="inner-pad">
         <h2>Biblioteca Musical</h2>
-        <p class="inner-role">Clique na faixa para ler a história ou dê play para ouvir inteira no player flutuante</p>
+        <p class="inner-role">Clique na faixa para ler a história ou dê play para assistir e ouvir no player flutuante</p>
         <div class="disc-tabs">
           <button type="button" class="disc-tab active" onclick="filterDisc('all', this)">Todas (19)</button>
           <button type="button" class="disc-tab" onclick="filterDisc('A', this)">Lado A (I–V)</button>
@@ -1011,26 +1008,27 @@ body::after {
 
 <script src="https://www.youtube.com/iframe_api"></script>
 <script>
+/* ORDEM EXATA DA SUA PLAYLIST NO YOUTUBE (COMEÇANDO POR WHO'S AFRAID OF LITTLE OLD ME?) */
 const TRACKS = [
-  { disc:"A", cap:"I", title:"Out Of Mind", artist:"Tove Lo", ytId:"vOZFiX6hDXQ", desc:"Out Of Mind é sobre negar que alguém tomou conta da sua cabeça. Você se convence de que está bem, que o tempo vai curar, que está seguindo em frente. A música é o momento em que essa mentira racha." },
-  { disc:"A", cap:"II", title:"Let's Not Fall In Love", artist:"BigBang", ytId:"_65tLeIWtx0", desc:"Let's Not Fall In Love é sobre dois que se gostam e sabem que aprofundar vai doer. O pedido é simples: fica essa noite, mas não promete nada. É o aviso que veio antes de tudo." },
-  { disc:"A", cap:"III", title:"Casanova", artist:"Allie X", ytId:"RoKsw9FdUFM", desc:"Casanova é sobre saber que alguém é perigoso e ficar mesmo assim. Você vê a má reputação, sente o perigo nos lábios e continua." },
-  { disc:"A", cap:"IV", title:"Nicotine", artist:"Panic! At The Disco", ytId:"xThd_r0dqd4", desc:"Nicotine é sobre querer parar e não conseguir. Você sabe que é ruim, corta os laços, e ainda precisa." },
-  { disc:"A", cap:"V", title:"hey you got drugs?", artist:"Tove Lo", ytId:"LkBxcmxWKAA", desc:"hey you got drugs? é sobre usar a noite e as substâncias para não sentir. Só mostra como é quando a festa é o único lugar onde você consegue respirar." },
-  { disc:"B", cap:"VI", title:"Doi D+", artist:"Jaloo", ytId:"NCdB-b53bn0", desc:"Doi D+ é sobre uma dor que não passa nem quando você tenta se afastar. Só a honestidade de quem ficou no naufrágio sabendo que o mar é a mesma pessoa que afunda." },
-  { disc:"B", cap:"VII", title:"Get Outta My Way", artist:"Kylie Minogue", ytId:"YFmIbWHNp0I", desc:"Get Outta My Way é sobre decidir ir embora e já estar indo. Não tem hesitação, não tem última conversa." },
-  { disc:"B", cap:"VIII", title:"Circle The Drain", artist:"Katy Perry", ytId:"BHGaW8lBlSk", desc:"Circle The Drain é sobre perceber que você virou responsável por alguém que não quer ser salvo." },
-  { disc:"B", cap:"IX", title:"Godless", artist:"Banks", ytId:"kuP8tZ5-7Wk", desc:"Godless é sobre idolatrar alguém que não acredita em nada. Quando ela vai embora, sobra o vazio de quem perdeu a própria religião." },
-  { disc:"B", cap:"X", title:"Sangrando", artist:"Gaby Amarantos & Potyguara Bardo", ytId:"CJ-E6NyjgAo", desc:"Sangrando é sobre olhar para o lado e perceber que a pessoa sumiu sem explicação. A cura não vem depois da dor. Vem durante." },
-  { disc:"C", cap:"XI", title:"Espumas ao Vento", artist:"Elza Soares", ytId:"YqxMZUU098s", desc:"Espumas ao Vento é sobre saber que o amor foi real e não conseguir aceitar que acabou." },
-  { disc:"C", cap:"XII", title:"Supercut", artist:"Lorde", ytId:"39LNUl7vLNM", desc:"Supercut é sobre a versão editada que você guarda de alguém. A compilação é bonita porque você escolheu o que ficou." },
-  { disc:"C", cap:"XIII", title:"Not Cute Anymore", artist:"ILLIT", ytId:"4bNZK-zgmUc", desc:"Not Cute Anymore é sobre parar de se encaixar no que o outro esperava. É só alguém que cansou de ser o que não é." },
-  { disc:"C", cap:"XIV", title:"It's Alright, It's Ok", artist:"Ashley Tisdale", ytId:"HGc8w9D9slA", desc:"It's Alright, It's Ok é sobre fechar a porta sem drama. A ponte queimou e tá tudo bem assim." },
-  { disc:"C", cap:"XV", title:"You're On Your Own, Kid", artist:"Taylor Swift", ytId:"On_ZPiDEqkA", desc:"You're On Your Own, Kid é sobre fechar uma conta que nunca vai ser paga pelo outro. Você sempre esteve por conta própria." },
-  { disc:"BONUS", cap:"★", title:"Who's Afraid of Little Old Me?", artist:"Taylor Swift", ytId:"7Gbg6Z70J7E", desc:"Sobre alguém que foi tratado como ameaça, como instável. A música apenas confirma: você deveria ter medo mesmo." },
-  { disc:"BONUS", cap:"B1", title:"Amor pra Recordar", artist:"Gaby Amarantos & Liniker", ytId:"qcK5MJEktLc", desc:"Ficou nas bônus porque esse sentimento é real: apesar de tudo, houve amor." },
+  { disc:"BONUS", cap:"★", title:"Who's Afraid of Little Old Me?", artist:"Taylor Swift", ytId:"vOZFiX6hDXQ", desc:"Sobre alguém que foi tratado como ameaça, como instável. A música apenas confirma: você deveria ter medo mesmo." },
+  { disc:"A", cap:"I", title:"Out Of Mind", artist:"Tove Lo", ytId:"_65tLeIWtx0", desc:"Out Of Mind é sobre negar que alguém tomou conta da sua cabeça. Você se convence de que está bem, que o tempo vai curar, que está seguindo em frente. A música é o momento em que essa mentira racha." },
+  { disc:"A", cap:"II", title:"Let's Not Fall In Love", artist:"BIGBANG", ytId:"RoKsw9FdUFM", desc:"Let's Not Fall In Love é sobre dois que se gostam e sabem que aprofundar vai doer. O pedido é simples: fica essa noite, mas não promete nada. É o aviso que veio antes de tudo." },
+  { disc:"A", cap:"III", title:"Casanova", artist:"Allie X", ytId:"xThd_r0dqd4", desc:"Casanova é sobre saber que alguém é perigoso e ficar mesmo assim. Você vê a má reputação, sente o perigo nos lábios e continua." },
+  { disc:"A", cap:"IV", title:"Nicotine", artist:"Panic! At The Disco", ytId:"LkBxcmxWKAA", desc:"Nicotine é sobre querer parar e não conseguir. Você sabe que é ruim, corta os laços, e ainda precisa." },
+  { disc:"A", cap:"V", title:"hey you got drugs?", artist:"Tove Lo", ytId:"NCdB-b53bn0", desc:"hey you got drugs? é sobre usar a noite e as substâncias para não sentir. Só mostra como é quando a festa é o único lugar onde você consegue respirar." },
+  { disc:"B", cap:"VI", title:"Dói d+", artist:"Jaloo ft. Nave", ytId:"YFmIbWHNp0I", desc:"Dói d+ é sobre uma dor que não passa nem quando você tenta se afastar. Só a honestidade de quem ficou no naufrágio sabendo que o mar é a mesma pessoa que afunda." },
+  { disc:"B", cap:"VII", title:"Get Outta My Way", artist:"Kylie Minogue", ytId:"BHGaW8lBlSk", desc:"Get Outta My Way é sobre decidir ir embora e já estar indo. Não tem hesitação, não tem última conversa." },
+  { disc:"B", cap:"VIII", title:"Circle The Drain", artist:"Katy Perry", ytId:"kuP8tZ5-7Wk", desc:"Circle The Drain é sobre perceber que você virou responsável por alguém que não quer ser salvo." },
+  { disc:"B", cap:"IX", title:"Godless", artist:"BANKS", ytId:"CJ-E6NyjgAo", desc:"Godless é sobre idolatrar alguém que não acredita em nada. Quando ela vai embora, sobra o vazio de quem perdeu a própria religião." },
+  { disc:"B", cap:"X", title:"Sangrando", artist:"Gaby Amarantos ft. Potyguara Bardo", ytId:"YqxMZUU098s", desc:"Sangrando é sobre olhar para o lado e perceber que a pessoa sumiu sem explicação. A cura não vem depois da dor. Vem durante." },
+  { disc:"C", cap:"XI", title:"Espumas ao Vento", artist:"Lisbela e o Prisioneiro", ytId:"39LNUl7vLNM", desc:"Espumas ao Vento é sobre saber que o amor foi real e não conseguir aceitar que acabou." },
+  { disc:"C", cap:"XII", title:"Supercut", artist:"Lorde", ytId:"4bNZK-zgmUc", desc:"Supercut é sobre a versão editada que você guarda de alguém. A compilação é bonita porque você escolheu o que ficou." },
+  { disc:"C", cap:"XIII", title:"NOT CUTE ANYMORE", artist:"ILLIT", ytId:"HGc8w9D9slA", desc:"NOT CUTE ANYMORE é sobre parar de se encaixar no que o outro esperava. É só alguém que cansou de ser o que não é." },
+  { disc:"C", cap:"XIV", title:"It's Alright, It's OK", artist:"Ashley Tisdale", ytId:"On_ZPiDEqkA", desc:"It's Alright, It's OK é sobre fechar a porta sem drama. A ponte queimou e tá tudo bem assim." },
+  { disc:"C", cap:"XV", title:"You're On Your Own, Kid", artist:"Taylor Swift", ytId:"7Gbg6Z70J7E", desc:"You're On Your Own, Kid é sobre fechar uma conta que nunca vai ser paga pelo outro. Você sempre esteve por conta própria." },
+  { disc:"BONUS", cap:"B1", title:"Amor Pra Recordar", artist:"Gaby Amarantos ft. Liniker", ytId:"qcK5MJEktLc", desc:"Ficou nas bônus porque esse sentimento é real: apesar de tudo, houve amor." },
   { disc:"BONUS", cap:"B2", title:"Strangers", artist:"Halsey ft. Lauren Jauregui", ytId:"RVd_71ZdRd4", desc:"O diagnóstico mais preciso do que aquela relação era antes de ter nome." },
-  { disc:"BONUS", cap:"B3", title:"Propaganda", artist:"Banks", ytId:"gQroY_XO1js", desc:"A frase I can’t save myself é o que o texto inteiro tenta não dizer em voz alta." }
+  { disc:"BONUS", cap:"B3", title:"Propaganda", artist:"BANKS", ytId:"gQroY_XO1js", desc:"A frase I can’t save myself é o que o texto inteiro tenta não dizer em voz alta." }
 ];
 
 let ytPlayer = null;
@@ -1058,7 +1056,7 @@ function renderTracks(filter = "all") {
           <div><span class="track-num">${t.cap}</span><span class="track-name">${t.title}</span></div>
           <div class="track-art">${t.artist}</div>
         </div>
-        <button type="button" class="mini-play" onclick="event.stopPropagation(); playSpecificTrack(${idx})" title="Ouvir faixa inteira">▶</button>
+        <button type="button" class="mini-play" onclick="event.stopPropagation(); playSpecificTrack(${idx})" title="Assistir e ouvir faixa inteira">▶</button>
       </div>
       <div class="track-note">${t.desc}</div>
     `;
@@ -1081,29 +1079,24 @@ function formatTime(sec) {
   return `${m}:${s < 10 ? "0" : ""}${s}`;
 }
 
-/* Atualiza UI da Faixa Atual + Capa + Nota do Capítulo */
+/* Atualiza UI da Faixa Atual + Nota do Capítulo */
 function updateTrackUI(idx) {
   currentIdx = idx;
   const trk = TRACKS[idx];
-  document.getElementById("rwTrackNum").textContent = `CAP. ${trk.cap} (${idx + 1}/${TRACKS.length})`;
+  document.getElementById("rwTrackNum").textContent = `FAIXA ${trk.cap} (${idx + 1}/${TRACKS.length})`;
   document.getElementById("rwTitle").textContent = trk.title;
   document.getElementById("rwArtist").textContent = trk.artist;
-  document.getElementById("rwCover").src = `https://i.ytimg.com/vi/${trk.ytId}/hqdefault.jpg`;
-  document.getElementById("rwReadingCap").textContent = `NOTAS DO CAPÍTULO ${trk.cap}`;
+  document.getElementById("rwReadingCap").textContent = `NOTAS DA FAIXA ${trk.cap}`;
   document.getElementById("rwReadingNote").textContent = trk.desc;
 }
 
-/* Inicializa YouTube IFrame API (Músicas inteiras sem login) */
+/* Inicializa YouTube IFrame API com Vídeo Visível */
 function onYouTubeIframeAPIReady() {
   ytPlayer = new YT.Player("yt-player-engine", {
-    height: "100",
-    width: "100",
     videoId: TRACKS[0].ytId,
     playerVars: {
       autoplay: 0,
-      controls: 0,
-      disablekb: 1,
-      fs: 0,
+      controls: 1,
       modestbranding: 1,
       playsinline: 1,
       rel: 0
