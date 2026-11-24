@@ -282,25 +282,46 @@ body::after {
   font-weight: 300;
 }
 
+/* TELA DE VÍDEO GRANDE ACIMA DO PLAYER */
+.video-stage-wrap {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: #000;
+  border: 2px solid var(--purple);
+  box-shadow: 6px 6px 0 var(--pink);
+  margin-bottom: 22px;
+  position: relative;
+  overflow: hidden;
+}
+.video-stage-wrap iframe,
+.video-stage-wrap #yt-player-engine {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  display: block;
+}
+
 .player-slot {
-  min-height: 180px;
+  min-height: 170px;
 }
 .floating-notice {
   display: none;
   background: var(--purple-deep);
   border: 1px dashed var(--pink);
-  padding: 22px;
+  padding: 18px;
   text-align: center;
-  font-size: 0.85rem;
+  font-size: 0.84rem;
 }
 .floating-notice.vis {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
 }
 
-/* WIDGET DO PLAYER (EMBUTIDO -> FLUTUANTE COM VÍDEO VISÍVEL) */
+/* WIDGET DO PLAYER ABAIXO DO VÍDEO (COM CAPA DA MÚSICA) */
 .radio-widget {
   background: var(--purple-deep);
   border: 2px solid var(--purple);
@@ -341,28 +362,26 @@ body::after {
 
 .rw-main-grid {
   display: grid;
-  grid-template-columns: 240px 1fr;
-  gap: 18px;
+  grid-template-columns: 112px 1fr;
+  gap: 16px;
   align-items: center;
 }
 
-/* TELA DE VÍDEO DO YOUTUBE VISÍVEL */
-.rw-video-box {
+/* CAPA DA MÚSICA NO PLAYER */
+.rw-cover-box {
   position: relative;
-  width: 100%;
-  aspect-ratio: 16 / 9;
+  width: 112px;
+  height: 112px;
   border: 2px solid var(--purple);
-  box-shadow: 4px 4px 0 var(--pink);
+  box-shadow: 3px 3px 0 var(--pink);
   overflow: hidden;
+  flex-shrink: 0;
   background: #000;
 }
-.rw-video-box iframe,
-.rw-video-box #yt-player-engine {
-  position: absolute;
-  inset: 0;
+.rw-cover-box img {
   width: 100%;
   height: 100%;
-  border: 0;
+  object-fit: cover;
   display: block;
 }
 
@@ -520,31 +539,28 @@ body::after {
   line-height: 1.55;
 }
 
-/* ESTADO FLUTUANTE DO PLAYER ENTRE AS ABAS (COM VÍDEO VISÍVEL) */
+/* ESTADO FLUTUANTE DO PLAYER ENTRE AS ABAS */
 .radio-widget.floating {
   position: fixed;
   bottom: 20px;
   right: 20px;
-  width: 330px;
+  width: 345px;
   background: var(--purple-dark);
   box-shadow: 7px 7px 0 var(--pink);
   z-index: 9999;
 }
 .radio-widget.floating .rw-topbar { cursor: grab; }
 .radio-widget.floating .rw-topbar:active { cursor: grabbing; }
-.radio-widget.floating .rw-main-grid {
-  grid-template-columns: 1fr;
-  gap: 10px;
-}
-.radio-widget.floating .rw-video-box {
-  width: 100%;
-  aspect-ratio: 16 / 9;
-}
+.radio-widget.floating .rw-main-grid { grid-template-columns: 76px 1fr; gap: 12px; }
+.radio-widget.floating .rw-cover-box { width: 76px; height: 76px; }
 .radio-widget.floating.minimized .rw-tools-row,
 .radio-widget.floating.minimized .rw-reading-drawer,
 .radio-widget.floating.minimized .rw-vol-box,
-.radio-widget.floating.minimized .rw-video-box {
+.radio-widget.floating.minimized .rw-cover-box {
   display: none !important;
+}
+.radio-widget.floating.minimized .rw-main-grid {
+  grid-template-columns: 1fr;
 }
 
 /* SEÇÃO DA RESENHA (RAFAEL NASCIMENTO / SSEX BBOX) */
@@ -745,8 +761,9 @@ body::after {
   .author-layout { grid-template-columns: 1fr; }
   .author-photo { max-width: 140px; }
   .rw-main-grid { grid-template-columns: 1fr; }
+  .rw-cover-box { width: 100%; height: 160px; }
   .radio-widget.floating { left: 12px; right: 12px; bottom: 12px; width: auto; }
-  .radio-widget.floating .rw-video-box { max-height: 150px; }
+  .radio-widget.floating .rw-cover-box { display: none; }
 }
 </style>
 </head>
@@ -795,7 +812,7 @@ body::after {
       </div>
     </section>
 
-    <!-- 2. SEÇÃO DA TRILHA SONORA (VÍDEO E ÁUDIO COMPLETOS VIA YOUTUBE API) -->
+    <!-- 2. SEÇÃO DA TRILHA SONORA (VÍDEO GRANDE ACIMA + PLAYER COM CAPA ABAIXO) -->
     <section class="hc-window" id="secao-trilha">
       <div class="hc-win-bar">
         <span>SOUNDTRACK.M3U // TRILHA OFICIAL DO LIVRO</span>
@@ -810,13 +827,18 @@ body::after {
           <button type="button" class="btn-secondary" style="padding:8px 16px; font-size:0.76rem;" onclick="showTab('trilha', document.querySelectorAll('.hc-nav button')[4])">Ver todas as faixas</button>
         </div>
 
+        <!-- PALCO DO VÍDEO GRANDE ACIMA DO PLAYER -->
+        <div class="video-stage-wrap">
+          <div id="yt-player-engine"></div>
+        </div>
+
+        <!-- PLAYER ABAIXO DO VÍDEO COM A CAPA DA MÚSICA -->
         <div class="player-slot" id="playerSlot">
           <div class="floating-notice" id="floatingNotice">
-            <span>O player com vídeo está flutuando no canto da tela para você acompanhar enquanto navega.</span>
-            <button type="button" class="btn-secondary" style="padding:7px 16px; font-size:0.75rem;" onclick="dockPlayer()">Encaixar player aqui novamente</button>
+            <span>O player está flutuando no canto da tela para você controlar enquanto navega pelas abas.</span>
+            <button type="button" class="btn-secondary" style="padding:7px 16px; font-size:0.75rem;" onclick="dockPlayer()">Encaixar player abaixo do vídeo</button>
           </div>
 
-          <!-- WIDGET DO PLAYER -->
           <div class="radio-widget" id="radioWidget">
             <div class="rw-topbar" id="rwDragHandle">
               <span>● LOUCA RADIO // TRILHA COMPLETA</span>
@@ -828,9 +850,9 @@ body::after {
 
             <div class="rw-content">
               <div class="rw-main-grid">
-                <!-- TELA DE VÍDEO VISÍVEL -->
-                <div class="rw-video-box">
-                  <div id="yt-player-engine"></div>
+                <!-- CAPA DA MÚSICA NO PLAYER -->
+                <div class="rw-cover-box">
+                  <img id="rwCover" src="https://i.ytimg.com/vi/vOZFiX6hDXQ/hqdefault.jpg" alt="Capa da música">
                 </div>
 
                 <div class="rw-info-col">
@@ -977,7 +999,7 @@ body::after {
       <div class="hc-win-bar"><span>PLAYLIST.M3U // 19 FAIXAS</span><span>[ — □ × ]</span></div>
       <div class="inner-pad">
         <h2>Biblioteca Musical</h2>
-        <p class="inner-role">Clique na faixa para ler a história ou dê play para assistir e ouvir no player flutuante</p>
+        <p class="inner-role">Clique na faixa para ler a história ou dê play para assistir e ouvir</p>
         <div class="disc-tabs">
           <button type="button" class="disc-tab active" onclick="filterDisc('all', this)">Todas (19)</button>
           <button type="button" class="disc-tab" onclick="filterDisc('A', this)">Lado A (I–V)</button>
@@ -1008,7 +1030,6 @@ body::after {
 
 <script src="https://www.youtube.com/iframe_api"></script>
 <script>
-/* ORDEM EXATA DA SUA PLAYLIST NO YOUTUBE (COMEÇANDO POR WHO'S AFRAID OF LITTLE OLD ME?) */
 const TRACKS = [
   { disc:"BONUS", cap:"★", title:"Who's Afraid of Little Old Me?", artist:"Taylor Swift", ytId:"vOZFiX6hDXQ", desc:"Sobre alguém que foi tratado como ameaça, como instável. A música apenas confirma: você deveria ter medo mesmo." },
   { disc:"A", cap:"I", title:"Out Of Mind", artist:"Tove Lo", ytId:"_65tLeIWtx0", desc:"Out Of Mind é sobre negar que alguém tomou conta da sua cabeça. Você se convence de que está bem, que o tempo vai curar, que está seguindo em frente. A música é o momento em que essa mentira racha." },
@@ -1079,18 +1100,19 @@ function formatTime(sec) {
   return `${m}:${s < 10 ? "0" : ""}${s}`;
 }
 
-/* Atualiza UI da Faixa Atual + Nota do Capítulo */
+/* Atualiza UI da Faixa Atual + Capa + Nota do Capítulo */
 function updateTrackUI(idx) {
   currentIdx = idx;
   const trk = TRACKS[idx];
   document.getElementById("rwTrackNum").textContent = `FAIXA ${trk.cap} (${idx + 1}/${TRACKS.length})`;
   document.getElementById("rwTitle").textContent = trk.title;
   document.getElementById("rwArtist").textContent = trk.artist;
+  document.getElementById("rwCover").src = `https://i.ytimg.com/vi/${trk.ytId}/hqdefault.jpg`;
   document.getElementById("rwReadingCap").textContent = `NOTAS DA FAIXA ${trk.cap}`;
   document.getElementById("rwReadingNote").textContent = trk.desc;
 }
 
-/* Inicializa YouTube IFrame API com Vídeo Visível */
+/* Inicializa YouTube IFrame API no Palco Superior */
 function onYouTubeIframeAPIReady() {
   ytPlayer = new YT.Player("yt-player-engine", {
     videoId: TRACKS[0].ytId,
@@ -1111,7 +1133,6 @@ function onYouTubeIframeAPIReady() {
         if (e.data === YT.PlayerState.PLAYING) {
           isPlaying = true;
           document.getElementById("rwState").textContent = "TOCANDO ▶";
-          floatPlayer();
         } else if (e.data === YT.PlayerState.PAUSED) {
           isPlaying = false;
           document.getElementById("rwState").textContent = "PAUSADO";
@@ -1143,7 +1164,6 @@ setInterval(() => {
 
 /* Controles do Player */
 function playSpecificTrack(idx) {
-  floatPlayer();
   updateTrackUI(idx);
   if (ytReady && ytPlayer) {
     ytPlayer.loadVideoById(TRACKS[idx].ytId);
@@ -1152,7 +1172,6 @@ function playSpecificTrack(idx) {
 }
 
 function togglePlay() {
-  floatPlayer();
   if (!ytReady || !ytPlayer) return;
   if (isPlaying) {
     ytPlayer.pauseVideo();
