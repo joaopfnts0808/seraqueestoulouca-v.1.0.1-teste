@@ -52,7 +52,7 @@ body::after {
 .hc-container {
   max-width: 820px;
   margin: 0 auto;
-  padding: 44px 20px 90px;
+  padding: 44px 20px 100px;
   position: relative;
   z-index: 1;
 }
@@ -156,7 +156,7 @@ body::after {
   background: rgba(240, 54, 184, 0.22);
 }
 
-/* Janelas Estilo Hotline Cafe */
+/* Janelas */
 .hc-window {
   background: var(--purple-dark);
   border: 2px solid var(--purple);
@@ -258,7 +258,7 @@ body::after {
   box-shadow: 2px 2px 0 var(--pink);
 }
 
-/* SEÇÃO DA TRILHA SONORA NA HOME (PLAYER EMBUTIDO QUE VIRA FLUTUANTE) */
+/* SEÇÃO DA TRILHA SONORA NA HOME */
 .soundtrack-dock {
   padding: 28px;
 }
@@ -282,9 +282,8 @@ body::after {
   font-weight: 300;
 }
 
-/* Placeholder que mantém o espaço na seção quando o player flutua */
 .player-slot {
-  min-height: 150px;
+  min-height: 180px;
 }
 .floating-notice {
   display: none;
@@ -301,7 +300,7 @@ body::after {
   gap: 12px;
 }
 
-/* O PLAYER (ESTADO 1: EMBUTIDO NA SEÇÃO DA HOME) */
+/* WIDGET DO PLAYER (EMBUTIDO -> FLUTUANTE) */
 .radio-widget {
   background: var(--purple-deep);
   border: 2px solid var(--purple);
@@ -309,7 +308,6 @@ body::after {
   display: flex;
   flex-direction: column;
   user-select: none;
-  transition: box-shadow 0.2s;
 }
 
 .rw-topbar {
@@ -327,44 +325,31 @@ body::after {
   background: var(--purple-deep);
   color: var(--white);
   border: 1px solid var(--white);
-  padding: 1px 7px;
-  font-size: 0.65rem;
+  padding: 2px 7px;
+  font-size: 0.64rem;
   font-weight: 600;
   cursor: pointer;
 }
-.rw-win-btn:hover { background: var(--pink); }
+.rw-win-btn:hover, .rw-win-btn.active { background: var(--pink); }
 
 .rw-content {
-  padding: 18px;
-}
-
-.rw-login-box {
+  padding: 16px;
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 16px;
-}
-.rw-login-box p {
-  font-size: 0.86rem;
-  max-width: 470px;
-  font-weight: 300;
+  flex-direction: column;
+  gap: 12px;
 }
 
-.rw-player-grid {
-  display: none;
-  grid-template-columns: 110px 1fr;
-  gap: 18px;
-  align-items: center;
-}
-.rw-player-grid.active {
+.rw-main-grid {
   display: grid;
+  grid-template-columns: 112px 1fr;
+  gap: 16px;
+  align-items: center;
 }
 
 .rw-cover-box {
   position: relative;
-  width: 110px;
-  height: 110px;
+  width: 112px;
+  height: 112px;
   border: 1px solid var(--purple);
   overflow: hidden;
   flex-shrink: 0;
@@ -379,16 +364,17 @@ body::after {
 .rw-info-col {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 8px;
   min-width: 0;
 }
 .rw-status-line {
   display: flex;
   justify-content: space-between;
-  font-size: 0.68rem;
+  align-items: center;
+  font-size: 0.66rem;
   font-weight: 600;
   color: var(--pink);
-  letter-spacing: 0.06em;
+  letter-spacing: 0.05em;
 }
 .rw-lcd {
   background: var(--purple-dark);
@@ -403,67 +389,152 @@ body::after {
   text-overflow: ellipsis;
 }
 .rw-artist {
-  font-size: 0.78rem;
+  font-size: 0.76rem;
   opacity: 0.82;
 }
+
+/* Barra de Progresso Interativa (Scrubbing) */
+.rw-progress-wrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.65rem;
+  font-variant-numeric: tabular-nums;
+  opacity: 0.9;
+}
+.rw-progress-bar {
+  flex: 1;
+  height: 7px;
+  background: var(--purple-dark);
+  border: 1px solid var(--purple);
+  cursor: pointer;
+  position: relative;
+}
+.rw-progress-fill {
+  height: 100%;
+  width: 0%;
+  background: var(--pink);
+  transition: width 0.2s linear;
+}
+
+/* Controles Principais */
 .rw-controls-row {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
 }
 .rw-btn {
   background: var(--purple);
   color: var(--white);
   border: 1px solid var(--white);
   font-family: "Poppins", sans-serif;
-  font-size: 0.72rem;
+  font-size: 0.7rem;
   font-weight: 600;
-  padding: 7px 12px;
+  padding: 6px 10px;
   cursor: pointer;
 }
 .rw-btn:hover, .rw-btn.pink { background: var(--pink); }
 
-.rw-vol-box {
+/* Barra de Ferramentas de Leitura */
+.rw-tools-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  padding-top: 8px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+.rw-tool-btn {
+  background: var(--purple-dark);
+  color: var(--white);
+  border: 1px solid var(--purple);
+  font-family: "Poppins", sans-serif;
+  font-size: 0.65rem;
+  font-weight: 600;
+  padding: 5px 9px;
+  text-decoration: none;
+  cursor: pointer;
+}
+.rw-tool-btn:hover, .rw-tool-btn.on {
+  background: var(--pink);
+  border-color: var(--white);
+}
+
+/* Painel Expansível: Acompanhar Leitura + Timer + Nota do Capítulo */
+.rw-reading-drawer {
+  display: none;
+  background: var(--purple-dark);
+  border: 1px solid var(--pink);
+  padding: 12px;
+  font-size: 0.8rem;
+}
+.rw-reading-drawer.open { display: block; }
+.rw-reading-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 6px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--pink);
+}
+.rw-timer-controls {
   display: flex;
   align-items: center;
   gap: 6px;
-  font-size: 0.68rem;
-  font-weight: 600;
-  margin-left: auto;
 }
-.rw-vol-box input {
-  width: 80px;
-  accent-color: var(--pink);
+.rw-mini-timer-btn {
+  background: var(--purple);
+  color: var(--white);
+  border: 1px solid var(--white);
+  font-size: 0.6rem;
+  font-weight: 600;
+  padding: 1px 6px;
   cursor: pointer;
 }
+.rw-mini-timer-btn:hover { background: var(--pink); }
+.rw-reading-text {
+  font-weight: 300;
+  line-height: 1.55;
+}
 
-/* O PLAYER (ESTADO 2: FLUTUANTE ENTRE TODAS AS PÁGINAS/ABAS) */
+/* Embed Oficial da Playlist (Reprodução livre sem login) */
+.rw-embed-holder {
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+  padding-top: 8px;
+}
+.rw-embed-frame {
+  width: 100%;
+  height: 80px;
+  overflow: hidden;
+  border: 1px solid var(--purple);
+}
+
+/* ESTADO FLUTUANTE DO PLAYER ENTRE AS ABAS */
 .radio-widget.floating {
   position: fixed;
-  bottom: 22px;
-  right: 22px;
-  width: 310px;
+  bottom: 20px;
+  right: 20px;
+  width: 340px;
   background: var(--purple-dark);
   box-shadow: 7px 7px 0 var(--pink);
   z-index: 9999;
 }
-.radio-widget.floating .rw-topbar {
-  cursor: grab;
+.radio-widget.floating .rw-topbar { cursor: grab; }
+.radio-widget.floating .rw-topbar:active { cursor: grabbing; }
+.radio-widget.floating .rw-main-grid { grid-template-columns: 74px 1fr; gap: 12px; }
+.radio-widget.floating .rw-cover-box { width: 74px; height: 74px; }
+.radio-widget.floating.minimized .rw-tools-row,
+.radio-widget.floating.minimized .rw-reading-drawer,
+.radio-widget.floating.minimized .rw-embed-holder,
+.radio-widget.floating.minimized .rw-cover-box {
+  display: none !important;
 }
-.radio-widget.floating .rw-topbar:active {
-  cursor: grabbing;
-}
-.radio-widget.floating .rw-player-grid {
+.radio-widget.floating.minimized .rw-main-grid {
   grid-template-columns: 1fr;
-}
-.radio-widget.floating .rw-cover-box {
-  width: 100%;
-  height: 150px;
-}
-.radio-widget.floating.minimized .rw-cover-box,
-.radio-widget.floating.minimized .rw-vol-box {
-  display: none;
 }
 
 /* SEÇÃO DA RESENHA (RAFAEL NASCIMENTO / SSEX BBOX) */
@@ -663,8 +734,8 @@ body::after {
   .hc-actions { justify-content: center; }
   .author-layout { grid-template-columns: 1fr; }
   .author-photo { max-width: 140px; }
-  .rw-player-grid { grid-template-columns: 1fr; }
-  .rw-cover-box { width: 100%; height: 180px; }
+  .rw-main-grid { grid-template-columns: 1fr; }
+  .rw-cover-box { width: 100%; height: 160px; }
   .radio-widget.floating { left: 12px; right: 12px; bottom: 12px; width: auto; }
   .radio-widget.floating .rw-cover-box { display: none; }
 }
@@ -693,7 +764,7 @@ body::after {
     <a class="nav-buy-btn" href="https://a.co/d/0guFeMn5" target="_blank" rel="noopener" data-i18n="nav_buy">Compre agora</a>
   </nav>
 
-  <!-- ABA 1: INÍCIO (COM LIVRO + SEÇÃO TRILHA SONORA + SEÇÃO RESENHA) -->
+  <!-- ABA 1: INÍCIO -->
   <div class="tab-view active" id="view-inicio">
 
     <!-- 1. BLOCO DO LIVRO -->
@@ -715,7 +786,7 @@ body::after {
       </div>
     </section>
 
-    <!-- 2. SEÇÃO DA TRILHA SONORA (PLAYER EMBUTIDO QUE VIRA FLUTUANTE) -->
+    <!-- 2. SEÇÃO DA TRILHA SONORA (PLAYER LIVRE SEM LOGIN QUE VIRA FLUTUANTE) -->
     <section class="hc-window" id="secao-trilha">
       <div class="hc-win-bar">
         <span>SOUNDTRACK.M3U // TRILHA OFICIAL DO LIVRO</span>
@@ -739,7 +810,7 @@ body::after {
           <!-- WIDGET DO PLAYER -->
           <div class="radio-widget" id="radioWidget">
             <div class="rw-topbar" id="rwDragHandle">
-              <span>● LOUCA RADIO // SPOTIFY</span>
+              <span>● LOUCA RADIO // TRILHA OFICIAL</span>
               <div class="rw-win-btns">
                 <button type="button" class="rw-win-btn" id="btnFloatToggle" onclick="toggleFloatMode()" title="Destacar / Encaixar">FLUTUAR</button>
                 <button type="button" class="rw-win-btn" onclick="toggleMinimizePlayer()" title="Minimizar">_</button>
@@ -747,14 +818,7 @@ body::after {
             </div>
 
             <div class="rw-content">
-              <!-- TELA DE LOGIN SPOTIFY -->
-              <div class="rw-login-box" id="rwLoginView">
-                <p>Conecte sua conta Spotify Premium para tocar as 20 faixas do livro direto nesta janela e continuar ouvindo em qualquer aba.</p>
-                <button type="button" class="btn-primary" onclick="loginSpotify()">Entrar com Spotify</button>
-              </div>
-
-              <!-- PLAYER ATIVO -->
-              <div class="rw-player-grid" id="rwPlayerView">
+              <div class="rw-main-grid">
                 <div class="rw-cover-box">
                   <img id="rwCover" src="https://i.imgur.com/dgWxjNX.jpeg" alt="Capa">
                 </div>
@@ -767,18 +831,51 @@ body::after {
                     <div class="rw-title" id="rwTitle">Out Of Mind</div>
                     <div class="rw-artist" id="rwArtist">Tove Lo</div>
                   </div>
+
+                  <!-- BARRA DE PROGRESSO INTERATIVA (SCRUBBING) -->
+                  <div class="rw-progress-wrap">
+                    <span id="rwTimeCur">0:00</span>
+                    <div class="rw-progress-bar" id="rwProgressBar" onclick="seekProgress(event)" title="Clique para avançar ou voltar">
+                      <div class="rw-progress-fill" id="rwProgressFill"></div>
+                    </div>
+                    <span id="rwTimeDur">0:30</span>
+                  </div>
+
                   <div class="rw-controls-row">
                     <button type="button" class="rw-btn" onclick="prevTrack()" title="Anterior">◀◀</button>
                     <button type="button" class="rw-btn pink" onclick="togglePlay()" id="rwPlayBtn">▶ PLAY / PAUSE</button>
                     <button type="button" class="rw-btn" onclick="nextTrack()" title="Próxima">▶▶</button>
-                    <button type="button" class="rw-btn" onclick="toggleMute()" id="rwMuteBtn">MUTE</button>
-                    <div class="rw-vol-box">
-                      <span>VOL</span>
-                      <input type="range" id="rwVolSlider" min="0" max="1" step="0.05" value="0.8" oninput="setVol(this.value)">
-                    </div>
                   </div>
                 </div>
               </div>
+
+              <!-- FERRAMENTAS DE LEITURA -->
+              <div class="rw-tools-row">
+                <button type="button" class="rw-tool-btn" id="btnReadingMode" onclick="toggleReadingDrawer()">📖 Acompanhar Leitura</button>
+                <a class="rw-tool-btn" id="btnOpenTrackSpotify" href="https://open.spotify.com/track/1duoEJxM4GBEICofJAh9Im" target="_blank" rel="noopener">↗ Faixa no Spotify</a>
+                <a class="rw-tool-btn" href="https://open.spotify.com/playlist/2nKDeojKmuFvGf6p20WWbt" target="_blank" rel="noopener">+ Salvar Playlist</a>
+              </div>
+
+              <!-- PAINEL: ACOMPANHAR LEITURA + TIMER + NOTA DO CAPÍTULO -->
+              <div class="rw-reading-drawer" id="rwReadingDrawer">
+                <div class="rw-reading-head">
+                  <span id="rwReadingCap">NOTAS DO CAPÍTULO I</span>
+                  <div class="rw-timer-controls">
+                    <span id="rwReadingTimer">⏱ Leitura: 00:00</span>
+                    <button type="button" class="rw-mini-timer-btn" id="btnTimerToggle" onclick="toggleReadingTimer()">Pausar</button>
+                    <button type="button" class="rw-mini-timer-btn" onclick="resetReadingTimer()">Zerar</button>
+                  </div>
+                </div>
+                <p class="rw-reading-text" id="rwReadingNote">Out Of Mind é sobre negar que alguém tomou conta da sua cabeça. Você se convence de que está bem, que o tempo vai curar, que está seguindo em frente. A música é o momento em que essa mentira racha.</p>
+              </div>
+
+              <!-- EMBED IFRAME OFICIAL DO SPOTIFY (SEM LOGIN E SEM LIMITE DE USUÁRIOS) -->
+              <div class="rw-embed-holder">
+                <div class="rw-embed-frame">
+                  <div id="spotify-embed-target"></div>
+                </div>
+              </div>
+
             </div>
           </div>
         </div>
@@ -901,31 +998,43 @@ body::after {
   <footer style="margin-top:20px; text-align:center; font-size:0.72rem; opacity:0.65;"><p>© 2026 · Será que Estou Louca? · João Pedro Fontes</p></footer>
 </div>
 
-<script src="https://sdk.scdn.co/spotify-player.js"></script>
+<script src="https://open.spotify.com/embed/iframe-api/v1" async></script>
 <script>
 const TRACKS = [
-  { disc:"A", cap:"I", title:"Out Of Mind", artist:"Tove Lo", uri:"spotify:track:1duoEJxM4GBEICofJAh9Im", desc:"Out Of Mind é sobre negar que alguém tomou conta da sua cabeça. Você se convence de que está bem, que o tempo vai curar, que está seguindo em frente. A música é o momento em que essa mentira racha." },
-  { disc:"A", cap:"II", title:"Let's Not Fall In Love", artist:"BigBang", uri:"spotify:track:6UgkB0xM45TR3Zjqm3GQ6T", desc:"Let's Not Fall In Love é sobre dois que se gostam e sabem que aprofundar vai doer. O pedido é simples: fica essa noite, mas não promete nada. É o aviso que veio antes de tudo." },
-  { disc:"A", cap:"III", title:"Casanova", artist:"Allie X", uri:"spotify:track:1fN3fH8Wcx7SJJwlVFrO5t", desc:"Casanova é sobre saber que alguém é perigoso e ficar mesmo assim. Você vê a má reputação, sente o perigo nos lábios e continua." },
-  { disc:"A", cap:"IV", title:"Nicotine", artist:"Panic! At The Disco", uri:"spotify:track:5Q4H1XkVHxQjnrHCUpS61d", desc:"Nicotine é sobre querer parar e não conseguir. Você sabe que é ruim, corta os laços, e ainda precisa." },
-  { disc:"A", cap:"V", title:"hey you got drugs?", artist:"Tove Lo", uri:"spotify:track:73kadnv7SduzhApfRUv5C0", desc:"hey you got drugs? é sobre usar a noite e as substâncias para não sentir. Só mostra como é quando a festa é o único lugar onde você consegue respirar." },
-  { disc:"B", cap:"VI", title:"Doi D+", artist:"Jaloo", uri:"spotify:track:1CD7hXuEjiUsoqOhleyKb7", desc:"Doi D+ é sobre uma dor que não passa nem quando você tenta se afastar. Só a honestidade de quem ficou no naufrágio sabendo que o mar é a mesma pessoa que afunda." },
-  { disc:"B", cap:"VII", title:"Get Outta My Way", artist:"Kylie Minogue", uri:"spotify:track:2VZ5Vtjn16RThAvaFz3sJZ", desc:"Get Outta My Way é sobre decidir ir embora e já estar indo. Não tem hesitação, não tem última conversa." },
-  { disc:"B", cap:"VIII", title:"Circle The Drain", artist:"Katy Perry", uri:"spotify:track:7s0YfJE6hNNYq9BV26iCw6", desc:"Circle The Drain é sobre perceber que você virou responsável por alguém que não quer ser salvo." },
-  { disc:"B", cap:"IX", title:"Godless", artist:"Banks", uri:"spotify:track:1eTL8yocTmire9gpOn2H2g", desc:"Godless é sobre idolatrar alguém que não acredita em nada. Quando ela vai embora, sobra o vazio de quem perdeu a própria religião." },
-  { disc:"B", cap:"X", title:"Sangrando", artist:"Gaby Amarantos & Potyguara Bardo", uri:"spotify:track:2ArW2y4HFzz1VjGtl7f4xm", desc:"Sangrando é sobre olhar para o lado e perceber que a pessoa sumiu sem explicação. A cura não vem depois da dor. Vem durante." },
-  { disc:"C", cap:"XI", title:"Espumas ao Vento", artist:"Elza Soares", uri:"spotify:track:7KiLniGRlvAHpoxMLYp32P", desc:"Espumas ao Vento é sobre saber que o amor foi real e não conseguir aceitar que acabou." },
-  { disc:"C", cap:"XII", title:"Supercut", artist:"Lorde", uri:"spotify:track:6K8VQ84MqhsoakN5MjrnVR", desc:"Supercut é sobre a versão editada que você guarda de alguém. A compilação é bonita porque você escolheu o que ficou." },
-  { disc:"C", cap:"XIII", title:"Not Cute Anymore", artist:"ILLIT", uri:"spotify:track:1k0JAiH11gHL9dc5dfQjQr", desc:"Not Cute Anymore é sobre parar de se encaixar no que o outro esperava. É só alguém que cansou de ser o que não é." },
-  { disc:"C", cap:"XIV", title:"It's Alright, It's Ok", artist:"Ashley Tisdale", uri:"spotify:track:1bYtKF2sY2wLU6xdVaqIqD", desc:"It's Alright, It's Ok é sobre fechar a porta sem drama. A ponte queimou e tá tudo bem assim." },
-  { disc:"C", cap:"XV", title:"You're On Your Own, Kid", artist:"Taylor Swift", uri:"spotify:track:4D7BCuvgdJlYvlX5QlSQoE", desc:"You're On Your Own, Kid é sobre fechar uma conta que nunca vai ser paga pelo outro. Você sempre esteve por conta própria." },
-  { disc:"BONUS", cap:"★", title:"Who's Afraid of Little Old Me?", artist:"Taylor Swift", uri:"spotify:track:2d8UxVNhJinc8uat9PoM9y", desc:"Sobre alguém que foi tratado como ameaça, como instável. A música apenas confirma: você deveria ter medo mesmo." },
-  { disc:"BONUS", cap:"B1", title:"Amor pra Recordar", artist:"Gaby Amarantos & Liniker", uri:"spotify:track:2olfjOvAFAIaQ8mJp1TFo0", desc:"Ficou nas bônus porque esse sentimento é real: apesar de tudo, houve amor." },
-  { disc:"BONUS", cap:"B2", title:"Strangers", artist:"Halsey ft. Lauren Jauregui", uri:"spotify:track:11EDhDAVDtGPoSar6ootYA", desc:"O diagnóstico mais preciso do que aquela relação era antes de ter nome." },
-  { disc:"BONUS", cap:"B3", title:"Propaganda", artist:"Banks", uri:"spotify:track:3XMBVIWJ19LcePSuM0VLEX", desc:"A frase I can’t save myself é o que o texto inteiro tenta não dizer em voz alta." },
-  { disc:"BONUS", cap:"B4", title:"Não Me Cutuca", artist:"Anitta, Alceu Valença", uri:"spotify:track:02BhbpQKWCVjqVBUsvOL7i", desc:"Devolve a palavra do título pra quem foi chamada assim." }
+  { disc:"A", cap:"I", title:"Out Of Mind", artist:"Tove Lo", uri:"spotify:track:1duoEJxM4GBEICofJAh9Im", id:"1duoEJxM4GBEICofJAh9Im", desc:"Out Of Mind é sobre negar que alguém tomou conta da sua cabeça. Você se convence de que está bem, que o tempo vai curar, que está seguindo em frente. A música é o momento em que essa mentira racha." },
+  { disc:"A", cap:"II", title:"Let's Not Fall In Love", artist:"BigBang", uri:"spotify:track:6UgkB0xM45TR3Zjqm3GQ6T", id:"6UgkB0xM45TR3Zjqm3GQ6T", desc:"Let's Not Fall In Love é sobre dois que se gostam e sabem que aprofundar vai doer. O pedido é simples: fica essa noite, mas não promete nada. É o aviso que veio antes de tudo." },
+  { disc:"A", cap:"III", title:"Casanova", artist:"Allie X", uri:"spotify:track:1fN3fH8Wcx7SJJwlVFrO5t", id:"1fN3fH8Wcx7SJJwlVFrO5t", desc:"Casanova é sobre saber que alguém é perigoso e ficar mesmo assim. Você vê a má reputação, sente o perigo nos lábios e continua." },
+  { disc:"A", cap:"IV", title:"Nicotine", artist:"Panic! At The Disco", uri:"spotify:track:5Q4H1XkVHxQjnrHCUpS61d", id:"5Q4H1XkVHxQjnrHCUpS61d", desc:"Nicotine é sobre querer parar e não conseguir. Você sabe que é ruim, corta os laços, e ainda precisa." },
+  { disc:"A", cap:"V", title:"hey you got drugs?", artist:"Tove Lo", uri:"spotify:track:73kadnv7SduzhApfRUv5C0", id:"73kadnv7SduzhApfRUv5C0", desc:"hey you got drugs? é sobre usar a noite e as substâncias para não sentir. Só mostra como é quando a festa é o único lugar onde você consegue respirar." },
+  { disc:"B", cap:"VI", title:"Doi D+", artist:"Jaloo", uri:"spotify:track:1CD7hXuEjiUsoqOhleyKb7", id:"1CD7hXuEjiUsoqOhleyKb7", desc:"Doi D+ é sobre uma dor que não passa nem quando você tenta se afastar. Só a honestidade de quem ficou no naufrágio sabendo que o mar é a mesma pessoa que afunda." },
+  { disc:"B", cap:"VII", title:"Get Outta My Way", artist:"Kylie Minogue", uri:"spotify:track:2VZ5Vtjn16RThAvaFz3sJZ", id:"2VZ5Vtjn16RThAvaFz3sJZ", desc:"Get Outta My Way é sobre decidir ir embora e já estar indo. Não tem hesitação, não tem última conversa." },
+  { disc:"B", cap:"VIII", title:"Circle The Drain", artist:"Katy Perry", uri:"spotify:track:7s0YfJE6hNNYq9BV26iCw6", id:"7s0YfJE6hNNYq9BV26iCw6", desc:"Circle The Drain é sobre perceber que você virou responsável por alguém que não quer ser salvo." },
+  { disc:"B", cap:"IX", title:"Godless", artist:"Banks", uri:"spotify:track:1eTL8yocTmire9gpOn2H2g", id:"1eTL8yocTmire9gpOn2H2g", desc:"Godless é sobre idolatrar alguém que não acredita em nada. Quando ela vai embora, sobra o vazio de quem perdeu a própria religião." },
+  { disc:"B", cap:"X", title:"Sangrando", artist:"Gaby Amarantos & Potyguara Bardo", uri:"spotify:track:2ArW2y4HFzz1VjGtl7f4xm", id:"2ArW2y4HFzz1VjGtl7f4xm", desc:"Sangrando é sobre olhar para o lado e perceber que a pessoa sumiu sem explicação. A cura não vem depois da dor. Vem durante." },
+  { disc:"C", cap:"XI", title:"Espumas ao Vento", artist:"Elza Soares", uri:"spotify:track:7KiLniGRlvAHpoxMLYp32P", id:"7KiLniGRlvAHpoxMLYp32P", desc:"Espumas ao Vento é sobre saber que o amor foi real e não conseguir aceitar que acabou." },
+  { disc:"C", cap:"XII", title:"Supercut", artist:"Lorde", uri:"spotify:track:6K8VQ84MqhsoakN5MjrnVR", id:"6K8VQ84MqhsoakN5MjrnVR", desc:"Supercut é sobre a versão editada que você guarda de alguém. A compilação é bonita porque você escolheu o que ficou." },
+  { disc:"C", cap:"XIII", title:"Not Cute Anymore", artist:"ILLIT", uri:"spotify:track:1k0JAiH11gHL9dc5dfQjQr", id:"1k0JAiH11gHL9dc5dfQjQr", desc:"Not Cute Anymore é sobre parar de se encaixar no que o outro esperava. É só alguém que cansou de ser o que não é." },
+  { disc:"C", cap:"XIV", title:"It's Alright, It's Ok", artist:"Ashley Tisdale", uri:"spotify:track:1bYtKF2sY2wLU6xdVaqIqD", id:"1bYtKF2sY2wLU6xdVaqIqD", desc:"It's Alright, It's Ok é sobre fechar a porta sem drama. A ponte queimou e tá tudo bem assim." },
+  { disc:"C", cap:"XV", title:"You're On Your Own, Kid", artist:"Taylor Swift", uri:"spotify:track:4D7BCuvgdJlYvlX5QlSQoE", id:"4D7BCuvgdJlYvlX5QlSQoE", desc:"You're On Your Own, Kid é sobre fechar uma conta que nunca vai ser paga pelo outro. Você sempre esteve por conta própria." },
+  { disc:"BONUS", cap:"★", title:"Who's Afraid of Little Old Me?", artist:"Taylor Swift", uri:"spotify:track:2d8UxVNhJinc8uat9PoM9y", id:"2d8UxVNhJinc8uat9PoM9y", desc:"Sobre alguém que foi tratado como ameaça, como instável. A música apenas confirma: você deveria ter medo mesmo." },
+  { disc:"BONUS", cap:"B1", title:"Amor pra Recordar", artist:"Gaby Amarantos & Liniker", uri:"spotify:track:2olfjOvAFAIaQ8mJp1TFo0", id:"2olfjOvAFAIaQ8mJp1TFo0", desc:"Ficou nas bônus porque esse sentimento é real: apesar de tudo, houve amor." },
+  { disc:"BONUS", cap:"B2", title:"Strangers", artist:"Halsey ft. Lauren Jauregui", uri:"spotify:track:11EDhDAVDtGPoSar6ootYA", id:"11EDhDAVDtGPoSar6ootYA", desc:"O diagnóstico mais preciso do que aquela relação era antes de ter nome." },
+  { disc:"BONUS", cap:"B3", title:"Propaganda", artist:"Banks", uri:"spotify:track:3XMBVIWJ19LcePSuM0VLEX", id:"3XMBVIWJ19LcePSuM0VLEX", desc:"A frase I can’t save myself é o que o texto inteiro tenta não dizer em voz alta." },
+  { disc:"BONUS", cap:"B4", title:"Não Me Cutuca", artist:"Anitta, Alceu Valença", uri:"spotify:track:02BhbpQKWCVjqVBUsvOL7i", id:"02BhbpQKWCVjqVBUsvOL7i", desc:"Devolve a palavra do título pra quem foi chamada assim." }
 ];
 
+const PLAYLIST_URI = "spotify:playlist:2nKDeojKmuFvGf6p20WWbt";
+
+let embedController = null;
+let currentIdx = 0;
+let isPlaying = false;
+let currentDurationSec = 30;
+let isFloating = false;
+let readingOpen = false;
+let readingSeconds = 0;
+let readingTimerRunning = true;
+
+/* Renderiza Lista de Faixas na Aba 5 */
 function renderTracks(filter = "all") {
   const box = document.getElementById("trackListContainer");
   box.innerHTML = "";
@@ -954,9 +1063,136 @@ function filterDisc(disc, btn) {
   renderTracks(disc);
 }
 
-/* CONTROLE DE MODO EMBUTIDO VS FLUTUANTE DO PLAYER */
-let isFloating = false;
+/* Formatação de Tempo */
+function formatTime(sec) {
+  sec = Math.max(0, Math.floor(sec || 0));
+  const m = Math.floor(sec / 60);
+  const s = sec % 60;
+  return `${m}:${s < 10 ? "0" : ""}${s}`;
+}
 
+/* Atualiza UI da Faixa Atual + Nota do Capítulo */
+function updateTrackUI(idx) {
+  currentIdx = idx;
+  const trk = TRACKS[idx];
+  document.getElementById("rwTrackNum").textContent = `CAP. ${trk.cap} (${idx + 1}/20)`;
+  document.getElementById("rwTitle").textContent = trk.title;
+  document.getElementById("rwArtist").textContent = trk.artist;
+  document.getElementById("rwReadingCap").textContent = `NOTAS DO CAPÍTULO ${trk.cap}`;
+  document.getElementById("rwReadingNote").textContent = trk.desc;
+  document.getElementById("btnOpenTrackSpotify").href = `https://open.spotify.com/track/${trk.id}`;
+}
+
+/* Inicializa Spotify iFrame API (Sem login e sem limite de usuários) */
+window.onSpotifyIframeApiReady = (IFrameAPI) => {
+  const element = document.getElementById("spotify-embed-target");
+  const options = {
+    width: "100%",
+    height: "80",
+    uri: PLAYLIST_URI,
+    theme: "dark"
+  };
+
+  IFrameAPI.createController(element, options, (EmbedController) => {
+    embedController = EmbedController;
+
+    EmbedController.addListener("playback_update", e => {
+      const data = e.data;
+      if (!data) return;
+
+      isPlaying = !data.isPaused;
+      document.getElementById("rwState").textContent = isPlaying ? "TOCANDO ▶" : "PAUSADO";
+
+      if (isPlaying) {
+        floatPlayer();
+      }
+
+      /* Sincroniza se o usuário clicou direto em outra faixa dentro do embed */
+      if (data.playingURI) {
+        const foundIdx = TRACKS.findIndex(t => t.uri === data.playingURI);
+        if (foundIdx !== -1 && foundIdx !== currentIdx) {
+          updateTrackUI(foundIdx);
+        }
+      }
+
+      /* Barra de Progresso Interativa (Scrubbing) */
+      const posSec = (data.position || 0) / 1000;
+      const durSec = (data.duration || 30000) / 1000;
+      currentDurationSec = durSec > 0 ? durSec : 30;
+      const pct = Math.min(100, Math.max(0, (posSec / currentDurationSec) * 100));
+
+      document.getElementById("rwProgressFill").style.width = pct + "%";
+      document.getElementById("rwTimeCur").textContent = formatTime(posSec);
+      document.getElementById("rwTimeDur").textContent = formatTime(currentDurationSec);
+    });
+  });
+};
+
+/* Controles do Player */
+function playSpecificTrack(idx) {
+  floatPlayer();
+  updateTrackUI(idx);
+  if (embedController) {
+    embedController.loadUri(TRACKS[idx].uri);
+    embedController.play();
+  }
+}
+
+function togglePlay() {
+  floatPlayer();
+  if (embedController) {
+    embedController.togglePlay();
+  }
+}
+
+function nextTrack() {
+  playSpecificTrack((currentIdx + 1) % TRACKS.length);
+}
+
+function prevTrack() {
+  playSpecificTrack((currentIdx - 1 + TRACKS.length) % TRACKS.length);
+}
+
+/* Scrubbing na Barra de Progresso */
+function seekProgress(e) {
+  if (!embedController) return;
+  const bar = document.getElementById("rwProgressBar");
+  const rect = bar.getBoundingClientRect();
+  const ratio = Math.min(1, Math.max(0, (e.clientX - rect.left) / rect.width));
+  const targetSec = Math.floor(ratio * currentDurationSec);
+  embedController.seek(targetSec);
+  document.getElementById("rwProgressFill").style.width = (ratio * 100) + "%";
+  document.getElementById("rwTimeCur").textContent = formatTime(targetSec);
+}
+
+/* Modo "Acompanhar Leitura" com Timer e Nota do Capítulo */
+function toggleReadingDrawer() {
+  readingOpen = !readingOpen;
+  document.getElementById("rwReadingDrawer").classList.toggle("open", readingOpen);
+  document.getElementById("btnReadingMode").classList.toggle("on", readingOpen);
+}
+
+function toggleReadingTimer() {
+  readingTimerRunning = !readingTimerRunning;
+  document.getElementById("btnTimerToggle").textContent = readingTimerRunning ? "Pausar" : "Retomar";
+}
+
+function resetReadingTimer() {
+  readingSeconds = 0;
+  document.getElementById("rwReadingTimer").textContent = "⏱ Leitura: 00:00";
+}
+
+setInterval(() => {
+  if (readingOpen && readingTimerRunning) {
+    readingSeconds++;
+    const m = Math.floor(readingSeconds / 60);
+    const s = readingSeconds % 60;
+    document.getElementById("rwReadingTimer").textContent =
+      `⏱ Leitura: ${m < 10 ? "0" : ""}${m}:${s < 10 ? "0" : ""}${s}`;
+  }
+}, 1000);
+
+/* Controle Embutido vs Flutuante */
 function floatPlayer() {
   if (isFloating) return;
   const widget = document.getElementById("radioWidget");
@@ -1001,22 +1237,21 @@ function scrollToOrFloatPlayer() {
   if (sec && document.getElementById("view-inicio").classList.contains("active")) {
     sec.scrollIntoView({ behavior: "smooth", block: "center" });
   }
-  if (accessToken && deviceId) {
-    floatPlayer();
-    if (!isPlaying) playSpecificTrack(currentIdx);
+  if (embedController && !isPlaying) {
+    embedController.play();
   }
 }
 
 function floatPlayerAndPlay() {
   floatPlayer();
-  if (accessToken && deviceId) {
-    if (!isPlaying) playSpecificTrack(currentIdx);
+  if (embedController && !isPlaying) {
+    embedController.play();
   }
 }
 
-/* NAVEGAÇÃO ENTRE ABAS (MANTÉM O PLAYER FLUTUANDO QUANDO VOCÊ ALTERNA) */
+/* Navegação entre abas mantendo o player flutuando */
 function showTab(tabId, btn) {
-  if (tabId !== "inicio" && (isPlaying || accessToken)) {
+  if (tabId !== "inicio" && isPlaying) {
     floatPlayer();
   }
   document.querySelectorAll(".hc-nav button").forEach(b => b.classList.remove("active"));
@@ -1024,145 +1259,6 @@ function showTab(tabId, btn) {
   document.querySelectorAll(".tab-view").forEach(v => v.classList.remove("active"));
   document.getElementById("view-" + tabId).classList.add("active");
   window.scrollTo({ top: 0, behavior: "smooth" });
-}
-
-/* SPOTIFY WEB PLAYBACK SDK */
-const CLIENT_ID    = "6b17b314279f41ca800c603bd7db0326";
-const REDIRECT_URI = location.origin + location.pathname;
-const SCOPES       = "streaming user-read-email user-read-private user-modify-playback-state user-read-playback-state";
-
-let accessToken = null, player = null, deviceId = null;
-let currentIdx = 0, isPlaying = false, isMuted = false, savedVol = 0.8;
-
-function genVerifier(n) {
-  const c = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-  return Array.from(crypto.getRandomValues(new Uint8Array(n))).map(x => c[x % c.length]).join("");
-}
-async function genChallenge(v) {
-  const d = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(v));
-  return btoa(String.fromCharCode(...new Uint8Array(d))).replace(/\+/g,"-").replace(/\//g,"_").replace(/=+$/,"");
-}
-async function loginSpotify() {
-  const v = genVerifier(128), ch = await genChallenge(v);
-  localStorage.setItem("sp_v", v);
-  localStorage.setItem("sp_auto_open", "1");
-  location.href = "https://accounts.spotify.com/authorize?client_id=" + CLIENT_ID +
-    "&response_type=code&redirect_uri=" + encodeURIComponent(REDIRECT_URI) +
-    "&scope=" + encodeURIComponent(SCOPES) + "&code_challenge_method=S256&code_challenge=" + ch;
-}
-async function exchangeCode(code) {
-  const v = localStorage.getItem("sp_v");
-  const r = await fetch("https://accounts.spotify.com/api/token", {
-    method:"POST", headers:{"Content-Type":"application/x-www-form-urlencoded"},
-    body: new URLSearchParams({client_id:CLIENT_ID,grant_type:"authorization_code",code,redirect_uri:REDIRECT_URI,code_verifier:v})
-  });
-  const d = await r.json();
-  if (d.access_token) {
-    localStorage.setItem("sp_t", d.access_token);
-    localStorage.setItem("sp_e", Date.now() + d.expires_in * 1000);
-    localStorage.removeItem("sp_v");
-    history.replaceState(null, null, location.pathname);
-    return d.access_token;
-  }
-  return null;
-}
-function getSavedToken() {
-  const t = localStorage.getItem("sp_t"), e = +localStorage.getItem("sp_e");
-  return t && Date.now() < e ? t : null;
-}
-
-window.onSpotifyWebPlaybackSDKReady = async () => {
-  const params = new URLSearchParams(location.search);
-  const code = params.get("code");
-  if (code) accessToken = await exchangeCode(code);
-  else accessToken = getSavedToken();
-
-  if (!accessToken) return;
-
-  document.getElementById("rwLoginView").style.display = "none";
-  document.getElementById("rwPlayerView").classList.add("active");
-
-  const shouldAutoPlay = localStorage.getItem("sp_auto_open") === "1";
-  if (shouldAutoPlay) {
-    localStorage.removeItem("sp_auto_open");
-    floatPlayer();
-  }
-
-  player = new Spotify.Player({
-    name: "Será que Estou Louca? Radio",
-    getOAuthToken: cb => cb(accessToken),
-    volume: 0.8
-  });
-
-  player.addListener("ready", ({ device_id }) => {
-    deviceId = device_id;
-    document.getElementById("rwState").textContent = "CONECTADO";
-    if (shouldAutoPlay) {
-      playSpecificTrack(0);
-    }
-  });
-
-  player.addListener("player_state_changed", s => {
-    if (!s) return;
-    isPlaying = !s.paused;
-    document.getElementById("rwState").textContent = isPlaying ? "TOCANDO ▶" : "PAUSADO";
-    if (isPlaying) floatPlayer();
-    const t = s.track_window.current_track;
-    if (t) {
-      document.getElementById("rwTitle").textContent = t.name;
-      document.getElementById("rwArtist").textContent = t.artists.map(a => a.name).join(", ");
-      if (t.album.images[0]?.url) document.getElementById("rwCover").src = t.album.images[0].url;
-    }
-  });
-
-  player.connect();
-};
-
-async function playSpecificTrack(idx) {
-  floatPlayer();
-  if (!accessToken) {
-    loginSpotify();
-    return;
-  }
-  if (!deviceId) {
-    document.getElementById("rwState").textContent = "CARREGANDO...";
-    return;
-  }
-  currentIdx = idx;
-  const trk = TRACKS[idx];
-  document.getElementById("rwTrackNum").textContent = `CAP. ${trk.cap} (${idx + 1}/20)`;
-  document.getElementById("rwTitle").textContent = trk.title;
-  document.getElementById("rwArtist").textContent = trk.artist;
-
-  await fetch("https://api.spotify.com/v1/me/player/play?device_id=" + deviceId, {
-    method: "PUT",
-    headers: { Authorization: "Bearer " + accessToken, "Content-Type": "application/json" },
-    body: JSON.stringify({ uris: TRACKS.map(x => x.uri), offset: { position: idx } })
-  });
-}
-
-async function togglePlay() {
-  if (!accessToken) { loginSpotify(); return; }
-  floatPlayer();
-  if (!isPlaying && deviceId) {
-    await playSpecificTrack(currentIdx);
-  } else if (player) {
-    await player.togglePlay();
-  }
-}
-async function nextTrack() { await playSpecificTrack((currentIdx + 1) % TRACKS.length); }
-async function prevTrack() { await playSpecificTrack((currentIdx - 1 + TRACKS.length) % TRACKS.length); }
-function setVol(v) {
-  savedVol = parseFloat(v);
-  isMuted = savedVol === 0;
-  if (player) player.setVolume(savedVol);
-}
-function toggleMute() {
-  isMuted = !isMuted;
-  const target = isMuted ? 0 : (savedVol || 0.8);
-  document.getElementById("rwVolSlider").value = target;
-  document.getElementById("rwMuteBtn").classList.toggle("pink", isMuted);
-  if (player) player.setVolume(target);
 }
 
 /* Arrastar quando estiver flutuando */
