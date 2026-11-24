@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<!-- Facebook Pixel Code -->
+<script>!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js'); fbq('init', '2276925326397793'); fbq('track', 'PageView');</script>
+<noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=2276925326397793&ev=PageView&noscript=1"/></noscript>
+<!-- End Facebook Pixel Code -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Compre agora — Será que Estou Louca?</title>
+<meta name="description" content="Será que estou louca?, o romance de João Pedro Fontes. Livro avulso por R$56 até dia 9 na Caravana Editorial, ou combo livro + ecobag por R$95 na pré-venda.">
+<link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,600;1,9..40,300&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0b0928;--pink:#f036b8;--purple:#7b2fbe;
+  --blue:#2d4de0;--steel:#6b8fd4;--muted:#9d93c8;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--bg);color:#fff;font-family:"DM Sans",sans-serif;min-height:100vh;overflow-x:hidden;}
+.bgs{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden;}
+.blob{position:absolute;border-radius:50%;filter:blur(90px);opacity:.16;animation:drift 10s ease-in-out infinite;}
+.b1{background:var(--pink);width:500px;height:500px;top:-180px;left:-120px;}
+.b2{background:var(--purple);width:380px;height:380px;bottom:50px;right:-80px;animation-delay:-4s;}
+.b3{background:var(--blue);width:280px;height:280px;top:45%;left:35%;animation-delay:-7s;}
+@keyframes drift{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(24px,-36px) scale(1.06)}66%{transform:translate(-14px,22px) scale(.94)}}
+.wrap{position:relative;z-index:1;max-width:900px;margin:0 auto;padding:0 40px;}
+/* topo com nome */
+.page-top{text-align:center;padding:44px 40px 18px;position:relative;z-index:1;}
+.page-top .hero-author{font-size:.7rem;letter-spacing:.35em;text-transform:uppercase;color:var(--muted);margin-bottom:10px;}
+.page-name{font-family:"Abril Fatface",serif;font-size:clamp(1.9rem,6vw,3.2rem);line-height:1.05;
+  background:linear-gradient(140deg,#fff 0%,var(--pink) 55%,var(--purple) 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+/* nav */
+.topnav{position:sticky;top:0;z-index:50;background:rgba(11,9,40,.9);
+  backdrop-filter:blur(14px);border-top:1px solid rgba(255,255,255,.08);border-bottom:1px solid rgba(255,255,255,.08);margin-top:20px;}
+.topnav-inner{max-width:900px;margin:0 auto;padding:14px 24px;
+  display:flex;align-items:center;justify-content:center;gap:26px;flex-wrap:wrap;}
+.topnav a{color:var(--muted);text-decoration:none;font-size:.78rem;
+  letter-spacing:.03em;white-space:nowrap;transition:color .2s;position:relative;padding-bottom:2px;}
+.topnav a:hover{color:#fff;}
+.topnav a::after{content:"";position:absolute;left:0;right:0;bottom:-5px;height:2px;
+  background:linear-gradient(90deg,var(--pink),var(--purple));transform:scaleX(0);
+  transition:transform .2s;transform-origin:left;}
+.topnav a:hover::after{transform:scaleX(1);}
+.topnav a.active{color:#fff;}
+.topnav a.active::after{transform:scaleX(1);}
+/* banner de promoção */
+.promo-banner{background:linear-gradient(90deg,var(--pink),var(--purple));padding:13px 20px;text-align:center;position:relative;z-index:20;}
+.promo-banner p{font-size:.85rem;font-weight:600;color:#fff;line-height:1.5;}
+.promo-banner a{color:#fff;font-weight:700;text-decoration:underline;}
+.promo-tag{display:inline-block;background:rgba(255,255,255,.25);padding:2px 10px;border-radius:10px;
+  font-size:.65rem;text-transform:uppercase;letter-spacing:.06em;margin-right:8px;vertical-align:1px;}
+.promo-box{background:linear-gradient(135deg,rgba(240,54,184,.16),rgba(123,47,190,.16));
+  border:1.5px solid var(--pink);border-radius:16px;padding:22px 26px;margin:0 0 22px;}
+.promo-box .promo-tag{margin-bottom:10px;}
+.promo-box .price-tag{margin:6px 0 4px;}
+.promo-box .promo-deadline{font-size:.8rem;color:var(--muted);margin-bottom:16px;}
+/* hero em duas colunas: capa + texto, como referência */
+.hero-cols{display:flex;gap:52px;align-items:flex-start;padding:52px 0 8px;}
+.cover-col{flex:0 0 260px;position:sticky;top:96px;}
+.cover-img-lg{width:100%;border-radius:10px;
+  box-shadow:0 20px 60px rgba(240,54,184,.25),0 8px 24px rgba(0,0,0,.4);}
+.text-col{flex:1;min-width:0;}
+.text-col .section-label{font-size:.7rem;letter-spacing:.25em;text-transform:uppercase;color:var(--muted);margin-bottom:14px;}
+.text-col h2{font-family:"Abril Fatface",serif;font-size:clamp(1.6rem,4vw,2.2rem);line-height:1.15;margin-bottom:18px;color:#fff;}
+.text-col p{font-size:.98rem;line-height:1.85;color:rgba(255,255,255,.85);margin-bottom:16px;font-weight:300;}
+.pull{border-left:2px solid var(--pink);padding-left:20px;margin:28px 0 32px;font-style:italic;
+  color:var(--muted);font-size:.92rem;line-height:1.7;}
+.price-tag{font-family:"Abril Fatface",serif;font-size:clamp(2rem,5.5vw,2.6rem);color:#fff;margin:0 0 14px;}
+.press-logos{display:flex;flex-wrap:wrap;justify-content:center;gap:22px;margin-top:26px;}
+.press-logo-item{display:flex;flex-direction:column;align-items:center;gap:10px;}
+.press-logo-card{background:#fff;border-radius:10px;padding:12px 18px;display:flex;align-items:center;justify-content:center;height:52px;width:140px;}
+.press-logo-card img{max-width:100%;max-height:100%;object-fit:contain;}
+.press-btns{display:flex;gap:6px;flex-wrap:wrap;justify-content:center;}
+.press-btn{font-size:.68rem;padding:6px 12px;border-radius:14px;border:1px solid rgba(255,255,255,.2);
+  color:var(--muted);text-decoration:none;transition:border-color .2s,color .2s;}
+.press-btn:hover{border-color:var(--pink);color:#fff;}
+.video-embed{position:relative;width:100%;padding-bottom:56.25%;height:0;border-radius:14px;overflow:hidden;margin-top:20px;}
+.video-embed iframe{position:absolute;top:0;left:0;width:100%;height:100%;border:0;}
+.testimonials-grid{display:flex;flex-direction:column;gap:18px;}
+.testimonial-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:22px 24px;}
+.testimonial-card p{font-size:.95rem;line-height:1.8;color:rgba(255,255,255,.85);font-style:italic;margin-bottom:12px;}
+.testimonial-author{font-size:.8rem;color:var(--pink);font-weight:600;}
+.testimonial-author span{color:var(--muted);font-weight:400;}
+.price-tag span{font-family:"DM Sans",sans-serif;font-size:.72rem;font-weight:400;color:var(--muted);margin-left:8px;letter-spacing:.02em;}
+.btn-presale{display:inline-block;background:var(--pink);color:#fff;text-decoration:none;
+  border-radius:22px;font-size:.9rem;font-weight:600;padding:14px 36px;
+  box-shadow:0 6px 20px rgba(240,54,184,.35);transition:transform .2s;}
+.btn-presale:hover{transform:translateY(-2px);}
+.presale-note{font-size:.72rem;color:rgba(255,255,255,.35);margin-top:10px;line-height:1.6;}
+.presale-note a{color:var(--muted);text-decoration:underline;}
+.presale-note a:hover{color:#fff;}
+.trust-line{font-size:.78rem;color:var(--muted);margin:-6px 0 26px;display:flex;align-items:center;gap:8px;}
+.trust-line::before{content:"✓";color:var(--pink);font-weight:700;}
+.faq-block{margin-top:14px;}
+.faq-item{border-bottom:1px solid rgba(255,255,255,.08);padding:16px 0;}
+.faq-item summary{cursor:pointer;font-size:.92rem;font-weight:600;color:#fff;list-style:none;display:flex;justify-content:space-between;align-items:center;gap:12px;}
+.faq-item summary::-webkit-details-marker{display:none;}
+.faq-item summary::after{content:"+";color:var(--pink);font-size:1.2rem;flex-shrink:0;}
+.faq-item[open] summary::after{content:"–";}
+.faq-item p{font-size:.88rem;color:rgba(255,255,255,.7);line-height:1.7;margin-top:10px;}
+section.block{padding:56px 0;position:relative;max-width:640px;margin:0 auto;}
+section.block + section.block{border-top:1px solid rgba(255,255,255,.06);}
+.section-label{font-size:.7rem;letter-spacing:.25em;text-transform:uppercase;color:var(--muted);margin-bottom:14px;}
+h2.block-title{font-family:"Abril Fatface",serif;font-size:clamp(1.6rem,5vw,2.3rem);line-height:1.15;margin-bottom:20px;
+  background:linear-gradient(140deg,#fff 0%,var(--pink) 55%,var(--purple) 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.ecobag-grid{display:flex;flex-direction:column;align-items:center;gap:24px;text-align:center;}
+.ecobag-img{width:100%;max-width:320px;border-radius:14px;box-shadow:0 16px 40px rgba(0,0,0,.4);}
+.btn-secondary{display:inline-block;background:transparent;color:#fff;text-decoration:none;
+  border:1.5px solid var(--pink);border-radius:22px;font-size:.88rem;font-weight:600;padding:13px 34px;
+  transition:background .2s,transform .2s;}
+.btn-secondary:hover{background:rgba(240,54,184,.15);transform:translateY(-2px);}
+.press-card{display:flex;align-items:center;gap:16px;background:rgba(255,255,255,.04);
+  border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:18px 20px;text-decoration:none;
+  color:#fff;transition:border-color .2s,background .2s;}
+.press-card:hover{border-color:var(--pink);background:rgba(240,54,184,.08);}
+.press-icon{flex-shrink:0;width:44px;height:44px;border-radius:50%;background:var(--pink);
+  display:flex;align-items:center;justify-content:center;font-size:1.1rem;}
+.press-text b{display:block;font-size:.92rem;margin-bottom:2px;}
+.press-text span{font-size:.78rem;color:var(--muted);}
+.final-cta{text-align:center;padding:60px 20px 20px;max-width:640px;margin:0 auto;}
+.final-cta h2{margin-bottom:12px;}
+.final-cta p{color:var(--muted);font-size:.88rem;margin-bottom:24px;}
+.social-row{display:flex;justify-content:center;gap:16px;padding:36px 20px 8px;position:relative;z-index:1;}
+.social-btn{width:42px;height:42px;border-radius:50%;background:rgba(255,255,255,.05);
+  border:1px solid rgba(255,255,255,.12);display:flex;align-items:center;justify-content:center;
+  color:var(--muted);transition:all .2s;}
+.social-btn:hover{background:rgba(240,54,184,.15);border-color:var(--pink);color:#fff;transform:translateY(-2px);}
+.social-btn svg{width:18px;height:18px;fill:currentColor;}
+.social-note{text-align:center;font-size:.72rem;color:rgba(255,255,255,.3);padding:10px 20px 0;}
+.social-note a{color:var(--muted);text-decoration:none;}
+.social-note a:hover{color:#fff;}
+footer{position:relative;z-index:1;text-align:center;padding:20px 20px 50px;
+  font-size:.68rem;color:rgba(255,255,255,.18);letter-spacing:.1em;}
+@media(max-width:760px){
+  .wrap{padding:0 20px;}
+  .hero-cols{flex-direction:column;gap:24px;}
+  .cover-col{position:static;flex:0 0 auto;max-width:200px;margin:0 auto;}
+  .btn-presale,.btn-secondary{display:block;width:100%;box-sizing:border-box;text-align:center;}
+  .promo-box{padding:18px 20px;}
+  .promo-box .btn-presale{width:100%;}
+  .press-logos{gap:12px;}
+  .press-logo-card{width:104px;height:44px;padding:8px 12px;}
+  .press-btn{font-size:.64rem;padding:5px 10px;}
+  .testimonial-card{padding:18px 20px;}
+  section.block{padding:40px 0;}
+  .final-cta{padding:44px 16px 16px;}
+}
+@media(max-width:400px){
+  .press-logo-card{width:90px;height:40px;}
+}
+</style>
+</head>
+<body>
+<div class="bgs"><div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div></div>
+<div class="page-top wrap">
+  <p class="hero-author">João Pedro Fontes</p>
+  <h1 class="page-name">Será que Estou Louca?</h1>
+</div>
+<div class="wrap">
+  <section class="hero-cols">
+    <div class="cover-col">
+      <img class="cover-img-lg" src="https://i.postimg.cc/QNkmfV7R/capa-png.png" alt="Capa do livro Será que Estou Louca?, de João Pedro Fontes">
+    </div>
+    <div class="text-col">
+      <p class="section-label">Sinopse</p>
+      <h2>Gaslighting não é uma discussão. É te fazer duvidar do que você viu com os próprios olhos.</h2>
+      <p>Quem narra este livro já morreu. É justamente por isso que consegue contar tudo sem medo.</p>
+      <p>"Será que estou louca?" acompanha uma relação que começou como paixão e foi virando, capítulo a capítulo, um exercício silencioso de duvidar da própria percepção: a euforia do início, os sinais ignorados, as frases que reescreviam a realidade até a vítima se sentir a culpada, a terapia que devolveu palavras para nomear o que estava acontecendo, e a saída, que não teve nada de cinematográfica.</p>
+      <p>No fundo da história corre outra pergunta, menos falada mas igual de urgente: o que fazer com o tempo quando o corpo pode acabar antes do previsto. A narradora convive com PFIC, doença hepática rara, e é não binária num mundo que ainda insiste em pedir explicações para as duas coisas. O livro trata isso como parte do mesmo enredo, não como pano de fundo: a dificuldade de ser acreditada, seja sobre o próprio corpo, seja sobre a própria dor.</p>
+      <div class="pull">"Será que estou louca?" pergunta o título. O livro inteiro responde: não, você só duvidou de si mesma tempo demais.</div>
+      <p class="trust-line">Já rendeu matéria no <strong>Band Mulher</strong> e em seis veículos de imprensa regionais</p>
+
+      <p class="price-tag">R$ 95 <span>livro + ecobag exclusiva</span></p>
+      <a class="btn-presale" href="https://seraqueestoulouca.lojavirtualnuvem.com.br/produtos/sera-que-estou-louca-versao-ecobag-de-serigrafia-rc22r/" target="_blank" rel="noopener">Quero o livro + ecobag</a>
+      <p class="presale-note">Combo de pré-venda, compra direta na loja oficial. Só quer o livro, sem o brinde? Sai por <a href="https://seraqueestoulouca.lojavirtualnuvem.com.br/produtos/seraqueestoulouca/" target="_blank" rel="noopener">R$72 aqui</a>. Você tem <strong>7 dias de garantia</strong>: se mudar de ideia, cancela e recebe o valor de volta integral.</p>
+    </div>
+  </section>
+</div>
+<section class="block">
+  <p class="section-label">Combo exclusivo</p>
+  <h2 class="block-title">Livro + ecobag da pré-venda</h2>
+  <div class="ecobag-grid">
+    <img class="ecobag-img" src="https://i.postimg.cc/Z5DV6gN8/Tote-Bag-Mockup.png" alt="Ecobag exclusiva da campanha de pré-venda de Será que Estou Louca?">
+    <p class="price-tag">R$ 95</p>
+    <p style="color:rgba(255,255,255,.85);font-size:.95rem;line-height:1.8;max-width:440px;">Na pré-venda, o exemplar vem acompanhado de uma ecobag de tecido resistente, estampada com a identidade visual do livro. Quantidade limitada à campanha — depois que essa leva acabar, não tem reposição.</p>
+    <a class="btn-secondary" href="https://seraqueestoulouca.lojavirtualnuvem.com.br/produtos/sera-que-estou-louca-versao-ecobag-de-serigrafia-rc22r/" target="_blank" rel="noopener">Quero o combo</a>
+    <p class="presale-note">Comprou e mudou de ideia? <strong>7 dias de garantia</strong>, dinheiro de volta.</p>
+    <p class="presale-note">Só quer o livro, sem o brinde? <a href="https://seraqueestoulouca.lojavirtualnuvem.com.br/produtos/seraqueestoulouca/" target="_blank" rel="noopener">R$72 na loja oficial</a>, ou <a href="https://caravanagrupoeditorial.com/livros/sera-que-estou-louca/" target="_blank" rel="noopener">R$56 até dia 9 direto na Caravana Editorial</a> (depois volta a R$80).</p>
+  </div>
+</section>
+<section class="block">
+  <p class="section-label">Quem já leu</p>
+  <h2 class="block-title">Depoimentos de leitura antecipada</h2>
+  <div class="testimonials-grid">
+    <div class="testimonial-card">
+      <p>"Li e gostei bastante do livro. As músicas no início de cada capítulo foram uma ideia muito boa, ajudam a entender melhor o fantasma que narra a história."</p>
+      <p class="testimonial-author">Letícia <span>— irmã do autor</span></p>
+    </div>
+    <div class="testimonial-card">
+      <p>"Terminei a leitura e não consegui parar até o final. A história prende do início ao fim, e dá pra sentir o quanto tem de verdade e de coragem nessas páginas. Não leio só como leitora qualquer, leio como amiga, e sei o tanto que esse livro custou pra existir."</p>
+      <p class="testimonial-author">Maria <span>— amiga do autor</span></p>
+    </div>
+  </div>
+</section>
+<section class="block">
+  <p class="section-label">Dúvidas</p>
+  <h2 class="block-title">Perguntas frequentes</h2>
+  <div class="faq-block">
+    <details class="faq-item">
+      <summary>Posso cancelar a compra?</summary>
+      <p>Sim. Comprando direto na loja oficial — livro avulso ou combo com ecobag — você tem 7 dias de garantia pra cancelar e receber o valor de volta integral.</p>
+    </details>
+    <details class="faq-item">
+      <summary>O frete é grátis?</summary>
+      <p>Ainda estamos fechando os detalhes do frete, incluindo se ele sai gratuito. Assim que tivermos certeza, avisamos por e-mail antes do envio.</p>
+    </details>
+    <details class="faq-item">
+      <summary>Quando o livro chega?</summary>
+      <p>A pré-venda segue por até dois meses. Depois que ela fechar, a data exata de envio é enviada por e-mail pra quem comprou.</p>
+    </details>
+  </div>
+</section>
+<section class="block">
+  <p class="section-label">Na mídia</p>
+  <h2 class="block-title">Já falamos sobre isso na TV</h2>
+  <p style="color:rgba(255,255,255,.85);font-size:.95rem;line-height:1.8;margin-bottom:20px;">João Pedro conversou com Juliana Celli no Band Mulher sobre o livro, o gaslighting por trás da história e a trilha sonora que guia cada capítulo.</p>
+  <a class="press-card" href="https://www.instagram.com/p/Dbbcz75t7Ie/" target="_blank" rel="noopener">
+    <span class="press-icon">▶</span>
+    <span class="press-text"><b>Entrevista completa no Band Mulher</b><span>Assistir no Instagram</span></span>
+  </a>
+
+  <div class="video-embed">
+    <iframe src="https://www.youtube.com/embed/zhuDax25rO8?start=8277" title="Entrevista sobre Será que Estou Louca?" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+  </div>
+
+  <div class="press-logos">
+    <div class="press-logo-item">
+      <div class="press-logo-card"><img src="https://i.postimg.cc/cHp2G1Dz/Logo-Iband-RN02.png" alt="IBandRN"></div>
+      <div class="press-btns">
+        <a class="press-btn" href="https://ibandrn.com.br/jovem-potiguar-lanca-livro-sobre-gaslighting/" target="_blank" rel="noopener">Matéria 1</a>
+        <a class="press-btn" href="https://ibandrn.com.br/projeto-literario-sobre-gaslighting-abre-pre-venda/" target="_blank" rel="noopener">Matéria 2</a>
+      </div>
+    </div>
+    <div class="press-logo-item">
+      <div class="press-logo-card"><img src="https://i.postimg.cc/3xXNDd5k/band-rn-94118-removebg-preview.png" alt="Band RN"></div>
+      <div class="press-btns">
+        <a class="press-btn" href="https://www.instagram.com/p/Dbbcz75t7Ie/" target="_blank" rel="noopener">Ver matéria</a>
+      </div>
+    </div>
+    <div class="press-logo-item">
+      <div class="press-logo-card"><img src="https://media.saibamais.jor.br/uploads/2023/08/logo-icon.svg" alt="Saiba Mais"></div>
+      <div class="press-btns">
+        <a class="press-btn" href="https://saibamais.jor.br/2026/01/escrever-foi-quando-entendi-jovem-potiguar-transforma-relacao-conturbada-em-livro/" target="_blank" rel="noopener">Matéria 1</a>
+        <a class="press-btn" href="https://saibamais.jor.br/2026/07/livro-de-jovem-potiguar-amplia-debate-sobre-doenca-rara-e-saude-mental/" target="_blank" rel="noopener">Matéria 2</a>
+      </div>
+    </div>
+    <div class="press-logo-item">
+      <div class="press-logo-card"><img src="https://www.opotiguar.com.br/assets/img/logo/logo.png" alt="O Potiguar"></div>
+      <div class="press-btns">
+        <a class="press-btn" href="https://www.opotiguar.com.br/jovem-potiguar-lanca-livro-sobre-gaslighting" target="_blank" rel="noopener">Ver matéria</a>
+      </div>
+    </div>
+    <div class="press-logo-item">
+      <div class="press-logo-card"><img src="https://farolpotiguar.com/wp-content/uploads/2025/11/cropped-cropped-cropped-Farol-Potiguar.png" alt="Farol Potiguar"></div>
+      <div class="press-btns">
+        <a class="press-btn" href="https://farolpotiguar.com/jovem-potiguar-lanca-livro-sobre-gaslighting/" target="_blank" rel="noopener">Ver matéria</a>
+      </div>
+    </div>
+    <div class="press-logo-item">
+      <div class="press-logo-card"><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjIYLFR0tytLg1mdVcW_s3UeGI0IJDri6nS0YBHvfM52lozOMLxp0OnHZ-a5ePZGe36oMh4RoTkSTWv0rRIkC5ybUO5xNf7GHUc2irGQFmkD2YXqIzhBwUDNsjjqAEQY-ZbFpPQW_RQ_ZCW/s1083/logo_bann2.jpg" alt="Tribuna de Notícias"></div>
+      <div class="press-btns">
+        <a class="press-btn" href="https://www.tribunadenoticias.com.br/2026/01/jovem-potiguar-lanca-livro-sobre.html" target="_blank" rel="noopener">Ver matéria</a>
+      </div>
+    </div>
+  </div>
+</section>
+<div class="final-cta">
+
+
+  <p class="price-tag" style="text-align:center;">R$ 95 <span>livro + ecobag</span></p>
+  <a class="btn-presale" href="https://seraqueestoulouca.lojavirtualnuvem.com.br/produtos/sera-que-estou-louca-versao-ecobag-de-serigrafia-rc22r/" target="_blank" rel="noopener">Quero o livro + ecobag</a>
+  <p class="presale-note">Só quer o livro, sem o brinde? <a href="https://seraqueestoulouca.lojavirtualnuvem.com.br/produtos/seraqueestoulouca/" target="_blank" rel="noopener">R$72 na loja oficial</a>. Você tem <strong>7 dias de garantia</strong> pra cancelar e reaver o valor.</p>
+</div>
+<div class="social-row">
+  <a class="social-btn" href="https://facebook.com/seraqueestoulouca" target="_blank" rel="noopener" aria-label="Facebook">
+    <svg viewBox="0 0 24 24"><path d="M22 12.06C22 6.51 17.52 2 12 2S2 6.51 2 12.06c0 5 3.66 9.15 8.44 9.94v-7.03H7.9v-2.9h2.54V9.85c0-2.5 1.49-3.89 3.77-3.89 1.09 0 2.23.2 2.23.2v2.46h-1.26c-1.24 0-1.63.77-1.63 1.56v1.88h2.78l-.44 2.9h-2.34V22c4.78-.8 8.44-4.95 8.44-9.94Z"/></svg>
+  </a>
+  <a class="social-btn" href="https://instagram.com/seraqueestoulouca" target="_blank" rel="noopener" aria-label="Instagram">
+    <svg viewBox="0 0 24 24"><path d="M12 2c2.72 0 3.06.01 4.12.06 1.06.05 1.79.22 2.43.47.66.26 1.21.6 1.76 1.15.55.55.89 1.1 1.15 1.76.25.64.42 1.37.47 2.43.05 1.06.06 1.4.06 4.12s-.01 3.06-.06 4.12c-.05 1.06-.22 1.79-.47 2.43-.26.66-.6 1.21-1.15 1.76-.55.55-1.1.89-1.76 1.15-.64.25-1.37.42-2.43.47-1.06.05-1.4.06-4.12.06s-3.06-.01-4.12-.06c-1.06-.05-1.79-.22-2.43-.47-.66-.26-1.21-.6-1.76-1.15-.55-.55-.89-1.1-1.15-1.76-.25-.64-.42-1.37-.47-2.43C2.01 15.06 2 14.72 2 12s.01-3.06.06-4.12c.05-1.06.22-1.79.47-2.43.26-.66.6-1.21 1.15-1.76.55-.55 1.1-.89 1.76-1.15.64-.25 1.37-.42 2.43-.47C8.94 2.01 9.28 2 12 2Zm0 1.8c-2.67 0-2.99.01-4.04.06-.87.04-1.34.18-1.65.3-.42.16-.71.35-1.02.66-.31.31-.5.6-.66 1.02-.12.31-.26.78-.3 1.65C4.28 8.74 4.27 9.06 4.27 12s.01 2.99.06 4.04c.04.87.18 1.34.3 1.65.16.42.35.71.66 1.02.31.31.6.5 1.02.66.31.12.78.26 1.65.3 1.05.05 1.37.06 4.04.06s2.99-.01 4.04-.06c.87-.04 1.34-.18 1.65-.3.42-.16.71-.35 1.02-.66.31-.31.5-.6.66-1.02.12-.31.26-.78.3-1.65.05-1.05.06-1.37.06-4.04s-.01-2.99-.06-4.04c-.04-.87-.18-1.34-.3-1.65-.16-.42-.35-.71-.66-1.02a2.75 2.75 0 0 0-1.02-.66c-.31-.12-.78-.26-1.65-.3C14.99 3.81 14.67 3.8 12 3.8Zm0 3.05a5.15 5.15 0 1 1 0 10.3 5.15 5.15 0 0 1 0-10.3Zm0 1.8a3.35 3.35 0 1 0 0 6.7 3.35 3.35 0 0 0 0-6.7Zm5.35-1.98a1.2 1.2 0 1 1-2.4 0 1.2 1.2 0 0 1 2.4 0Z"/></svg>
+  </a>
+  <a class="social-btn" href="mailto:imprensa@seraqueestoulouca.com.br" aria-label="E-mail">
+    <svg viewBox="0 0 24 24"><path d="M2 5.5A1.5 1.5 0 0 1 3.5 4h17A1.5 1.5 0 0 1 22 5.5v13a1.5 1.5 0 0 1-1.5 1.5h-17A1.5 1.5 0 0 1 2 18.5v-13Zm2.2.5 7.3 5.47a.8.8 0 0 0 .96 0L19.8 6H4.2ZM4 8.1v10.4h16V8.1l-7.02 5.26a2.6 2.6 0 0 1-3.06 0L4 8.1Z"/></svg>
+  </a>
+</div>
+<p class="social-note"><a href="mailto:imprensa@seraqueestoulouca.com.br">imprensa@seraqueestoulouca.com.br</a></p>
+<footer><p>© 2026 · Será que Estou Louca? · João Pedro Fontes</p></footer>
+<script>
+document.addEventListener('click', function(e){
+  var link = e.target.closest('a');
+  if(!link || !link.href) return;
+  if(typeof fbq !== 'function') return;
+  var href = link.href;
+  if(href.indexOf('sera-que-estou-louca-versao-ecobag') > -1){
+    fbq('track','InitiateCheckout',{content_name:'combo-ecobag',value:95,currency:'BRL'});
+  } else if(href.indexOf('lojavirtualnuvem.com.br/produtos/seraqueestoulouca') > -1){
+    fbq('track','InitiateCheckout',{content_name:'livro-avulso',value:72,currency:'BRL'});
+  } else if(href.indexOf('caravanagrupoeditorial.com') > -1){
+    fbq('track','InitiateCheckout',{content_name:'livro-avulso-promo-editora',value:56,currency:'BRL'});
+  }
+});
+</script>
+</body>
+</html>

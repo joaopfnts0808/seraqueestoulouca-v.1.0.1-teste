@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Por que ouvir antes de ler? — Será que Estou Louca?</title>
+<link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,600;1,9..40,300&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0b0928;--pink:#f036b8;--purple:#7b2fbe;--blue:#2d4de0;--steel:#6b8fd4;--muted:#9d93c8;}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--bg);color:#fff;font-family:"DM Sans",sans-serif;min-height:100vh;overflow-x:hidden;}
+.bgs{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden;}
+.blob{position:absolute;border-radius:50%;filter:blur(90px);opacity:.16;animation:drift 10s ease-in-out infinite;}
+.b1{background:var(--blue);width:480px;height:480px;top:-160px;left:-140px;}
+.b2{background:var(--pink);width:360px;height:360px;bottom:-40px;right:-100px;animation-delay:-4s;}
+@keyframes drift{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(24px,-36px) scale(1.06)}66%{transform:translate(-14px,22px) scale(.94)}}
+.wrap{position:relative;z-index:1;max-width:620px;margin:0 auto;padding:0 40px;}
+.back-link{display:inline-block;font-size:.72rem;color:var(--muted);text-decoration:none;
+  letter-spacing:.1em;text-transform:uppercase;margin:60px 0 30px;border:1px solid rgba(255,255,255,.12);
+  border-radius:20px;padding:6px 16px;transition:border-color .2s,color .2s;}
+.back-link:hover{border-color:var(--pink);color:#fff;}
+h1{font-family:"Abril Fatface",serif;font-size:clamp(2rem,6.5vw,3.1rem);line-height:1.15;
+  background:linear-gradient(140deg,#fff 0%,var(--pink) 55%,var(--purple) 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:8px;}
+.role{font-size:.78rem;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);margin-bottom:36px;}
+.lang-toggle{display:flex;align-items:center;gap:0;margin:0 0 36px;width:fit-content;
+  border:1px solid rgba(255,255,255,.12);border-radius:20px;overflow:hidden;}
+.lang-btn{background:none;border:none;color:var(--muted);font-family:"DM Sans",sans-serif;
+  font-size:.65rem;font-weight:600;letter-spacing:.1em;padding:5px 14px;cursor:pointer;}
+.lang-btn.active{background:rgba(240,54,184,.2);color:#fff;}
+.lang-sep{width:1px;background:rgba(255,255,255,.12);height:24px;}
+.bio p{font-size:.98rem;line-height:1.85;color:rgba(255,255,255,.85);margin-bottom:20px;font-weight:300;}
+.pull{border-left:2px solid var(--pink);padding-left:20px;margin:36px 0;font-style:italic;
+  color:var(--muted);font-size:.92rem;line-height:1.7;}
+.cta{display:flex;align-items:center;justify-content:space-between;gap:16px;
+  background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:16px;
+  padding:22px 26px;margin:44px 0 60px;flex-wrap:wrap;}
+.cta-txt b{display:block;font-family:"Abril Fatface",serif;font-size:1.1rem;margin-bottom:3px;}
+.cta-txt span{font-size:.78rem;color:var(--muted);}
+.btn-go{background:var(--pink);color:#fff;text-decoration:none;border-radius:20px;
+  font-size:.82rem;font-weight:600;padding:11px 26px;white-space:nowrap;}
+footer{position:relative;z-index:1;text-align:center;padding:32px 20px 50px;
+  border-top:1px solid rgba(255,255,255,.05);font-size:.68rem;color:rgba(255,255,255,.18);letter-spacing:.1em;}
+@media(max-width:480px){.wrap{padding:0 22px;}.cta{flex-direction:column;align-items:flex-start;}}
+
+/* ---- Edição inline ---- */
+[data-key][contenteditable="true"]{outline:2px dashed var(--pink);border-radius:3px;padding:1px 3px;cursor:text;background:rgba(240,54,184,.06);}
+.edit-bar{position:fixed;bottom:0;left:0;right:0;z-index:200;
+  background:rgba(11,9,40,.97);border-top:1px solid rgba(240,54,184,.3);
+  backdrop-filter:blur(16px);display:none;align-items:center;justify-content:center;gap:10px;padding:12px 20px;}
+.edit-bar.vis{display:flex;}
+.edit-bar p{font-size:.76rem;color:var(--muted);flex:1;}
+.btn-save{background:var(--pink);color:#fff;border:none;border-radius:20px;
+  font-family:"DM Sans",sans-serif;font-size:.75rem;font-weight:600;padding:9px 22px;cursor:pointer;}
+.btn-cancel{background:none;color:var(--muted);border:1px solid rgba(255,255,255,.1);
+  border-radius:20px;font-family:"DM Sans",sans-serif;font-size:.75rem;padding:9px 18px;cursor:pointer;}
+.edit-trigger{position:fixed;bottom:20px;right:20px;z-index:199;
+  background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);
+  border-radius:50%;width:38px;height:38px;display:flex;align-items:center;justify-content:center;
+  cursor:pointer;color:rgba(255,255,255,.25);font-size:15px;transition:all .2s;}
+.edit-trigger:hover{background:rgba(240,54,184,.15);border-color:var(--pink);color:var(--pink);}
+</style>
+</head>
+<body>
+<div class="bgs"><div class="blob b1"></div><div class="blob b2"></div></div>
+<div class="wrap">
+  <a class="back-link" href="/" data-i18n="back">← Voltar</a>
+  <h1 data-i18n="h1">Por que ouvir antes de ler?</h1>
+  <p class="role" data-key="ouvir_role">Uma música por capítulo, na ordem exata do livro</p>
+  <div class="lang-toggle">
+    <button class="lang-btn active" id="btn-pt" onclick="setLang('pt')">PT</button>
+    <div class="lang-sep"></div>
+    <button class="lang-btn" id="btn-en" onclick="setLang('en')">EN</button>
+  </div>
+  <div class="bio" id="bio">
+    <p data-key="ouvir_p1">Cada capítulo de "Será que estou louca?" nasceu com uma música tocando ao lado. Não como trilha decorativa colocada depois, pronta para dar clima. As dezenove faixas vieram primeiro. O texto se ajustou a elas, não o contrário.</p>
+    <p data-key="ouvir_p2">Isso muda o que a playlist pode fazer por quem vai ler. Uma música leva alguns minutos para instalar um sentimento que um parágrafo levaria páginas para construir. Antes de saber a data em que aquele relacionamento começou a apodrecer, você já vai sentir o gosto de "Out Of Mind" na boca. Antes de ler a cena da saída, "You're On Your Own, Kid" já vai ter te avisado que ninguém chega para salvar ninguém.</p>
+    <p data-key="ouvir_p3">Ler o livro sem a playlist funciona. Ler com ela funciona diferente: o corpo chega ao capítulo já sabendo alguma coisa que a cabeça só vai entender duas páginas depois. É essa defasagem proposital, entre sentir e entender, que a trilha sonora entrega.</p>
+    <p data-key="ouvir_p4">Tem faixa bônus também, música que quase entrou num capítulo e acabou ficando de fora por decisão editorial. Essas explicam, nos próprios comentários da página, por que foram cortadas. Vale ouvir depois, como quem lê os extras de um DVD.</p>
+  </div>
+  <div class="pull" data-key="ouvir_pull">Não é trilha sonora de fundo. É a temperatura emocional de cada capítulo, entregue três minutos antes de você chegar nele.</div>
+  <div class="cta">
+    <div class="cta-txt">
+      <b data-key="ouvir_cta_b">A biblioteca musical do livro</b>
+      <span data-key="ouvir_cta_s">19 faixas, capítulo por capítulo, com Spotify integrado</span>
+    </div>
+    <a class="btn-go" href="escute" data-i18n="cta_btn">Ouça agora</a>
+  </div>
+</div>
+<footer><p>© 2026 · Será que Estou Louca? · João Pedro Fontes</p></footer>
+
+<div class="edit-bar" id="editBar">
+  <p id="editStatus">Modo de edição ativo — clique em qualquer texto para editar.</p>
+  <button class="btn-cancel" onclick="cancelEdit()">Cancelar</button>
+  <button class="btn-save" id="saveBtn" onclick="saveContent()">Salvar tudo</button>
+</div>
+<div class="edit-trigger" id="editTrigger" onclick="promptEdit()">✏️</div>
+
+<script>
+const SB_URL = "https://rvmfonytiinfzdgirsgk.supabase.co";
+const SB_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJ2bWZvbnl0aWluZnpkZ2lyc2drIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA3Mjg1ODQsImV4cCI6MjA5NjMwNDU4NH0.kGVmLNzLE6eK6QaaCRVw8_cNZ8aloYi5CNzWwvEpSqI";
+const EDIT_PASS = "louca2026";
+const DEFAULTS = {
+  ouvir_role: "Uma música por capítulo, na ordem exata do livro",
+  ouvir_p1: "Cada capítulo de \"Será que estou louca?\" nasceu com uma música tocando ao lado. Não como trilha decorativa colocada depois, pronta para dar clima. As dezenove faixas vieram primeiro. O texto se ajustou a elas, não o contrário.",
+  ouvir_p2: "Isso muda o que a playlist pode fazer por quem vai ler. Uma música leva alguns minutos para instalar um sentimento que um parágrafo levaria páginas para construir. Antes de saber a data em que aquele relacionamento começou a apodrecer, você já vai sentir o gosto de \"Out Of Mind\" na boca. Antes de ler a cena da saída, \"You're On Your Own, Kid\" já vai ter te avisado que ninguém chega para salvar ninguém.",
+  ouvir_p3: "Ler o livro sem a playlist funciona. Ler com ela funciona diferente: o corpo chega ao capítulo já sabendo alguma coisa que a cabeça só vai entender duas páginas depois. É essa defasagem proposital, entre sentir e entender, que a trilha sonora entrega.",
+  ouvir_p4: "Tem faixa bônus também, música que quase entrou num capítulo e acabou ficando de fora por decisão editorial. Essas explicam, nos próprios comentários da página, por que foram cortadas. Vale ouvir depois, como quem lê os extras de um DVD.",
+  ouvir_pull: "Não é trilha sonora de fundo. É a temperatura emocional de cada capítulo, entregue três minutos antes de você chegar nele.",
+  ouvir_cta_b: "A biblioteca musical do livro",
+  ouvir_cta_s: "19 faixas, capítulo por capítulo, com Spotify integrado"
+};
+let editActive = false;
+
+async function sbFetch(method, body) {
+  const r = await fetch(SB_URL + "/rest/v1/conteudo", {
+    method, headers:{apikey:SB_KEY,Authorization:"Bearer "+SB_KEY,"Content-Type":"application/json",
+      Prefer: method==="POST"?"resolution=merge-duplicates":""},
+    body: body ? JSON.stringify(body) : undefined
+  });
+  return method === "GET" ? r.json() : r;
+}
+async function loadContent() {
+  try {
+    const rows = await sbFetch("GET");
+    const keysHere = Object.keys(DEFAULTS);
+    const present = new Set((rows || []).map(r => r.chave));
+    const missing = keysHere.filter(k => !present.has(k));
+    if (missing.length) await sbFetch("POST", missing.map(chave => ({ chave, valor: DEFAULTS[chave] })));
+    (rows || []).forEach(row => {
+      if (!(row.chave in DEFAULTS)) return;
+      document.querySelectorAll('[data-key="' + row.chave + '"]').forEach(el => {
+        if (!editActive) el.textContent = row.valor;
+      });
+    });
+  } catch (e) { console.warn("Supabase:", e); }
+  if (currentLang === "en") applyEnOverrides();
+}
+function promptEdit() {
+  if (localStorage.getItem("sq_editor_ok") === "1") { enableEdit(); return; }
+  const pw = prompt("Senha de edição:");
+  if (pw === EDIT_PASS) enableEdit();
+  else if (pw !== null) alert("Senha incorreta.");
+}
+function enableEdit() {
+  editActive = true;
+  document.querySelectorAll("[data-key]").forEach(el => {
+    el.contentEditable = "true";
+    el.dataset.original = el.textContent;
+  });
+  document.getElementById("editBar").classList.add("vis");
+  document.getElementById("editTrigger").style.display = "none";
+}
+function cancelEdit() {
+  document.querySelectorAll("[data-key]").forEach(el => {
+    el.textContent = el.dataset.original || el.textContent;
+    el.removeAttribute("contenteditable");
+  });
+  document.getElementById("editBar").classList.remove("vis");
+  document.getElementById("editTrigger").style.display = "flex";
+  editActive = false;
+}
+async function saveContent() {
+  const btn = document.getElementById("saveBtn");
+  const status = document.getElementById("editStatus");
+  btn.disabled = true; btn.textContent = "Salvando...";
+  const rows = [...document.querySelectorAll("[data-key]")].map(el => ({ chave: el.dataset.key, valor: el.textContent.trim() }));
+  try {
+    await sbFetch("POST", rows);
+    status.textContent = "Salvo!";
+    setTimeout(cancelEdit, 1000);
+  } catch (e) {
+    status.textContent = "Erro ao salvar.";
+    btn.disabled = false; btn.textContent = "Salvar tudo";
+  }
+}
+
+const LANG_DATA = {
+  pt: {
+    back: "← Voltar", h1: "Por que ouvir antes de ler?", cta_btn: "Ouça agora",
+    ouvir_role: "Uma música por capítulo, na ordem exata do livro",
+    ouvir_p1: "Cada capítulo de \"Será que estou louca?\" nasceu com uma música tocando ao lado. Não como trilha decorativa colocada depois, pronta para dar clima. As dezenove faixas vieram primeiro. O texto se ajustou a elas, não o contrário.",
+    ouvir_p2: "Isso muda o que a playlist pode fazer por quem vai ler. Uma música leva alguns minutos para instalar um sentimento que um parágrafo levaria páginas para construir. Antes de saber a data em que aquele relacionamento começou a apodrecer, você já vai sentir o gosto de \"Out Of Mind\" na boca. Antes de ler a cena da saída, \"You're On Your Own, Kid\" já vai ter te avisado que ninguém chega para salvar ninguém.",
+    ouvir_p3: "Ler o livro sem a playlist funciona. Ler com ela funciona diferente: o corpo chega ao capítulo já sabendo alguma coisa que a cabeça só vai entender duas páginas depois. É essa defasagem proposital, entre sentir e entender, que a trilha sonora entrega.",
+    ouvir_p4: "Tem faixa bônus também, música que quase entrou num capítulo e acabou ficando de fora por decisão editorial. Essas explicam, nos próprios comentários da página, por que foram cortadas. Vale ouvir depois, como quem lê os extras de um DVD.",
+    ouvir_pull: "Não é trilha sonora de fundo. É a temperatura emocional de cada capítulo, entregue três minutos antes de você chegar nele.",
+    ouvir_cta_b: "A biblioteca musical do livro",
+    ouvir_cta_s: "19 faixas, capítulo por capítulo, com Spotify integrado"
+  },
+  en: {
+    back: "← Back", h1: "Why listen before reading?", cta_btn: "Listen now",
+    ouvir_role: "One song per chapter, in the book's exact order",
+    ouvir_p1: "Every chapter of \"Será que estou louca?\" was written with a song playing alongside it. Not as a decorative soundtrack added afterward to set a mood. The nineteen tracks came first. The text adjusted to them, not the other way around.",
+    ouvir_p2: "That changes what the playlist can do for a reader. A song takes a few minutes to install a feeling that a paragraph would take pages to build. Before you know the date that relationship started rotting, you'll already taste \"Out Of Mind\" in your mouth. Before you read the exit scene, \"You're On Your Own, Kid\" will already have warned you that nobody's coming to save anybody.",
+    ouvir_p3: "Reading the book without the playlist works. Reading it with the playlist works differently: the body arrives at the chapter already knowing something the mind only catches up to two pages later. That's the deliberate lag, between feeling and understanding, the soundtrack delivers.",
+    ouvir_p4: "There are bonus tracks too, songs that almost made it into a chapter and got cut in editing. Those explain, right in the page's own comments, why they were cut. Worth listening to afterward, like reading a DVD's deleted scenes.",
+    ouvir_pull: "It isn't background music. It's the emotional temperature of each chapter, delivered three minutes before you get there.",
+    ouvir_cta_b: "The book's musical library",
+    ouvir_cta_s: "19 tracks, chapter by chapter, with Spotify built in"
+  }
+};
+let currentLang = localStorage.getItem("sq_lang") || "pt";
+function applyEnOverrides() {
+  const t = LANG_DATA.en;
+  Object.keys(DEFAULTS).forEach(key => {
+    document.querySelectorAll('[data-key="' + key + '"]').forEach(el => {
+      if (!editActive) el.textContent = t[key];
+    });
+  });
+}
+function setLang(lang) {
+  currentLang = lang;
+  localStorage.setItem("sq_lang", lang);
+  document.getElementById("btn-pt").classList.toggle("active", lang === "pt");
+  document.getElementById("btn-en").classList.toggle("active", lang === "en");
+  const t = LANG_DATA[lang];
+  document.querySelectorAll("[data-i18n]").forEach(el => {
+    const key = el.dataset.i18n;
+    if (t[key] != null) el.textContent = t[key];
+  });
+  if (lang === "en") applyEnOverrides();
+  else Object.keys(DEFAULTS).forEach(key => {
+    document.querySelectorAll('[data-key="' + key + '"]').forEach(el => {
+      if (!editActive) el.textContent = DEFAULTS[key];
+    });
+  });
+}
+if (currentLang === "en") setLang("en");
+loadContent();
+</script>
+</body>
+</html>

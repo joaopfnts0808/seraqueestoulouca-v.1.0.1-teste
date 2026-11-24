@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sobre o autor — Será que Estou Louca?</title>
+<link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,600;1,9..40,300&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0b0928;--pink:#f036b8;--purple:#7b2fbe;--blue:#2d4de0;--muted:#9d93c8;}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--bg);color:#fff;font-family:"DM Sans",sans-serif;min-height:100vh;overflow-x:hidden;}
+.bgs{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden;}
+.blob{position:absolute;border-radius:50%;filter:blur(90px);opacity:.16;animation:drift 10s ease-in-out infinite;}
+.b1{background:var(--pink);width:480px;height:480px;top:-180px;left:-120px;}
+.b2{background:var(--purple);width:360px;height:360px;bottom:0;right:-100px;animation-delay:-4s;}
+@keyframes drift{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(24px,-36px) scale(1.06)}66%{transform:translate(-14px,22px) scale(.94)}}
+.wrap{position:relative;z-index:1;max-width:620px;margin:0 auto;padding:0 40px;}
+.back-link{display:inline-block;font-size:.72rem;color:var(--muted);text-decoration:none;
+  letter-spacing:.1em;text-transform:uppercase;margin:0 0 20px;border:1px solid rgba(255,255,255,.12);
+  border-radius:20px;padding:6px 16px;transition:border-color .2s,color .2s;}
+.back-link:hover{border-color:var(--pink);color:#fff;}
+h1{font-family:"Abril Fatface",serif;font-size:clamp(2.2rem,7vw,3.4rem);line-height:1.1;
+  background:linear-gradient(140deg,#fff 0%,var(--pink) 55%,var(--purple) 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:8px;}
+.role{font-size:.78rem;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);margin-bottom:36px;}
+.author-grid{display:grid;grid-template-columns:170px 1fr;gap:32px;align-items:start;
+  padding-top:60px;margin-bottom:8px;}
+.author-photo{width:100%;aspect-ratio:1;border-radius:14px;object-fit:cover;
+  border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.03);}
+.author-links{display:flex;flex-direction:column;gap:10px;margin-top:14px;}
+.author-link{display:flex;align-items:center;gap:8px;font-size:.76rem;color:var(--muted);
+  text-decoration:none;line-height:1.4;transition:color .2s;}
+.author-link:hover{color:#fff;}
+.author-link svg{width:15px;height:15px;flex-shrink:0;}
+.author-main .role{margin-bottom:20px;}
+@media(max-width:560px){.author-grid{grid-template-columns:110px 1fr;gap:18px;padding-top:40px;}
+  .author-links{gap:8px;}.author-link{font-size:.7rem;}}
+.lang-toggle{display:flex;align-items:center;gap:0;margin:0 0 36px;width:fit-content;
+  border:1px solid rgba(255,255,255,.12);border-radius:20px;overflow:hidden;}
+.lang-btn{background:none;border:none;color:var(--muted);font-family:"DM Sans",sans-serif;
+  font-size:.65rem;font-weight:600;letter-spacing:.1em;padding:5px 14px;cursor:pointer;}
+.lang-btn.active{background:rgba(240,54,184,.2);color:#fff;}
+.lang-sep{width:1px;background:rgba(255,255,255,.12);height:24px;}
+.bio p{font-size:.98rem;line-height:1.85;color:rgba(255,255,255,.85);margin-bottom:20px;font-weight:300;}
+.pull{border-left:2px solid var(--pink);padding-left:20px;margin:36px 0;font-style:italic;
+  color:var(--muted);font-size:.92rem;line-height:1.7;}
+.tags{display:flex;flex-wrap:wrap;gap:8px;margin:32px 0 40px;}
+.tag{font-size:.68rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);
+  border:1px solid rgba(255,255,255,.12);border-radius:14px;padding:5px 12px;}
+footer{position:relative;z-index:1;text-align:center;padding:32px 20px 50px;
+  border-top:1px solid rgba(255,255,255,.05);font-size:.68rem;color:rgba(255,255,255,.18);letter-spacing:.1em;}
+@media(max-width:480px){.wrap{padding:0 22px;}}
+
+/* ---- Edição inline ---- */
+[data-key][contenteditable="true"]{outline:2px dashed var(--pink);border-radius:3px;padding:1px 3px;cursor:text;background:rgba(240,54,184,.06);}
+.edit-bar{position:fixed;bottom:0;left:0;right:0;z-index:200;
+  background:rgba(11,9,40,.97);border-top:1px solid rgba(240,54,184,.3);
+  backdrop-filter:blur(16px);display:none;align-items:center;justify-content:center;gap:10px;padding:12px 20px;}
+.edit-bar.vis{display:flex;}
+.edit-bar p{font-size:.76rem;color:var(--muted);flex:1;}
+.btn-save{background:var(--pink);color:#fff;border:none;border-radius:20px;
+  font-family:"DM Sans",sans-serif;font-size:.75rem;font-weight:600;padding:9px 22px;cursor:pointer;}
+.btn-cancel{background:none;color:var(--muted);border:1px solid rgba(255,255,255,.1);
+  border-radius:20px;font-family:"DM Sans",sans-serif;font-size:.75rem;padding:9px 18px;cursor:pointer;}
+.edit-trigger{position:fixed;bottom:20px;right:20px;z-index:199;
+  background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);
+  border-radius:50%;width:38px;height:38px;display:flex;align-items:center;justify-content:center;
+  cursor:pointer;color:rgba(255,255,255,.25);font-size:15px;transition:all .2s;}
+.edit-trigger:hover{background:rgba(240,54,184,.15);border-color:var(--pink);color:var(--pink);}
+</style>
+</head>
+<body>
+<div class="bgs"><div class="blob b1"></div><div class="blob b2"></div></div>
+<div class="wrap">
+  <div class="author-grid">
+    <div class="author-side">
+      <img class="author-photo" src="https://i.imgur.com/w3ccKR2.jpeg" alt="João Pedro Fontes">
+      <div class="author-links">
+        <a class="author-link" href="https://instagram.com/joaopfnts" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.16c3.2 0 3.58.01 4.85.07 1.17.05 1.8.25 2.23.41.56.22.96.48 1.38.9.42.42.68.82.9 1.38.16.42.36 1.06.41 2.23.06 1.27.07 1.65.07 4.85s-.01 3.58-.07 4.85c-.05 1.17-.25 1.8-.41 2.23-.22.56-.48.96-.9 1.38-.42.42-.82.68-1.38.9-.42.16-1.06.36-2.23.41-1.27.06-1.65.07-4.85.07s-3.58-.01-4.85-.07c-1.17-.05-1.8-.25-2.23-.41-.56-.22-.96-.48-1.38-.9-.42-.42-.68-.82-.9-1.38-.16-.42-.36-1.06-.41-2.23-.06-1.27-.07-1.65-.07-4.85s.01-3.58.07-4.85c.05-1.17.25-1.8.41-2.23.22-.56.48-.96.9-1.38.42-.42.82-.68 1.38-.9.42-.16 1.06-.36 2.23-.41 1.27-.06 1.65-.07 4.85-.07M12 0C8.74 0 8.33.01 7.05.07 5.78.13 4.9.33 4.14.63c-.79.31-1.46.72-2.13 1.38C1.35 2.68.94 3.35.63 4.14.33 4.9.13 5.78.07 7.05.01 8.33 0 8.74 0 12s.01 3.67.07 4.95c.06 1.27.26 2.15.56 2.91.31.79.72 1.46 1.38 2.13.66.66 1.34 1.07 2.13 1.38.76.3 1.64.5 2.91.56C8.33 23.99 8.74 24 12 24s3.67-.01 4.95-.07c1.27-.06 2.15-.26 2.91-.56.79-.31 1.46-.72 2.13-1.38.66-.66 1.07-1.34 1.38-2.13.3-.76.5-1.64.56-2.91.06-1.27.07-1.68.07-4.95s-.01-3.67-.07-4.95c-.06-1.27-.26-2.15-.56-2.91-.31-.79-.72-1.46-1.38-2.13C21.32 1.35 20.65.94 19.86.63c-.76-.3-1.64-.5-2.91-.56C15.67.01 15.26 0 12 0zm0 5.84A6.16 6.16 0 1 0 12 18.16 6.16 6.16 0 0 0 12 5.84zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.41-10.85a1.44 1.44 0 1 1-2.88 0 1.44 1.44 0 0 1 2.88 0z"/></svg>
+          <span data-i18n="ig_handle">@joaopfnts</span>
+        </a>
+        <a class="author-link" href="https://ssexbbox.com/author/jo%C3%A3o-pedro-fontes" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M4 4h11a5 5 0 0 1 5 5 5 5 0 0 1-5 5H7v6H4V4zm3 3v4h8a2 2 0 0 0 0-4H7z"/></svg>
+          <span data-i18n="col_line">Colunista no Instituto [SSEX BBOX]</span>
+        </a>
+      </div>
+    </div>
+    <div class="author-main">
+      <a class="back-link" href="/" data-i18n="back">← Voltar</a>
+      <h1 data-i18n="h1">Sobre o autor</h1>
+      <p class="role" data-key="autor_role">João Pedro Fontes — Natal, RN</p>
+      <div class="lang-toggle">
+        <button class="lang-btn active" id="btn-pt" onclick="setLang('pt')">PT</button>
+        <div class="lang-sep"></div>
+        <button class="lang-btn" id="btn-en" onclick="setLang('en')">EN</button>
+      </div>
+    </div>
+  </div>
+  <div class="bio" id="bio">
+    <p data-key="autor_p1">João Pedro Fontes nasceu e mora em Natal. Formado em Comunicação Social com habilitação em Publicidade e Propaganda, passou anos escrevendo para marcas antes de escrever para si mesmo. "Será que estou louca?" é o primeiro livro.</p>
+    <p data-key="autor_p2">É uma pessoa não binária vivendo com PFIC, uma doença hepática rara que a maior parte das pessoas nunca ouviu nomear. Essa convivência com um corpo que pode falhar antes da hora aparece no livro sem pedir licença: é o motivo pelo qual a história é contada por um fantasma, alguém que já sabe como tudo termina e ainda assim insiste em voltar para contar do começo.</p>
+    <p data-key="autor_p3">O livro nasceu de um relacionamento marcado por gaslighting. Não como desabafo, mas como tentativa de nomear com precisão algo que durante muito tempo não tinha nome nenhum. Escrever virou o processo de separar o que era real do que a outra pessoa insistia em dizer que era.</p>
+    <p data-key="autor_p4">Fora do livro, João Pedro divide o processo de escrita no Instagram e assina uma coluna sobre cultura e identidade no Instituto SSEX BBOX.</p>
+  </div>
+  <div class="pull" data-key="autor_pull">"Escrevo porque um fantasma não tem mais nada a perder ao dizer a verdade."</div>
+  <div class="tags">
+    <span class="tag" data-i18n="tag1">Autoficção</span>
+    <span class="tag" data-i18n="tag2">Narrador-fantasma</span>
+    <span class="tag" data-i18n="tag3">PFIC</span>
+    <span class="tag" data-i18n="tag4">Identidade não binária</span>
+  </div>
+</div>
+<footer><p>© 2026 · Será que Estou Louca? · João Pedro Fontes</p></footer>
+
+<div class="edit-bar" id="editBar">
+  <p id="editStatus">Modo de edição ativo — clique em qualquer texto para editar.</p>
+  <button class="btn-cancel" onclick="cancelEdit()">Cancelar</button>
+  <button class="btn-save" id="saveBtn" onclick="saveContent()">Salvar tudo</button>
+</div>
+<div class="edit-trigger" id="editTrigger" onclick="promptEdit()">✏️</div>
+
+<script>
+const SB_URL = "https://rvmfonytiinfzdgirsgk.supabase.co";
+const SB_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJ2bWZvbnl0aWluZnpkZ2lyc2drIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA3Mjg1ODQsImV4cCI6MjA5NjMwNDU4NH0.kGVmLNzLE6eK6QaaCRVw8_cNZ8aloYi5CNzWwvEpSqI";
+const EDIT_PASS = "louca2026";
+const DEFAULTS = {
+  autor_role: "João Pedro Fontes — Natal, RN",
+  autor_p1: "João Pedro Fontes nasceu e mora em Natal. Formado em Comunicação Social com habilitação em Publicidade e Propaganda, passou anos escrevendo para marcas antes de escrever para si mesmo. \"Será que estou louca?\" é o primeiro livro.",
+  autor_p2: "É uma pessoa não binária vivendo com PFIC, uma doença hepática rara que a maior parte das pessoas nunca ouviu nomear. Essa convivência com um corpo que pode falhar antes da hora aparece no livro sem pedir licença: é o motivo pelo qual a história é contada por um fantasma, alguém que já sabe como tudo termina e ainda assim insiste em voltar para contar do começo.",
+  autor_p3: "O livro nasceu de um relacionamento marcado por gaslighting. Não como desabafo, mas como tentativa de nomear com precisão algo que durante muito tempo não tinha nome nenhum. Escrever virou o processo de separar o que era real do que a outra pessoa insistia em dizer que era.",
+  autor_p4: "Fora do livro, João Pedro divide o processo de escrita no Instagram e assina uma coluna sobre cultura e identidade no Instituto SSEX BBOX.",
+  autor_pull: "\"Escrevo porque um fantasma não tem mais nada a perder ao dizer a verdade.\""
+};
+let editActive = false;
+
+async function sbFetch(method, body) {
+  const r = await fetch(SB_URL + "/rest/v1/conteudo", {
+    method, headers:{apikey:SB_KEY,Authorization:"Bearer "+SB_KEY,"Content-Type":"application/json",
+      Prefer: method==="POST"?"resolution=merge-duplicates":""},
+    body: body ? JSON.stringify(body) : undefined
+  });
+  return method === "GET" ? r.json() : r;
+}
+async function loadContent() {
+  try {
+    const rows = await sbFetch("GET");
+    const keysHere = Object.keys(DEFAULTS);
+    const present = new Set((rows || []).map(r => r.chave));
+    const missing = keysHere.filter(k => !present.has(k));
+    if (missing.length) await sbFetch("POST", missing.map(chave => ({ chave, valor: DEFAULTS[chave] })));
+    (rows || []).forEach(row => {
+      if (!(row.chave in DEFAULTS)) return;
+      document.querySelectorAll('[data-key="' + row.chave + '"]').forEach(el => {
+        if (!editActive) el.textContent = row.valor;
+      });
+    });
+  } catch (e) { console.warn("Supabase:", e); }
+  if (currentLang === "en") applyEnOverrides();
+}
+function promptEdit() {
+  if (localStorage.getItem("sq_editor_ok") === "1") { enableEdit(); return; }
+  const pw = prompt("Senha de edição:");
+  if (pw === EDIT_PASS) enableEdit();
+  else if (pw !== null) alert("Senha incorreta.");
+}
+function enableEdit() {
+  editActive = true;
+  document.querySelectorAll("[data-key]").forEach(el => {
+    el.contentEditable = "true";
+    el.dataset.original = el.textContent;
+  });
+  document.getElementById("editBar").classList.add("vis");
+  document.getElementById("editTrigger").style.display = "none";
+}
+function cancelEdit() {
+  document.querySelectorAll("[data-key]").forEach(el => {
+    el.textContent = el.dataset.original || el.textContent;
+    el.removeAttribute("contenteditable");
+  });
+  document.getElementById("editBar").classList.remove("vis");
+  document.getElementById("editTrigger").style.display = "flex";
+  editActive = false;
+}
+async function saveContent() {
+  const btn = document.getElementById("saveBtn");
+  const status = document.getElementById("editStatus");
+  btn.disabled = true; btn.textContent = "Salvando...";
+  const rows = [...document.querySelectorAll("[data-key]")].map(el => ({ chave: el.dataset.key, valor: el.textContent.trim() }));
+  try {
+    await sbFetch("POST", rows);
+    status.textContent = "Salvo!";
+    setTimeout(cancelEdit, 1000);
+  } catch (e) {
+    status.textContent = "Erro ao salvar.";
+    btn.disabled = false; btn.textContent = "Salvar tudo";
+  }
+}
+
+const LANG_DATA = {
+  pt: {
+    back: "← Voltar", h1: "Sobre o autor",
+    tag1: "Autoficção", tag2: "Narrador-fantasma", tag3: "PFIC", tag4: "Identidade não binária",
+    ig_handle: "@joaopfnts", col_line: "Colunista no Instituto [SSEX BBOX]",
+    autor_role: "João Pedro Fontes — Natal, RN",
+    autor_p1: "João Pedro Fontes nasceu e mora em Natal. Formado em Comunicação Social com habilitação em Publicidade e Propaganda, passou anos escrevendo para marcas antes de escrever para si mesmo. \"Será que estou louca?\" é o primeiro livro.",
+    autor_p2: "É uma pessoa não binária vivendo com PFIC, uma doença hepática rara que a maior parte das pessoas nunca ouviu nomear. Essa convivência com um corpo que pode falhar antes da hora aparece no livro sem pedir licença: é o motivo pelo qual a história é contada por um fantasma, alguém que já sabe como tudo termina e ainda assim insiste em voltar para contar do começo.",
+    autor_p3: "O livro nasceu de um relacionamento marcado por gaslighting. Não como desabafo, mas como tentativa de nomear com precisão algo que durante muito tempo não tinha nome nenhum. Escrever virou o processo de separar o que era real do que a outra pessoa insistia em dizer que era.",
+    autor_p4: "Fora do livro, João Pedro divide o processo de escrita no Instagram e assina uma coluna sobre cultura e identidade no Instituto SSEX BBOX.",
+    autor_pull: "\"Escrevo porque um fantasma não tem mais nada a perder ao dizer a verdade.\""
+  },
+  en: {
+    back: "← Back", h1: "About the author",
+    tag1: "Autofiction", tag2: "Ghost narrator", tag3: "PFIC", tag4: "Non-binary identity",
+    ig_handle: "@joaopfnts", col_line: "Columnist at Instituto [SSEX BBOX]",
+    autor_role: "João Pedro Fontes — Natal, Brazil",
+    autor_p1: "João Pedro Fontes was born and lives in Natal, Brazil. With a degree in Advertising, they spent years writing for brands before writing for themselves. \"Será que estou louca?\" (Am I Going Crazy?) is their first book.",
+    autor_p2: "They are non-binary and live with PFIC, a rare liver disease most people have never heard named. That relationship with a body that could fail ahead of schedule shows up in the book without asking permission: it's the reason the story is told by a ghost, someone who already knows how it ends and still insists on coming back to tell the beginning.",
+    autor_p3: "The book grew out of a relationship marked by gaslighting. Not as a vent, but as an attempt to name with precision something that for a long time had no name at all. Writing became the process of separating what was real from what the other person kept insisting it was.",
+    autor_p4: "Outside the book, João Pedro shares the writing process on Instagram and writes a column on culture and identity for Instituto SSEX BBOX.",
+    autor_pull: "\"I write because a ghost has nothing left to lose by telling the truth.\""
+  }
+};
+let currentLang = localStorage.getItem("sq_lang") || "pt";
+function applyEnOverrides() {
+  const t = LANG_DATA.en;
+  Object.keys(DEFAULTS).forEach(key => {
+    document.querySelectorAll('[data-key="' + key + '"]').forEach(el => {
+      if (!editActive) el.textContent = t[key];
+    });
+  });
+}
+function setLang(lang) {
+  currentLang = lang;
+  localStorage.setItem("sq_lang", lang);
+  document.getElementById("btn-pt").classList.toggle("active", lang === "pt");
+  document.getElementById("btn-en").classList.toggle("active", lang === "en");
+  const t = LANG_DATA[lang];
+  document.querySelectorAll("[data-i18n]").forEach(el => {
+    const key = el.dataset.i18n;
+    if (t[key] != null) el.textContent = t[key];
+  });
+  if (lang === "en") applyEnOverrides();
+  else Object.keys(DEFAULTS).forEach(key => {
+    document.querySelectorAll('[data-key="' + key + '"]').forEach(el => {
+      if (!editActive) el.textContent = DEFAULTS[key];
+    });
+  });
+}
+if (currentLang === "en") setLang("en");
+loadContent();
+</script>
+</body>
+</html>

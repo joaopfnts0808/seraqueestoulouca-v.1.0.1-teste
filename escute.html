@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ouça enquanto lê — Será que Estou Louca?</title>
+<link rel="stylesheet" href="vapor.css">
+<style>
+.winamp-player {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  width: 280px;
+  background: #13103a;
+  border: 2px solid var(--purple);
+  box-shadow: 6px 6px 0 var(--pink);
+  z-index: 150;
+  display: none;
+  flex-direction: column;
+  user-select: none;
+  font-family: "Poppins", sans-serif;
+}
+.winamp-player.vis { display: flex; }
+
+.wp-titlebar {
+  background: linear-gradient(90deg, var(--pink), var(--purple));
+  color: #fff;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  padding: 7px 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid rgba(255,255,255,0.2);
+  cursor: grab;
+}
+.wp-titlebar:active { cursor: grabbing; }
+
+.wp-win-btns { display: flex; gap: 4px; }
+.wp-win-btn {
+  background: var(--win-dark);
+  color: #fff;
+  border: 1px solid rgba(255,255,255,0.3);
+  width: 18px;
+  height: 18px;
+  font-size: 11px;
+  line-height: 15px;
+  text-align: center;
+  cursor: pointer;
+}
+
+.wp-body { padding: 12px; display: flex; flex-direction: column; gap: 10px; }
+
+.wp-status-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.68rem;
+  font-weight: 600;
+  color: var(--steel);
+  letter-spacing: 0.05em;
+}
+
+.wp-lcd {
+  background: #08061c;
+  border: 1px solid var(--purple);
+  padding: 8px 10px;
+  overflow: hidden;
+  white-space: nowrap;
+}
+.wp-lcd-title {
+  font-family: "DM Serif Display", serif;
+  font-size: 1.05rem;
+  color: #fff;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+.wp-lcd-artist {
+  font-size: 0.72rem;
+  color: var(--pink);
+}
+
+.wp-controls {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr 1fr 1.3fr;
+  gap: 6px;
+}
+.wp-btn {
+  background: var(--win-dark);
+  color: #fff;
+  border: 1px solid var(--purple);
+  font-family: "Poppins", sans-serif;
+  font-size: 0.7rem;
+  font-weight: 600;
+  padding: 7px 4px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s;
+}
+.wp-btn:hover { background: var(--purple); }
+.wp-btn-mute {
+  background: var(--pink);
+  border-color: #ff85d8;
+}
+.wp-btn-mute.muted {
+  background: #3a1230;
+  color: var(--muted);
+}
+
+.wp-art-box {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1;
+  background: #08061c;
+  border: 1px solid var(--purple);
+  overflow: hidden;
+}
+.wp-art-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.wp-art-overlay {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  background: rgba(11, 9, 40, 0.88);
+  padding: 6px 8px;
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  color: #fff;
+  border-top: 1px solid var(--pink);
+  text-align: center;
+}
+
+.wp-vol-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.68rem;
+  font-weight: 600;
+  color: var(--muted);
+}
+.wp-vol-row input[type="range"] {
+  flex: 1;
+  accent-color: var(--pink);
+  cursor: pointer;
+}
+
+.wp-footer-drag {
+  background: #08061c;
+  color: var(--muted);
+  font-size: 0.62rem;
+  text-align: center;
+  padding: 4px;
+  border-top: 1px solid rgba(255,255,255,0.08);
+}
+
+.winamp-player.minimized .wp-art-box,
+.winamp-player.minimized .wp-vol-row { display: none; }
+
+@media (max-width: 600px) {
+  .winamp-player { left: 12px; right: 12px; bottom: 12px; width: auto; }
+  .wp-art-box { display: none; }
+}
+</style>
+</head>
+<body>
+<header class="hero wrap">
+  <a class="back-link" href="/" data-i18n="back">← Voltar</a><br>
+  <p class="hero-author">João Pedro Fontes</p>
+  <h1 class="hero-title" data-i18n="title">Será que<br>Estou Louca?</h1>
+  <p class="hero-sub" data-key="hero_sub" data-i18n="hero_sub">A biblioteca musical do livro</p>
+  <div class="lang-toggle">
+    <button class="lang-btn active" id="btn-pt" onclick="setLang('pt')">PT</button>
+    <button class="lang-btn" id="btn-en" onclick="setLang('en')">EN</button>
+  </div>
+  <div class="login-banner" id="loginBanner" style="margin-top:24px; display:flex; align-items:center; gap:14px;">
+    <p style="font-size:0.8rem; text-align:left;"><b data-i18n="login_bold" style="color:var(--cyan);">Ouça enquanto lê.</b><br><span data-i18n="login_sub">Entre com Spotify para tocar as músicas aqui.</span></p>
+    <button class="btn-spotify" onclick="loginSpotify()">
+      <span data-i18n="login_btn">Entrar</span>
+    </button>
+  </div>
+  <div class="user-bar" id="userBar" style="display:none; margin-top:24px; align-items:center; gap:10px;">
+    <img id="userAvatar" src="" alt="" style="width:28px; height:28px; border:2px solid var(--cyan);">
+    <span style="font-size:0.8rem;"><span data-i18n="hello">Olá,</span> <b class="uname" id="userName" style="color:var(--cyan);"></b></span>
+    <button class="back-link" style="margin:0 0 0 auto;" onclick="logout()" data-i18n="logout">Sair</button>
+  </div>
+</header>
+
+<main>
+  <div class="wrap" style="max-width:700px; margin:0 auto; padding:0 20px 120px;">
+    <p class="sec-label" data-i18n="before_all">★ Antes de tudo</p>
+    <div class="special-card">
+      <div class="track" onclick="expandTrack(this)" data-uri="spotify:track:2d8UxVNhJinc8uat9PoM9y" data-idx="15">
+        <div class="track-top" style="display:grid; grid-template-columns:28px 40px 1fr auto; gap:10px; align-items:center;">
+          <span class="track-cap">★</span>
+          <img class="track-thumb" id="thumb-15" src="" alt="" style="width:40px;height:40px;">
+          <div class="track-info">
+            <div class="track-title">Who's Afraid of Little Old Me?</div>
+            <div class="track-artist">Taylor Swift</div>
+            <div class="track-hint" data-i18n="tap">[ clique para ler ]</div>
+          </div>
+          <button class="btn-play" id="btn-play-15" onclick="event.stopPropagation();playTrack(15)" title="Ouvir">▶</button>
+        </div>
+        <div class="track-desc" data-key="track_15_desc" style="max-height:0;overflow:hidden;transition:max-height .3s;">Who's Afraid of Little Old Me? é sobre alguém que foi tratado como ameaça, como instável, como problema a ser contido. A música não rebate nem se justifica. Ela apenas confirma: você deveria ter medo mesmo.</div>
+      </div>
+    </div>
+
+    <p class="sec-label" data-i18n="choose_disc">Escolha um disco</p>
+    <div class="tabs">
+      <div class="tab tab-a active" onclick="switchTab('a')" data-i18n="side_a">Lado A</div>
+      <div class="tab tab-b" onclick="switchTab('b')" data-i18n="side_b">Lado B</div>
+      <div class="tab tab-bns" onclick="switchTab('bns')" data-i18n="side_c">Lado C</div>
+      <div class="tab tab-bonus" onclick="switchTab('bonus')" data-i18n="bonus">Bônus</div>
+    </div>
+
+    <div class="panel active" id="panel-a">
+      <p class="panel-desc" data-key="disco_a_desc">Capítulos I ao V — o começo, a paixão, os primeiros sinais</p>
+      <div class="track" onclick="expandTrack(this)" data-uri="spotify:track:1duoEJxM4GBEICofJAh9Im" data-idx="0">
+        <div class="track-top" style="display:grid; grid-template-columns:28px 40px 1fr auto; gap:10px; align-items:center;">
+          <span class="track-cap">I</span>
+          <img class="track-thumb" id="thumb-0" src="" alt="" style="width:40px;height:40px;">
+          <div class="track-info">
+            <div class="track-title">Out Of Mind</div>
+            <div class="track-artist">Tove Lo</div>
+            <div class="track-hint" data-i18n="tap">[ clique para ler ]</div>
+          </div>
+          <button class="btn-play" id="btn-play-0" onclick="event.stopPropagation();playTrack(0)">▶</button>
+        </div>
+        <div class="track-desc" data-key="track_0_desc" style="max-height:0;overflow:hidden;">Out Of Mind é sobre negar que alguém tomou conta da sua cabeça. Você se convence de que está bem, que o tempo vai curar, que está seguindo em frente. A música é o momento em que essa mentira racha.</div>
+      </div>
+      <div class="track" onclick="expandTrack(this)" data-uri="spotify:track:6UgkB0xM45TR3Zjqm3GQ6T" data-idx="1">
+        <div class="track-top" style="display:grid; grid-template-columns:28px 40px 1fr auto; gap:10px; align-items:center;">
+          <span class="track-cap">II</span>
+          <img class="track-thumb" id="thumb-1" src="" alt="" style="width:40px;height:40px;">
+          <div class="track-info">
+            <div class="track-title">Let's Not Fall In Love</div>
+            <div class="track-artist">BigBang</div>
+            <div class="track-hint" data-i18n="tap">[ clique para ler ]</div>
+          </div>
+          <button class="btn-play" id="btn-play-1" onclick="event.stopPropagation();playTrack(1)">▶</button>
+        </div>
+        <div class="track-desc" data-key="track_1_desc" style="max-height:0;overflow:hidden;">Let's Not Fall In Love é sobre dois que se gostam e sabem que aprofundar vai doer. Ninguém está mentindo, ninguém está se fazendo de difícil. Os dois estão com medo e falam isso abertamente. O pedido é simples: fica essa noite, mas não promete nada. É o aviso que veio antes de tudo.</div>
+      </div>
+      <div class="track" onclick="expandTrack(this)" data-uri="spotify:track:1fN3fH8Wcx7SJJwlVFrO5t" data-idx="2">
+        <div class="track-top" style="display:grid; grid-template-columns:28px 40px 1fr auto; gap:10px; align-items:center;">
+          <span class="track-cap">III</span>
+          <img class="track-thumb" id="thumb-2" src="" alt="" style="width:40px;height:40px;">
+          <div class="track-info">
+            <div class="track-title">Casanova</div>
+            <div class="track-artist">Allie X</div>
+            <div class="track-hint" data-i18n="tap">[ clique para ler ]</div>
+          </div>
+          <button class="btn-play" id="btn-play-2" onclick="event.stopPropagation();playTrack(2)">▶</button>
+        </div>
+        <div class="track-desc" data-key="track_2_desc" style="max-height:0;overflow:hidden;">Casanova é sobre saber que alguém é perigoso e ficar mesmo assim. Você vê a má reputação, sente o perigo nos lábios e continua. A música não romantiza isso, ela nomeia: você me fodeu e me deixou morrendo por seu amor. O problema é que tem algo no toque dele que não dá pra abandonar.</div>
+      </div>
+      <div class="track" onclick="expandTrack(this)" data-uri="spotify:track:5Q4H1XkVHxQjnrHCUpS61d" data-idx="3">
+        <div class="track-top" style="display:grid; grid-template-columns:28px 40px 1fr auto; gap:10px; align-items:center;">
+          <span class="track-cap">IV</span>
+          <img class="track-thumb" id="thumb-3" src="" alt="" style="width:40px;height:40px;">
+          <div class="track-info">
+            <div class="track-title">Nicotine</div>
+            <div class="track-artist">Panic! At The Disco</div>
+            <div class="track-hint" data-i18n="tap">[ clique para ler ]</div>
+          </div>
+          <button class="btn-play" id="btn-play-3" onclick="event.stopPropagation();playTrack(3)">▶</button>
+        </div>
+        <div class="track-desc" data-key="track_3_desc" style="max-height:0;overflow:hidden;">Nicotine é sobre querer parar e não conseguir. Você sabe que é ruim, corta os laços, e ainda precisa. A linha mais honesta da música é também a mais simples: seu amor é uma maldita droga, mas eu preciso tanto dele.</div>
+      </div>
+      <div class="track" onclick="expandTrack(this)" data-uri="spotify:track:73kadnv7SduzhApfRUv5C0" data-idx="4">
+        <div class="track-top" style="display:grid; grid-template-columns:28px 40px 1fr auto; gap:10px; align-items:center;">
+          <span class="track-cap">V</span>
+          <img class="track-thumb" id="thumb-4" src="" alt="" style="width:40px;height:40px;">
+          <div class="track-info">
+            <div class="track-title">hey you got drugs?</div>
+            <div class="track-artist">Tove Lo</div>
+            <div class="track-hint" data-i18n="tap">[ clique para ler ]</div>
+          </div>
+          <button class="btn-play" id="btn-play-4" onclick="event.stopPropagation();playTrack(4)">▶</button>
+        </div>
+        <div class="track-desc" data-key="track_4_desc" style="max-height:0;overflow:hidden;">hey you got drugs? é sobre usar a noite e as substâncias para não sentir. Tudo é diversão até se tornar real, e enquanto não se torna, você dança, você pede mais, você finge que se livrou dos sentimentos. A música não julga. Só mostra como é quando a festa é o único lugar onde você consegue respirar.</div>
+      </div>
+    </div>
+
+    <div class="panel" id="panel-b" style="display:none;">
+      <p class="panel-desc" data-key="disco_b_desc">Capítulos VI ao X — o fim, o gaslighting, a terapia</p>
+      <div class="track" onclick="expandTrack(this)" data-uri="spotify:track:1CD7hXuEjiUsoqOhleyKb7" data-idx="5">
+        <div class="track-top" style="display:grid; grid-template-columns:28px 40px 1fr auto; gap:10px; align-items:center;">
+          <span class="track-cap">VI</span>
+          <img class="track-thumb" id="thumb-5" src="" alt="" style="width:40px;height:40px;">
+          <div class="track-info">
+            <div class="track-title">Doi D+</div>
+            <div class="track-artist">Jaloo</div>
+            <div class="track-hint" data-i18n="tap">[ clique para ler ]</div>
+          </div>
+          <button class="btn-play" id="btn-play-5" onclick="event.stopPropagation();playTrack(5)">▶</button>
+        </div>
+        <div class="track-desc" data-key="track_5_desc" style="max-height:0;overflow:hidden;">Doi D+ é sobre uma dor que não passa nem quando você tenta se afastar. Você mente que não amou tanto, finge que não doeu, e a música desmonta tudo isso em duas palavras: dói demais. Não tem saída limpa, não tem paz no final. Só a honestidade de quem ficou no naufrágio sabendo que o mar é a mesma pessoa que afunda.</div>
+      </div>
+      <div class="track" onclick="expandTrack(this)" data-uri="spotify:track:2VZ5Vtjn16RThAvaFz3sJZ" data-idx="6">
+        <div class="track-top" style="display:grid; grid-template-columns:28px 40px 1fr auto; gap:10px; align-items:center;">
+          <span class="track-cap">VII</span>
+          <img class="track-thumb" id="thumb-6" src="" alt="" style="width:40px;height:40px;">
+          <div class="track-info">
+            <div class="track-title">Get Outta My Way</div>
+            <div class="track-artist">Kylie Minogue</div>
+            <div class="track-hint" data-i18n="tap">[ clique para ler ]</div>
+          </div>
+          <button class="btn-play" id="btn-play-6" onclick="event.stopPropagation();playTrack(6)">▶</button>
+        </div>
+        <div class="track-desc" data-key="track_6_desc" style="max-height:0;overflow:hidden;">Get Outta My Way é sobre decidir ir embora e já estar indo. Não tem hesitação, não tem última conversa. Tem alguém que esperou tempo demais, viu chegar alguém melhor e simplesmente saiu do lugar. A música não pede permissão.</div>
+      </div>
+      <div class="track" onclick="expandTrack(this)" data-uri="spotify:track:7s0YfJE6hNNYq9BV26iCw6" data-idx="7">
+        <div class="track-top" style="display:grid; grid-template-columns:28px 40px 1fr auto; gap:10px; align-items:center;">
+          <span class="track-cap">VIII</span>
+          <img class="track-thumb" id="thumb-7" src="" alt="" style="width:40px;height:40px;">
+          <div class="track-info">
+            <div class="track-title">Circle The Drain</div>
+            <div class="track-artist">Katy Perry</div>
+            <div class="track-hint" data-i18n="tap">[ clique para ler ]</div>
+          </div>
+          <button class="btn-play" id="btn-play-7" onclick="event.stopPropagation();playTrack(7)">▶</button>
+        </div>
+        <div class="track-desc" data-key="track_7_desc" style="max-height:0;overflow:hidden;">Circle The Drain é sobre perceber que você virou responsável por alguém que não quer ser salvo. Você queria um parceiro, ficou sendo mãe. Queria amor, ficou sendo salvadora. A música é o momento em que você para de se convencer de que pode mudar alguém que prefere transformar algo sólido em pó.</div>
+      </div>
+      <div class="track" onclick="expandTrack(this)" data-uri="spotify:track:1eTL8yocTmire9gpOn2H2g" data-idx="8">
+        <div class="track-top" style="display:grid; grid-template-columns:28px 40px 1fr auto; gap:10px; align-items:center;">
+          <span class="track-cap">IX</span>
+          <img class="track-thumb" id="thumb-8" src="" alt="" style="width:40px;height:40px;">
+          <div class="track-info">
+            <div class="track-title">Godless</div>
+            <div class="track-artist">Banks</div>
+            <div class="track-hint" data-i18n="tap">[ clique para ler ]</div>
+          </div>
+          <button class="btn-play" id="btn-play-8" onclick="event.stopPropagation();playTrack(8)">▶</button>
+        </div>
+        <div class="track-desc" data-key="track_8_desc" style="max-height:0;overflow:hidden;">Godless é sobre idolatrar alguém que não acredita em nada. Você construiu uma fé inteira em cima de uma pessoa que nunca pediu para ser adorada. Quando ela vai embora, não sobra só a saudade. Sobra o vazio de quem perdeu a própria religião.</div>
+      </div>
+      <div class="track" onclick="expandTrack(this)" data-uri="spotify:track:2ArW2y4HFzz1VjGtl7f4xm" data-idx="9">
+        <div class="track-top" style="display:grid; grid-template-columns:28px 40px 1fr auto; gap:10px; align-items:center;">
+          <span class="track-cap">X</span>
+          <img class="track-thumb" id="thumb-9" src="" alt="" style="width:40px;height:40px;">
+          <div class="track-info">
+            <div class="track-title">Sangrando</div>
+            <div class="track-artist">Gaby Amarantos & Potyguara Bardo</div>
+            <div class="track-hint" data-i18n="tap">[ clique para ler ]</div>
+          </div>
+          <button class="btn-play" id="btn-play-9" onclick="event.stopPropagation();playTrack(9)">▶</button>
+        </div>
+        <div class="track-desc" data-key="track_9_desc" style="max-height:0;overflow:hidden;">Sangrando é sobre olhar para o lado e perceber que a pessoa sumiu sem explicação. Não teve briga, não teve despedida. Você sangra, o olhar vai clareando aos poucos, e no meio disso tudo vai se encontrando de volta. A cura não vem depois da dor. Vem durante.</div>
+      </div>
+    </div>
+
+    <div class="panel" id="panel-bns" style="display:none;">
+      <p class="panel-desc" data-key="disco_bns_desc">Capítulos XI ao XV — a saída, o luto, a sobriedade</p>
+      <div class="track" onclick="expandTrack(this)" data-uri="spotify:track:7KiLniGRlvAHpoxMLYp32P" data-idx="10">
+        <div class="track-top" style="display:grid; grid-template-columns:28px 40px 1fr auto; gap:10px; align-items:center;">
+          <span class="track-cap">XI</span>
+          <img class="track-thumb" id="thumb-10" src="" alt="" style="width:40px;height:40px;">
+          <div class="track-info">
+            <div class="track-title">Espumas ao Vento</div>
+            <div class="track-artist">Elza Soares</div>
+            <div class="track-hint" data-i18n="tap">[ clique para ler ]</div>
+          </div>
+          <button class="btn-play" id="btn-play-10" onclick="event.stopPropagation();playTrack(10)">▶</button>
+        </div>
+        <div class="track-desc" data-key="track_10_desc" style="max-height:0;overflow:hidden;">Espumas ao Vento é sobre saber que o amor foi real e não conseguir aceitar que acabou. Não tem raiva, não tem orgulho. Tem alguém com o coração na mão pedindo para a pessoa voltar, com a porta aberta e o olhar pronto para fazer festa na hora em que ela chegar. A escolha por essa versão carrega Inaura junto: a dor de quem ama alguém que não vai ficar, e chora sabendo disso.</div>
+      </div>
+      <div class="track" onclick="expandTrack(this)" data-uri="spotify:track:6K8VQ84MqhsoakN5MjrnVR" data-idx="11">
+        <div class="track-top" style="display:grid; grid-template-columns:28px 40px 1fr auto; gap:10px; align-items:center;">
+          <span class="track-cap">XII</span>
+          <img class="track-thumb" id="thumb-11" src="" alt="" style="width:40px;height:40px;">
+          <div class="track-info">
+            <div class="track-title">Supercut</div>
+            <div class="track-artist">Lorde</div>
+            <div class="track-hint" data-i18n="tap">[ clique para ler ]</div>
+          </div>
+          <button class="btn-play" id="btn-play-11" onclick="event.stopPropagation();playTrack(11)">▶</button>
+        </div>
+        <div class="track-desc" data-key="track_11_desc" style="max-height:0;overflow:hidden;">Supercut é sobre a versão editada que você guarda de alguém. Na sua cabeça tudo correu bem, você perdoou sem brigar, o amor foi feroz e fluorescente. A compilação é bonita porque você escolheu o que ficou. O problema é que a versão real nunca foi essa.</div>
+      </div>
+      <div class="track" onclick="expandTrack(this)" data-uri="spotify:track:1k0JAiH11gHL9dc5dfQjQr" data-idx="12">
+        <div class="track-top" style="display:grid; grid-template-columns:28px 40px 1fr auto; gap:10px; align-items:center;">
+          <span class="track-cap">XIII</span>
+          <img class="track-thumb" id="thumb-12" src="" alt="" style="width:40px;height:40px;">
+          <div class="track-info">
+            <div class="track-title">Not Cute Anymore</div>
+            <div class="track-artist">ILLIT</div>
+            <div class="track-hint" data-i18n="tap">[ clique para ler ]</div>
+          </div>
+          <button class="btn-play" id="btn-play-12" onclick="event.stopPropagation();playTrack(12)">▶</button>
+        </div>
+        <div class="track-desc" data-key="track_12_desc" style="max-height:0;overflow:hidden;">Not Cute Anymore é sobre parar de se encaixar no que o outro esperava. A pessoa continua sendo quem é, com suas sandálias coloridas e seu vinil de Suede, mas não vai mais fingir ser fofa pra agradar. Não é uma ruptura dramática. É só alguém que cansou de ser o que não é.</div>
+      </div>
+      <div class="track" onclick="expandTrack(this)" data-uri="spotify:track:1bYtKF2sY2wLU6xdVaqIqD" data-idx="13">
+        <div class="track-top" style="display:grid; grid-template-columns:28px 40px 1fr auto; gap:10px; align-items:center;">
+          <span class="track-cap">XIV</span>
+          <img class="track-thumb" id="thumb-13" src="" alt="" style="width:40px;height:40px;">
+          <div class="track-info">
+            <div class="track-title">It's Alright, It's Ok</div>
+            <div class="track-artist">Ashley Tisdale</div>
+            <div class="track-hint" data-i18n="tap">[ clique para ler ]</div>
+          </div>
+          <button class="btn-play" id="btn-play-13" onclick="event.stopPropagation();playTrack(13)">▶</button>
+        </div>
+        <div class="track-desc" data-key="track_13_desc" style="max-height:0;overflow:hidden;">It's Alright, It's Ok é sobre fechar a porta sem drama. Não tem lágrima, não tem última chance. Tem alguém que viu o jogo, pegou as palavras do outro e foi embora sem olhar para trás. A ponte queimou e tá tudo bem assim.</div>
+      </div>
+      <div class="track" onclick="expandTrack(this)" data-uri="spotify:track:4D7BCuvgdJlYvlX5QlSQoE" data-idx="14">
+        <div class="track-top" style="display:grid; grid-template-columns:28px 40px 1fr auto; gap:10px; align-items:center;">
+          <span class="track-cap">XV</span>
+          <img class="track-thumb" id="thumb-14" src="" alt="" style="width:40px;height:40px;">
+          <div class="track-info">
+            <div class="track-title">You're On Your Own, Kid</div>
+            <div class="track-artist">Taylor Swift</div>
+            <div class="track-hint" data-i18n="tap">[ clique para ler ]</div>
+          </div>
+          <button class="btn-play" id="btn-play-14" onclick="event.stopPropagation();playTrack(14)">▶</button>
+        </div>
+        <div class="track-desc" data-key="track_14_desc" style="max-height:0;overflow:hidden;">You're On Your Own, Kid é sobre fechar uma conta que nunca vai ser paga pelo outro. A resolução vem sozinha, sem o pedido de desculpas que nunca chega. Você sempre esteve por conta própria.</div>
+      </div>
+    </div>
+
+    <div class="panel" id="panel-bonus" style="display:none;">
+      <p class="panel-desc" data-key="disco_bonus_desc">Faixas extras</p>
+      <div class="track" onclick="expandTrack(this)" data-uri="spotify:track:2olfjOvAFAIaQ8mJp1TFo0" data-idx="16">
+        <div class="track-top" style="display:grid; grid-template-columns:28px 40px 1fr auto; gap:10px; align-items:center;">
+          <span class="track-cap">I</span>
+          <img class="track-thumb" id="thumb-16" src="" alt="" style="width:40px;height:40px;">
+          <div class="track-info">
+            <div class="track-title">Amor pra Recordar</div>
+            <div class="track-artist">Gaby Amarantos & Liniker</div>
+            <div class="track-hint" data-i18n="tap">[ clique para ler ]</div>
+          </div>
+          <button class="btn-play" id="btn-play-16" onclick="event.stopPropagation();playTrack(16)">▶</button>
+        </div>
+        <div class="track-desc" data-key="track_16_desc" style="max-height:0;overflow:hidden;">Amor pra Recordar não entrou porque o livro não tem espaço para essa generosidade. O arco principal é sobre nomear o gaslighting, e ceder muito à ideia de que a gente foi feliz contradizia o tom. Ficou de fora porque o livro prefere não absolver. Ficou nas bônus porque esse sentimento é real: apesar de tudo, houve amor, e fingir que não houve seria outra forma de mentira.</div>
+      </div>
+      <div class="track" onclick="expandTrack(this)" data-uri="spotify:track:11EDhDAVDtGPoSar6ootYA" data-idx="17">
+        <div class="track-top" style="display:grid; grid-template-columns:28px 40px 1fr auto; gap:10px; align-items:center;">
+          <span class="track-cap">II</span>
+          <img class="track-thumb" id="thumb-17" src="" alt="" style="width:40px;height:40px;">
+          <div class="track-info">
+            <div class="track-title">Strangers</div>
+            <div class="track-artist">Halsey ft. Lauren Jauregui</div>
+            <div class="track-hint" data-i18n="tap">[ clique para ler ]</div>
+          </div>
+          <button class="btn-play" id="btn-play-17" onclick="event.stopPropagation();playTrack(17)">▶</button>
+        </div>
+        <div class="track-desc" data-key="track_17_desc" style="max-height:0;overflow:hidden;">Strangers não entrou porque descreve um estado que o livro atravessa rápido demais para nomear: o meio, quando ainda não era nada mas já pesava tudo. A música nomeia o que ficou implícito. 'Strangers with the same damn hunger to be touched, to be loved' é o diagnóstico mais preciso do que aquela relação era antes de ter nome.</div>
+      </div>
+      <div class="track" onclick="expandTrack(this)" data-uri="spotify:track:3XMBVIWJ19LcePSuM0VLEX" data-idx="18">
+        <div class="track-top" style="display:grid; grid-template-columns:28px 40px 1fr auto; gap:10px; align-items:center;">
+          <span class="track-cap">III</span>
+          <img class="track-thumb" id="thumb-18" src="" alt="" style="width:40px;height:40px;">
+          <div class="track-info">
+            <div class="track-title">Propaganda</div>
+            <div class="track-artist">Banks</div>
+            <div class="track-hint" data-i18n="tap">[ clique para ler ]</div>
+          </div>
+          <button class="btn-play" id="btn-play-18" onclick="event.stopPropagation();playTrack(18)">▶</button>
+        </div>
+        <div class="track-desc" data-key="track_18_desc" style="max-height:0;overflow:hidden;">Propaganda ficou de fora porque é pesada demais para qualquer ponto do arco sem arrastar o livro junto. Está nas bônus porque a frase I can’t save myself é o que o texto inteiro tenta não dizer em voz alta. O livro chega perto. A música diz.</div>
+      </div>
+      <div class="track" onclick="expandTrack(this)" data-uri="spotify:track:02BhbpQKWCVjqVBUsvOL7i" data-idx="19">
+        <div class="track-top" style="display:grid; grid-template-columns:28px 40px 1fr auto; gap:10px; align-items:center;">
+          <span class="track-cap">IV</span>
+          <img class="track-thumb" id="thumb-19" src="" alt="" style="width:40px;height:40px;">
+          <div class="track-info">
+            <div class="track-title">Não Me Cutuca</div>
+            <div class="track-artist">Anitta, Alceu Valença</div>
+            <div class="track-hint" data-i18n="tap">[ clique para ler ]</div>
+          </div>
+          <button class="btn-play" id="btn-play-19" onclick="event.stopPropagation();playTrack(19)">▶</button>
+        </div>
+        <div class="track-desc" data-key="track_19_desc" style="max-height:0;overflow:hidden;">Não Me Cutuca ficou de fora do arco principal porque chega tarde demais: o livro inteiro gira em torno da dúvida, e essa música já nasce depois dela, resolvida. Não tem espaço pra "será que" numa letra que começa dizendo que está em paz. Ficou nas bônus porque devolve a palavra do título pra quem foi chamada assim. É a versão da história em que a "maluca" já não está mais se explicando pra ninguém.</div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<!-- PLAYER ESTILO HOTLINE RADIO / WINAMP -->
+<div class="winamp-player" id="nowPlaying">
+  <div class="wp-titlebar" id="wpDragHandle">
+    <span>• LOUCA RADIO ラジオ</span>
+    <div class="wp-win-btns">
+      <button class="wp-win-btn" onclick="toggleMinimizePlayer()" title="Minimizar">_</button>
+      <button class="wp-win-btn" onclick="closePlayer()" title="Fechar">×</button>
+    </div>
+  </div>
+  <div class="wp-body">
+    <div class="wp-status-row">
+      <span id="wpStateText">PAUSED</span>
+      <span>128 KBPS // STEREO</span>
+    </div>
+    <div class="wp-lcd">
+      <div class="wp-lcd-title" id="npTitle">SELECT A TRACK</div>
+      <div class="wp-lcd-artist" id="npArtist">---</div>
+    </div>
+    <div class="wp-controls">
+      <button class="wp-btn" onclick="prevTrack()" title="Anterior">◀◀</button>
+      <button class="wp-btn" id="ppBtn" onclick="togglePlay()" title="Play/Pause">
+        <span id="playIcon">▶</span>
+        <span id="pauseIcon" style="display:none">❚❚</span>
+      </button>
+      <button class="wp-btn" onclick="nextTrack()" title="Próxima">▶▶</button>
+      <button class="wp-btn wp-btn-mute" id="muteBtn" onclick="toggleMute()">MUTE</button>
+    </div>
+    <div class="wp-art-box">
+      <img id="npCover" src="" alt="">
+      <div class="wp-art-overlay" id="wpSideLabel">SERÁ QUE ESTOU LOUCA?</div>
+    </div>
+    <div class="wp-vol-row">
+      <span>VOL</span>
+      <input type="range" id="volSlider" min="0" max="1" step="0.05" value="0.8" oninput="setPlayerVolume(this.value)">
+    </div>
+  </div>
+  <div class="wp-footer-drag">DRAG TITLE BAR // 移動できます</div>
+</div>
+
+<script src="https://sdk.scdn.co/spotify-player.js"></script>
+<script>
+const CLIENT_ID   = "6b17b314279f41ca800c603bd7db0326";
+const REDIRECT_URI= "https://seraqueestoulouca.com.br/escute";
+const SCOPES      = "streaming user-read-email user-read-private user-modify-playback-state user-read-playback-state";
+const TRACK_URIS  = ["spotify:track:1duoEJxM4GBEICofJAh9Im", "spotify:track:6UgkB0xM45TR3Zjqm3GQ6T", "spotify:track:1fN3fH8Wcx7SJJwlVFrO5t", "spotify:track:5Q4H1XkVHxQjnrHCUpS61d", "spotify:track:73kadnv7SduzhApfRUv5C0", "spotify:track:1CD7hXuEjiUsoqOhleyKb7", "spotify:track:2VZ5Vtjn16RThAvaFz3sJZ", "spotify:track:7s0YfJE6hNNYq9BV26iCw6", "spotify:track:1eTL8yocTmire9gpOn2H2g", "spotify:track:2ArW2y4HFzz1VjGtl7f4xm", "spotify:track:7KiLniGRlvAHpoxMLYp32P", "spotify:track:6K8VQ84MqhsoakN5MjrnVR", "spotify:track:1k0JAiH11gHL9dc5dfQjQr", "spotify:track:1bYtKF2sY2wLU6xdVaqIqD", "spotify:track:4D7BCuvgdJlYvlX5QlSQoE", "spotify:track:2d8UxVNhJinc8uat9PoM9y", "spotify:track:2olfjOvAFAIaQ8mJp1TFo0", "spotify:track:11EDhDAVDtGPoSar6ootYA", "spotify:track:3XMBVIWJ19LcePSuM0VLEX", "spotify:track:02BhbpQKWCVjqVBUsvOL7i"];
+const TRACK_IDS   = ["1duoEJxM4GBEICofJAh9Im", "6UgkB0xM45TR3Zjqm3GQ6T", "1fN3fH8Wcx7SJJwlVFrO5t", "5Q4H1XkVHxQjnrHCUpS61d", "73kadnv7SduzhApfRUv5C0", "1CD7hXuEjiUsoqOhleyKb7", "2VZ5Vtjn16RThAvaFz3sJZ", "7s0YfJE6hNNYq9BV26iCw6", "1eTL8yocTmire9gpOn2H2g", "2ArW2y4HFzz1VjGtl7f4xm", "7KiLniGRlvAHpoxMLYp32P", "6K8VQ84MqhsoakN5MjrnVR", "1k0JAiH11gHL9dc5dfQjQr", "1bYtKF2sY2wLU6xdVaqIqD", "4D7BCuvgdJlYvlX5QlSQoE", "2d8UxVNhJinc8uat9PoM9y", "2olfjOvAFAIaQ8mJp1TFo0", "11EDhDAVDtGPoSar6ootYA", "3XMBVIWJ19LcePSuM0VLEX", "02BhbpQKWCVjqVBUsvOL7i"];
+
+let accessToken = null, player = null, deviceId = null;
+let currentIdx = -1, isPlaying = false, isMuted = false, lastVol = 0.8;
+
+function switchTab(name) {
+  document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
+  document.querySelectorAll(".panel").forEach(p => { p.classList.remove("active"); p.style.display = "none"; });
+  document.querySelector(".tab-" + name).classList.add("active");
+  const panel = document.getElementById("panel-" + name);
+  panel.classList.add("active");
+  panel.style.display = "block";
+}
+
+function expandTrack(el) {
+  const desc = el.querySelector(".track-desc");
+  const was = el.classList.contains("expanded");
+  document.querySelectorAll(".track.expanded").forEach(t => {
+    t.classList.remove("expanded");
+    t.querySelector(".track-desc").style.maxHeight = "0";
+  });
+  if (!was) {
+    el.classList.add("expanded");
+    desc.style.maxHeight = "400px";
+  }
+}
+
+/* Arrastar a janela do player no desktop */
+(function makeDraggable() {
+  const box = document.getElementById("nowPlaying");
+  const handle = document.getElementById("wpDragHandle");
+  let dragging = false, offsetX = 0, offsetY = 0;
+  handle.addEventListener("mousedown", e => {
+    if (window.innerWidth <= 600) return;
+    dragging = true;
+    const rect = box.getBoundingClientRect();
+    offsetX = e.clientX - rect.left;
+    offsetY = e.clientY - rect.top;
+    box.style.bottom = "auto";
+    box.style.right = "auto";
+    box.style.left = rect.left + "px";
+    box.style.top = rect.top + "px";
+  });
+  document.addEventListener("mousemove", e => {
+    if (!dragging) return;
+    box.style.left = (e.clientX - offsetX) + "px";
+    box.style.top = (e.clientY - offsetY) + "px";
+  });
+  document.addEventListener("mouseup", () => { dragging = false; });
+})();
+
+function toggleMinimizePlayer() {
+  document.getElementById("nowPlaying").classList.toggle("minimized");
+}
+function closePlayer() {
+  if (player && isPlaying) player.pause();
+  document.getElementById("nowPlaying").classList.remove("vis");
+}
+function setPlayerVolume(val) {
+  lastVol = parseFloat(val);
+  isMuted = lastVol === 0;
+  document.getElementById("muteBtn").classList.toggle("muted", isMuted);
+  if (player) player.setVolume(lastVol);
+}
+function toggleMute() {
+  isMuted = !isMuted;
+  document.getElementById("muteBtn").classList.toggle("muted", isMuted);
+  const targetVol = isMuted ? 0 : (lastVol || 0.8);
+  document.getElementById("volSlider").value = targetVol;
+  if (player) player.setVolume(targetVol);
+}
+
+/* Autenticação e SDK Spotify */
+function genVerifier(n) {
+  const c = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  return Array.from(crypto.getRandomValues(new Uint8Array(n))).map(x => c[x % c.length]).join("");
+}
+async function genChallenge(v) {
+  const d = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(v));
+  return btoa(String.fromCharCode(...new Uint8Array(d))).replace(/\+/g,"-").replace(/\//g,"_").replace(/=+$/,"");
+}
+async function loginSpotify() {
+  const v = genVerifier(128), ch = await genChallenge(v);
+  localStorage.setItem("sp_v", v);
+  location.href = "https://accounts.spotify.com/authorize?client_id=" + CLIENT_ID +
+    "&response_type=code&redirect_uri=" + encodeURIComponent(REDIRECT_URI) +
+    "&scope=" + encodeURIComponent(SCOPES) + "&code_challenge_method=S256&code_challenge=" + ch;
+}
+async function exchangeCode(code) {
+  const v = localStorage.getItem("sp_v");
+  const r = await fetch("https://accounts.spotify.com/api/token", {
+    method:"POST", headers:{"Content-Type":"application/x-www-form-urlencoded"},
+    body: new URLSearchParams({client_id:CLIENT_ID,grant_type:"authorization_code",code,redirect_uri:REDIRECT_URI,code_verifier:v})
+  });
+  const d = await r.json();
+  if (d.access_token) {
+    localStorage.setItem("sp_t", d.access_token);
+    localStorage.setItem("sp_e", Date.now() + d.expires_in * 1000);
+    localStorage.removeItem("sp_v");
+    history.replaceState(null, null, location.pathname);
+    return d.access_token;
+  }
+  return null;
+}
+function getSaved() {
+  const t = localStorage.getItem("sp_t"), e = +localStorage.getItem("sp_e");
+  return t && Date.now() < e ? t : null;
+}
+function logout() {
+  accessToken = null;
+  ["sp_t","sp_e","sp_r","sp_v"].forEach(k => localStorage.removeItem(k));
+  document.getElementById("loginBanner").style.display = "flex";
+  document.getElementById("userBar").style.display = "none";
+  document.getElementById("nowPlaying").classList.remove("vis");
+  if (player) { player.disconnect(); player = null; }
+}
+window.onSpotifyWebPlaybackSDKReady = async () => {
+  const params = new URLSearchParams(location.search);
+  const code = params.get("code");
+  if (code) accessToken = await exchangeCode(code);
+  else accessToken = getSaved();
+  if (!accessToken) return;
+  initPlayer();
+};
+function initPlayer() {
+  document.getElementById("loginBanner").style.display = "none";
+  fetchUser(); fetchCovers();
+  player = new Spotify.Player({name:"Será que Estou Louca?", getOAuthToken: cb => cb(accessToken), volume:0.8});
+  player.addListener("ready", ({device_id}) => { deviceId = device_id; });
+  player.addListener("player_state_changed", s => {
+    if (!s) return;
+    isPlaying = !s.paused; updatePP();
+    const t = s.track_window.current_track;
+    if (t) updateNP(t);
+  });
+  player.connect();
+}
+async function fetchUser() {
+  const r = await fetch("https://api.spotify.com/v1/me", {headers:{Authorization:"Bearer "+accessToken}});
+  const d = await r.json();
+  document.getElementById("userName").textContent = d.display_name || d.id;
+  document.getElementById("userAvatar").src = d.images?.[0]?.url || "";
+  document.getElementById("userBar").style.display = "flex";
+}
+async function fetchCovers() {
+  const r = await fetch("https://api.spotify.com/v1/tracks?ids=" + TRACK_IDS.join(","), {headers:{Authorization:"Bearer "+accessToken}});
+  const d = await r.json();
+  if (!d.tracks) return;
+  d.tracks.forEach((t, i) => {
+    const url = t?.album?.images?.[1]?.url || t?.album?.images?.[0]?.url;
+    if (!url) return;
+    const img = document.getElementById("thumb-" + i);
+    if (img) { img.src = url; }
+  });
+}
+async function playTrack(idx) {
+  if (!accessToken) { loginSpotify(); return; }
+  if (!deviceId) { alert("Player carregando, aguarde alguns segundos."); return; }
+  document.querySelectorAll(".btn-play.playing").forEach(b => b.classList.remove("playing"));
+  if (currentIdx === idx && isPlaying) { player.pause(); return; }
+  currentIdx = idx;
+  document.getElementById("btn-play-" + idx)?.classList.add("playing");
+  await fetch("https://api.spotify.com/v1/me/player/play?device_id=" + deviceId, {
+    method:"PUT", headers:{Authorization:"Bearer "+accessToken,"Content-Type":"application/json"},
+    body: JSON.stringify({uris:[TRACK_URIS[idx]]})
+  });
+  document.getElementById("nowPlaying").classList.add("vis");
+}
+async function togglePlay() { if (player) await player.togglePlay(); }
+async function nextTrack() { await playTrack((currentIdx + 1) % TRACK_URIS.length); }
+async function prevTrack() { await playTrack((currentIdx - 1 + TRACK_URIS.length) % TRACK_URIS.length); }
+function updateNP(t) {
+  document.getElementById("npTitle").textContent = t.name;
+  document.getElementById("npArtist").textContent = t.artists.map(a => a.name).join(", ");
+  document.getElementById("npCover").src = t.album.images[0]?.url || "";
+  const i = TRACK_URIS.indexOf("spotify:track:" + t.id);
+  document.querySelectorAll(".btn-play.playing").forEach(b => b.classList.remove("playing"));
+  if (i >= 0) { document.getElementById("btn-play-" + i)?.classList.add("playing"); currentIdx = i; }
+}
+function updatePP() {
+  document.getElementById("playIcon").style.display  = isPlaying ? "none"  : "inline";
+  document.getElementById("pauseIcon").style.display = isPlaying ? "inline" : "none";
+  document.getElementById("wpStateText").textContent = isPlaying ? "PLAYING ▶" : "PAUSED";
+}
+function setLang(lang) {
+  document.getElementById("btn-pt").classList.toggle("active", lang === "pt");
+  document.getElementById("btn-en").classList.toggle("active", lang === "en");
+}
+</script>
+</body>
+</html>

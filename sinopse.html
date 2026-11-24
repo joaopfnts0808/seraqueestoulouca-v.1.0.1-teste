@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sinopse — Será que Estou Louca?</title>
+<link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,600;1,9..40,300&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0b0928;--pink:#f036b8;--purple:#7b2fbe;--blue:#2d4de0;--muted:#9d93c8;}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--bg);color:#fff;font-family:"DM Sans",sans-serif;min-height:100vh;overflow-x:hidden;}
+.bgs{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden;}
+.blob{position:absolute;border-radius:50%;filter:blur(90px);opacity:.16;animation:drift 10s ease-in-out infinite;}
+.b1{background:var(--purple);width:480px;height:480px;top:-180px;right:-120px;}
+.b2{background:var(--blue);width:360px;height:360px;bottom:0;left:-100px;animation-delay:-4s;}
+@keyframes drift{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(24px,-36px) scale(1.06)}66%{transform:translate(-14px,22px) scale(.94)}}
+.wrap{position:relative;z-index:1;max-width:620px;margin:0 auto;padding:0 40px;}
+.back-link{display:inline-block;font-size:.72rem;color:var(--muted);text-decoration:none;
+  letter-spacing:.1em;text-transform:uppercase;margin:60px 0 30px;border:1px solid rgba(255,255,255,.12);
+  border-radius:20px;padding:6px 16px;transition:border-color .2s,color .2s;}
+.back-link:hover{border-color:var(--pink);color:#fff;}
+h1{font-family:"Abril Fatface",serif;font-size:clamp(2.2rem,7vw,3.4rem);line-height:1.1;
+  background:linear-gradient(140deg,#fff 0%,var(--pink) 55%,var(--purple) 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:8px;}
+.role{font-size:.78rem;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);margin-bottom:36px;}
+.lang-toggle{display:flex;align-items:center;gap:0;margin:0 0 36px;width:fit-content;
+  border:1px solid rgba(255,255,255,.12);border-radius:20px;overflow:hidden;}
+.lang-btn{background:none;border:none;color:var(--muted);font-family:"DM Sans",sans-serif;
+  font-size:.65rem;font-weight:600;letter-spacing:.1em;padding:5px 14px;cursor:pointer;}
+.lang-btn.active{background:rgba(240,54,184,.2);color:#fff;}
+.lang-sep{width:1px;background:rgba(255,255,255,.12);height:24px;}
+.bio p{font-size:.98rem;line-height:1.85;color:rgba(255,255,255,.85);margin-bottom:20px;font-weight:300;}
+.pull{border-left:2px solid var(--pink);padding-left:20px;margin:36px 0;font-style:italic;
+  color:var(--muted);font-size:.92rem;line-height:1.7;}
+.info-row{display:flex;gap:24px;flex-wrap:wrap;margin:8px 0 60px;padding-top:24px;
+  border-top:1px solid rgba(255,255,255,.08);}
+.info-item{font-size:.75rem;color:var(--muted);}
+.info-item b{display:block;color:#fff;font-size:.85rem;margin-bottom:2px;}
+footer{position:relative;z-index:1;text-align:center;padding:32px 20px 50px;
+  border-top:1px solid rgba(255,255,255,.05);font-size:.68rem;color:rgba(255,255,255,.18);letter-spacing:.1em;}
+@media(max-width:480px){.wrap{padding:0 22px;}}
+
+/* ---- Edição inline ---- */
+[data-key][contenteditable="true"]{outline:2px dashed var(--pink);border-radius:3px;padding:1px 3px;cursor:text;background:rgba(240,54,184,.06);}
+.edit-bar{position:fixed;bottom:0;left:0;right:0;z-index:200;
+  background:rgba(11,9,40,.97);border-top:1px solid rgba(240,54,184,.3);
+  backdrop-filter:blur(16px);display:none;align-items:center;justify-content:center;gap:10px;padding:12px 20px;}
+.edit-bar.vis{display:flex;}
+.edit-bar p{font-size:.76rem;color:var(--muted);flex:1;}
+.btn-save{background:var(--pink);color:#fff;border:none;border-radius:20px;
+  font-family:"DM Sans",sans-serif;font-size:.75rem;font-weight:600;padding:9px 22px;cursor:pointer;}
+.btn-cancel{background:none;color:var(--muted);border:1px solid rgba(255,255,255,.1);
+  border-radius:20px;font-family:"DM Sans",sans-serif;font-size:.75rem;padding:9px 18px;cursor:pointer;}
+.edit-trigger{position:fixed;bottom:20px;right:20px;z-index:199;
+  background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);
+  border-radius:50%;width:38px;height:38px;display:flex;align-items:center;justify-content:center;
+  cursor:pointer;color:rgba(255,255,255,.25);font-size:15px;transition:all .2s;}
+.edit-trigger:hover{background:rgba(240,54,184,.15);border-color:var(--pink);color:var(--pink);}
+</style>
+</head>
+<body>
+<div class="bgs"><div class="blob b1"></div><div class="blob b2"></div></div>
+<div class="wrap">
+  <a class="back-link" href="/" data-i18n="back">← Voltar</a>
+  <h1 data-i18n="h1">Sinopse</h1>
+  <p class="role" data-key="sinopse_role">Um romance narrado por um fantasma</p>
+  <div class="lang-toggle">
+    <button class="lang-btn active" id="btn-pt" onclick="setLang('pt')">PT</button>
+    <div class="lang-sep"></div>
+    <button class="lang-btn" id="btn-en" onclick="setLang('en')">EN</button>
+  </div>
+  <div class="bio" id="bio">
+    <p data-key="sinopse_p1">Quem narra este livro já morreu. E é justamente por isso que consegue contar tudo sem medo.</p>
+    <p data-key="sinopse_p2">"Será que estou louca?" acompanha uma relação que começou como paixão e foi virando, capítulo a capítulo, um exercício silencioso de duvidar da própria percepção. A pessoa que narra revisita cada fase: a euforia do início, os primeiros sinais ignorados, as frases que reescreviam a realidade até fazer a vítima se sentir a culpada, a terapia que devolveu palavras para nomear o que estava acontecendo, e a saída, que não teve nada de cinematográfica.</p>
+    <p data-key="sinopse_p3">No fundo da história corre outra pergunta, menos falada mas igual de urgente: o que fazer com o tempo quando o corpo pode acabar antes do previsto. A narradora convive com PFIC, doença hepática rara, e é não binária num mundo que ainda insiste em pedir explicações para as duas coisas. O livro não trata isso como pano de fundo. Trata como parte do mesmo enredo: a dificuldade de ser acreditada, seja sobre o próprio corpo, seja sobre a própria dor.</p>
+    <p data-key="sinopse_p4">A escolha de um narrador-fantasma não é um truque literário vazio. É a forma mais honesta de contar essa história: só quem já perdeu tudo consegue falar sem medo do que ainda pode perder.</p>
+  </div>
+  <div class="pull" data-key="sinopse_pull">"Será que estou louca?" pergunta o título. O livro inteiro responde: não, você só duvidou de si mesma tempo demais.</div>
+  <div class="info-row">
+    <div class="info-item"><b data-i18n="genre_label">Gênero</b><span data-i18n="genre">Autoficção</span></div>
+    <div class="info-item"><b data-i18n="lang_label">Idioma</b><span data-i18n="lang">Português</span></div>
+    <div class="info-item"><b data-i18n="format_label">Formato</b><span data-i18n="format">Impresso e digital</span></div>
+  </div>
+</div>
+<footer><p>© 2026 · Será que Estou Louca? · João Pedro Fontes</p></footer>
+
+<div class="edit-bar" id="editBar">
+  <p id="editStatus">Modo de edição ativo — clique em qualquer texto para editar.</p>
+  <button class="btn-cancel" onclick="cancelEdit()">Cancelar</button>
+  <button class="btn-save" id="saveBtn" onclick="saveContent()">Salvar tudo</button>
+</div>
+<div class="edit-trigger" id="editTrigger" onclick="promptEdit()">✏️</div>
+
+<script>
+const SB_URL = "https://rvmfonytiinfzdgirsgk.supabase.co";
+const SB_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJ2bWZvbnl0aWluZnpkZ2lyc2drIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA3Mjg1ODQsImV4cCI6MjA5NjMwNDU4NH0.kGVmLNzLE6eK6QaaCRVw8_cNZ8aloYi5CNzWwvEpSqI";
+const EDIT_PASS = "louca2026";
+const DEFAULTS = {
+  sinopse_role: "Um romance narrado por um fantasma",
+  sinopse_p1: "Quem narra este livro já morreu. E é justamente por isso que consegue contar tudo sem medo.",
+  sinopse_p2: "\"Será que estou louca?\" acompanha uma relação que começou como paixão e foi virando, capítulo a capítulo, um exercício silencioso de duvidar da própria percepção. A pessoa que narra revisita cada fase: a euforia do início, os primeiros sinais ignorados, as frases que reescreviam a realidade até fazer a vítima se sentir a culpada, a terapia que devolveu palavras para nomear o que estava acontecendo, e a saída, que não teve nada de cinematográfica.",
+  sinopse_p3: "No fundo da história corre outra pergunta, menos falada mas igual de urgente: o que fazer com o tempo quando o corpo pode acabar antes do previsto. A narradora convive com PFIC, doença hepática rara, e é não binária num mundo que ainda insiste em pedir explicações para as duas coisas. O livro não trata isso como pano de fundo. Trata como parte do mesmo enredo: a dificuldade de ser acreditada, seja sobre o próprio corpo, seja sobre a própria dor.",
+  sinopse_p4: "A escolha de um narrador-fantasma não é um truque literário vazio. É a forma mais honesta de contar essa história: só quem já perdeu tudo consegue falar sem medo do que ainda pode perder.",
+  sinopse_pull: "\"Será que estou louca?\" pergunta o título. O livro inteiro responde: não, você só duvidou de si mesma tempo demais."
+};
+let editActive = false;
+
+async function sbFetch(method, body) {
+  const r = await fetch(SB_URL + "/rest/v1/conteudo", {
+    method, headers:{apikey:SB_KEY,Authorization:"Bearer "+SB_KEY,"Content-Type":"application/json",
+      Prefer: method==="POST"?"resolution=merge-duplicates":""},
+    body: body ? JSON.stringify(body) : undefined
+  });
+  return method === "GET" ? r.json() : r;
+}
+async function loadContent() {
+  try {
+    const rows = await sbFetch("GET");
+    const keysHere = Object.keys(DEFAULTS);
+    const present = new Set((rows || []).map(r => r.chave));
+    const missing = keysHere.filter(k => !present.has(k));
+    if (missing.length) await sbFetch("POST", missing.map(chave => ({ chave, valor: DEFAULTS[chave] })));
+    (rows || []).forEach(row => {
+      if (!(row.chave in DEFAULTS)) return;
+      document.querySelectorAll('[data-key="' + row.chave + '"]').forEach(el => {
+        if (!editActive) el.textContent = row.valor;
+      });
+    });
+  } catch (e) { console.warn("Supabase:", e); }
+  if (currentLang === "en") applyEnOverrides();
+}
+function promptEdit() {
+  if (localStorage.getItem("sq_editor_ok") === "1") { enableEdit(); return; }
+  const pw = prompt("Senha de edição:");
+  if (pw === EDIT_PASS) enableEdit();
+  else if (pw !== null) alert("Senha incorreta.");
+}
+function enableEdit() {
+  editActive = true;
+  document.querySelectorAll("[data-key]").forEach(el => {
+    el.contentEditable = "true";
+    el.dataset.original = el.textContent;
+  });
+  document.getElementById("editBar").classList.add("vis");
+  document.getElementById("editTrigger").style.display = "none";
+}
+function cancelEdit() {
+  document.querySelectorAll("[data-key]").forEach(el => {
+    el.textContent = el.dataset.original || el.textContent;
+    el.removeAttribute("contenteditable");
+  });
+  document.getElementById("editBar").classList.remove("vis");
+  document.getElementById("editTrigger").style.display = "flex";
+  editActive = false;
+}
+async function saveContent() {
+  const btn = document.getElementById("saveBtn");
+  const status = document.getElementById("editStatus");
+  btn.disabled = true; btn.textContent = "Salvando...";
+  const rows = [...document.querySelectorAll("[data-key]")].map(el => ({ chave: el.dataset.key, valor: el.textContent.trim() }));
+  try {
+    await sbFetch("POST", rows);
+    status.textContent = "Salvo!";
+    setTimeout(cancelEdit, 1000);
+  } catch (e) {
+    status.textContent = "Erro ao salvar.";
+    btn.disabled = false; btn.textContent = "Salvar tudo";
+  }
+}
+
+const LANG_DATA = {
+  pt: {
+    back: "← Voltar", h1: "Sinopse",
+    genre_label: "Gênero", genre: "Autoficção",
+    lang_label: "Idioma", lang: "Português",
+    format_label: "Formato", format: "Impresso e digital",
+    sinopse_role: "Um romance narrado por um fantasma",
+    sinopse_p1: "Quem narra este livro já morreu. E é justamente por isso que consegue contar tudo sem medo.",
+    sinopse_p2: "\"Será que estou louca?\" acompanha uma relação que começou como paixão e foi virando, capítulo a capítulo, um exercício silencioso de duvidar da própria percepção. A pessoa que narra revisita cada fase: a euforia do início, os primeiros sinais ignorados, as frases que reescreviam a realidade até fazer a vítima se sentir a culpada, a terapia que devolveu palavras para nomear o que estava acontecendo, e a saída, que não teve nada de cinematográfica.",
+    sinopse_p3: "No fundo da história corre outra pergunta, menos falada mas igual de urgente: o que fazer com o tempo quando o corpo pode acabar antes do previsto. A narradora convive com PFIC, doença hepática rara, e é não binária num mundo que ainda insiste em pedir explicações para as duas coisas. O livro não trata isso como pano de fundo. Trata como parte do mesmo enredo: a dificuldade de ser acreditada, seja sobre o próprio corpo, seja sobre a própria dor.",
+    sinopse_p4: "A escolha de um narrador-fantasma não é um truque literário vazio. É a forma mais honesta de contar essa história: só quem já perdeu tudo consegue falar sem medo do que ainda pode perder.",
+    sinopse_pull: "\"Será que estou louca?\" pergunta o título. O livro inteiro responde: não, você só duvidou de si mesma tempo demais."
+  },
+  en: {
+    back: "← Back", h1: "Synopsis",
+    genre_label: "Genre", genre: "Autofiction",
+    lang_label: "Language", lang: "Portuguese",
+    format_label: "Format", format: "Print and digital",
+    sinopse_role: "A novel narrated by a ghost",
+    sinopse_p1: "The narrator of this book is already dead. That's exactly why they can tell all of it without fear.",
+    sinopse_p2: "\"Será que estou louca?\" (Am I Going Crazy?) follows a relationship that started as passion and turned, chapter by chapter, into a quiet exercise in doubting one's own perception. The narrator revisits every phase: the early euphoria, the first ignored warning signs, the sentences that rewrote reality until the victim felt like the guilty one, the therapy that gave the words back, and the exit, which had nothing cinematic about it.",
+    sinopse_p3: "Underneath the story runs another question, less spoken but just as urgent: what to do with time when the body might run out ahead of schedule. The narrator lives with PFIC, a rare liver disease, and is non-binary in a world that still demands explanations for both. The book doesn't treat this as backdrop. It treats it as part of the same plot: the difficulty of being believed, whether about your body or your pain.",
+    sinopse_p4: "The choice of a ghost narrator isn't an empty literary trick. It's the most honest way to tell this story: only someone who has already lost everything can speak without fear of what's left to lose.",
+    sinopse_pull: "\"Am I going crazy?\" asks the title. The whole book answers: no, you just doubted yourself for too long."
+  }
+};
+let currentLang = localStorage.getItem("sq_lang") || "pt";
+function applyEnOverrides() {
+  const t = LANG_DATA.en;
+  Object.keys(DEFAULTS).forEach(key => {
+    document.querySelectorAll('[data-key="' + key + '"]').forEach(el => {
+      if (!editActive) el.textContent = t[key];
+    });
+  });
+}
+function setLang(lang) {
+  currentLang = lang;
+  localStorage.setItem("sq_lang", lang);
+  document.getElementById("btn-pt").classList.toggle("active", lang === "pt");
+  document.getElementById("btn-en").classList.toggle("active", lang === "en");
+  const t = LANG_DATA[lang];
+  document.querySelectorAll("[data-i18n]").forEach(el => {
+    const key = el.dataset.i18n;
+    if (t[key] != null) el.textContent = t[key];
+  });
+  if (lang === "en") applyEnOverrides();
+  else Object.keys(DEFAULTS).forEach(key => {
+    document.querySelectorAll('[data-key="' + key + '"]').forEach(el => {
+      if (!editActive) el.textContent = DEFAULTS[key];
+    });
+  });
+}
+if (currentLang === "en") setLang("en");
+loadContent();
+</script>
+</body>
+</html>
