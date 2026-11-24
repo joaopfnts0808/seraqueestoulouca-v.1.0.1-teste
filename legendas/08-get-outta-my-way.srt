@@ -1,161 +1,263 @@
 1
-00:00:25,920 --> 00:00:30,320
+00:00:26,150 --> 00:00:30,240
 Qual é a pior coisa que poderia acontecer com você?
 
 2
-00:00:30,560 --> 00:00:34,140
+00:00:30,240 --> 00:00:34,100
 Aproveite a chance hoje à noite e tente algo novo
 
 3
-00:00:34,220 --> 00:00:35,480
-Você está ficando chato
+00:00:34,100 --> 00:00:37,860
+Você está ficando chato, você está tão chato
 
 4
-00:00:36,020 --> 00:00:37,380
-Você está tão chato
-
-5
-00:00:37,960 --> 00:00:41,440
+00:00:37,860 --> 00:00:41,770
 E não reconheço o zumbi que você se transformou
 
-6
-00:00:41,820 --> 00:00:45,240
+5
+00:00:41,770 --> 00:00:45,310
 Não se preocupe, porque essa noite eu tenho você
 
-7
-00:00:45,520 --> 00:00:48,980
+6
+00:00:45,310 --> 00:00:49,080
 Você pode se sentar, fazer o que faz normalmente
 
-8
-00:00:48,980 --> 00:00:51,120
+7
+00:00:49,080 --> 00:00:52,450
 Eu estou a ponto de deixá-lo ver
 
-9
-00:00:51,120 --> 00:00:56,000
+8
+00:00:52,450 --> 00:00:56,810
 Isto é o que vai acontecer se você não der a sua garota o que precisa
 
-10
-00:00:56,000 --> 00:01:00,000
+9
+00:00:56,810 --> 00:01:00,330
 Te deixar, ir até um perfeito desconhecido
 
+10
+00:01:00,330 --> 00:01:03,710
+Você fala, eu caminho, quero sentir o perigo
+
 11
-00:01:00,000 --> 00:01:04,000
-Você fala, eu caminho
-Quero sentir o perigo
+00:01:03,710 --> 00:01:06,270
+Me veja com ele, isso te excita
 
 12
-00:01:04,000 --> 00:01:08,000
-Me veja com ele, isso te excita
+00:01:06,270 --> 00:01:07,790
 Só tenho a dizer
 
 13
-00:01:08,000 --> 00:01:16,320
+00:01:07,790 --> 00:01:10,190
 Você não me terá de volta ao fim dessa canção
-Saia do meu caminho
 
 14
-00:01:16,320 --> 00:01:19,412
+00:01:10,190 --> 00:01:12,000
 Saia do meu caminho
 
 15
-00:01:25,440 --> 00:01:30,384
-Agora que eu provei quero explorar
+00:01:12,000 --> 00:01:13,920
+Saia do meu caminho
 
 16
-00:01:30,384 --> 00:01:34,624
-Não vou deixar pra lá, não, não mais
+00:01:13,920 --> 00:01:15,830
+Não há mais nada a dizer
 
 17
-00:01:36,192 --> 00:01:40,992
-Agora tenta pra valer ganhar meu coração mas
+00:01:15,830 --> 00:01:17,880
+Ele tomou seu lugar
 
 18
-00:01:40,992 --> 00:01:44,000
-Foram tantas vezes agora precisa ser mais rápido
+00:01:17,880 --> 00:01:19,550
+Saia do meu caminho
 
 19
-00:01:44,000 --> 00:01:47,232
-Não se preocupe, porque essa noite eu tenho você
+00:01:19,550 --> 00:01:21,440
+Bem fora do meu caminho
 
 20
-00:01:47,232 --> 00:01:52,037
-Você pode se sentar, fazer o que faz normalmente
+00:01:21,440 --> 00:01:23,400
+Não há mais nada a dizer
 
 21
-00:01:52,110 --> 00:01:56,944
-Eu estou a ponto de deixá-lo ver
+00:01:23,400 --> 00:01:25,490
+Ele tomou seu lugar
 
 22
-00:01:56,944 --> 00:02:00,998
-Isto é o que vai acontecer se você não der a sua garota o que precisa
+00:01:25,490 --> 00:01:27,020
+Saia do meu caminho
 
 23
-00:02:01,078 --> 00:02:04,000
-Te deixar, ir até um perfeito desconhecido
+00:01:27,020 --> 00:01:30,680
+Agora que eu provei quero explorar
 
 24
-00:02:04,000 --> 00:02:07,296
-Você fala, eu caminho
-Quero sentir o perigo
+00:01:30,680 --> 00:01:34,050
+Não vou deixar pra lá, não, não mais
 
 25
-00:02:07,296 --> 00:02:11,000
-Me veja com ele, isso te excita
-Só tenho a dizer
+00:01:34,050 --> 00:01:36,920
+Agora tenta pra valer ganhar meu coração mas
 
 26
-00:02:11,000 --> 00:02:16,000
-Você não me terá de volta ao fim dessa canção
-Saia do meu caminho
+00:01:36,920 --> 00:01:41,810
+Foram tantas vezes agora precisa ser mais rápido
 
 27
-00:02:16,000 --> 00:02:21,000
-Saia do meu caminho, não há mais nada a dizer
-Ele tomou seu lugar, saia do meu caminho
+00:01:41,810 --> 00:01:45,520
+Não se preocupe, porque essa noite eu tenho você
 
 28
-00:02:21,000 --> 00:02:26,000
-Bem fora do meu caminho, não há mais nada a dizer
-Ele tomou o seu lugar, saia do meu caminho
+00:01:45,520 --> 00:01:49,190
+Você pode se sentar, fazer o que faz normalmente
 
 29
-00:02:26,000 --> 00:02:31,000
-E não, eu não vou para casa, porque eu quero ficar
-Mas eu não estarei sozinha, de jeito nenhum
+00:01:49,190 --> 00:01:52,670
+Eu estou a ponto de deixá-lo ver
 
 30
-00:02:31,000 --> 00:02:36,000
-Agora que te mostrei do que eu sou feita
-Isto é o que vai acontecer se você não dá para sua garota o que ela precisa
+00:01:52,670 --> 00:01:56,850
+Isto é o que vai acontecer se você não der a sua garota o que precisa
 
 31
-00:02:36,000 --> 00:02:40,000
+00:01:56,850 --> 00:02:00,440
 Te deixar, ir até um perfeito desconhecido
-Você fala, eu caminho
-Quero sentir o perigo
 
 32
-00:02:40,000 --> 00:02:44,000
-Me veja com ele, isso te excita
-Só tenho a dizer: Você não me terá de volta ao fim dessa canção!
-Saia do meu caminho
+00:02:00,440 --> 00:02:03,710
+Você fala, eu caminho, quero sentir o perigo
 
 33
-00:02:44,000 --> 00:02:48,000
-Saia do meu caminho, não há mais nada a dizer
-Ele tomou seu lugar, saia do meu caminho
+00:02:03,710 --> 00:02:06,750
+Me veja com ele, isso te excita
 
 34
-00:02:48,480 --> 00:02:52,000
-Bem fora do meu caminho, não há mais nada a dizer
-Ele tomou o seu lugar, saia do meu caminho
+00:02:06,750 --> 00:02:08,200
+Só tenho a dizer
 
 35
-00:02:52,512 --> 00:02:56,000
-Não, eu não vou pra casa (uh, uh, uh, uh)
-Mas eu não estarei sozinha (uh, uh, uh, uh)
+00:02:08,200 --> 00:02:10,290
+Você não me terá de volta ao fim dessa canção
 
 36
-00:02:56,000 --> 00:03:02,000
+00:02:10,290 --> 00:02:12,060
+Saia do meu caminho
+
+37
+00:02:12,060 --> 00:02:14,080
+Saia do meu caminho
+
+38
+00:02:14,080 --> 00:02:15,740
+Não há mais nada a dizer
+
+39
+00:02:15,740 --> 00:02:17,780
+Ele tomou seu lugar
+
+40
+00:02:17,780 --> 00:02:19,320
+Saia do meu caminho
+
+41
+00:02:19,320 --> 00:02:21,450
+Bem fora do meu caminho
+
+42
+00:02:21,450 --> 00:02:23,470
+Não há mais nada a dizer
+
+43
+00:02:23,470 --> 00:02:25,410
+Ele tomou seu lugar
+
+44
+00:02:25,410 --> 00:02:34,250
+Saia do meu caminho
+
+45
+00:02:34,250 --> 00:02:37,750
+E não, eu não vou para casa, porque eu quero ficar
+
+46
+00:02:37,750 --> 00:02:42,030
+Mas eu não estarei sozinha, de jeito nenhum
+
+47
+00:02:42,030 --> 00:02:45,380
 Agora que te mostrei do que eu sou feita
+
+48
+00:02:45,380 --> 00:02:49,440
+Isto é o que vai acontecer se você não der a sua garota o que precisa
+
+49
+00:02:49,440 --> 00:02:53,490
+Te deixar, ir até um perfeito desconhecido
+
+50
+00:02:53,490 --> 00:02:56,620
+Você fala, eu caminho, quero sentir o perigo
+
+51
+00:02:56,620 --> 00:02:59,240
+Me veja com ele, isso te excita
+
+52
+00:02:59,240 --> 00:03:00,480
+Só tenho a dizer
+
+53
+00:03:00,480 --> 00:03:02,950
+Você não me terá de volta ao fim dessa canção
+
+54
+00:03:02,950 --> 00:03:04,830
+Saia do meu caminho
+
+55
+00:03:04,830 --> 00:03:06,730
+Saia do meu caminho
+
+56
+00:03:06,730 --> 00:03:08,780
+Não há mais nada a dizer
+
+57
+00:03:08,780 --> 00:03:10,550
+Ele tomou seu lugar
+
+58
+00:03:10,550 --> 00:03:12,450
+Saia do meu caminho
+
+59
+00:03:12,450 --> 00:03:14,170
+Bem fora do meu caminho
+
+60
+00:03:14,170 --> 00:03:16,220
+Não há mais nada a dizer
+
+61
+00:03:16,220 --> 00:03:18,110
+Ele tomou seu lugar
+
+62
+00:03:18,110 --> 00:03:19,510
+Saia do meu caminho
+
+63
+00:03:19,510 --> 00:03:23,040
+Não, eu não vou pra casa
+
+64
+00:03:23,040 --> 00:03:27,060
+Mas eu não estarei sozinha
+
+65
+00:03:27,060 --> 00:03:30,720
+Agora que te mostrei do que eu sou feita
+
+66
+00:03:30,720 --> 00:03:51,420
 Agora que te mostrei do que eu sou feita
